@@ -9,5 +9,7 @@ from yuri import camera
 class MarkerCameraTestCase(BaseTestCase):
     @given(reasonable_image_size())
     def test_captures_frame_at_correct_resolution(self, resolution):
-        frame = camera.MarkerCamera(aruco.DICT_6X6_50, 25, resolution).capture_frame()
+        frame = camera.MarkerCamera(
+            25, marker_dict=aruco.DICT_6X6_50, marker_size=resolution
+        ).capture_frame()
         self.assertEqual(frame.shape, (resolution, resolution))

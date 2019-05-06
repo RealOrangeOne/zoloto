@@ -2,10 +2,15 @@ import os
 
 import cv2
 
+MARKER_SIZE_MM = 100
+
 
 class BaseCamera:
-    def __init__(self):
-        pass
+    def __init__(self, **kwargs):
+        self.marker_size = kwargs.get("marker_size", MARKER_SIZE_MM)
+        self.marker_dictionary = cv2.aruco.getPredefinedDictionary(
+            kwargs["marker_dict"]
+        )
 
     def capture_frame(self):
         raise NotImplementedError()
@@ -21,7 +26,7 @@ class BaseCamera:
 
 
 class ImageFileCamera(BaseCamera):
-    def __init__(self, image_path):
+    def __init__(self, image_path, **kwargs):
         self.image = None
         assert os.path.exists(image_path)
         self.image_path = image_path
@@ -39,8 +44,8 @@ class ImageFileCamera(BaseCamera):
 
 
 class Camera(BaseCamera):
-    def __init__(self, camera_id):
-        super().__init__()
+    def __init__(self, camera_id, **kwargs):
+        super().__init__(**kwargs)
         self.camera_id = camera_id
         self.video_capture = self._create_video_capture()
 
@@ -75,11 +80,9 @@ class MarkerCamera(BaseCamera):
     A camera which always returns a single full-screen marker
     """
 
-    def __init__(self, marker_id, marker_dict_id, marker_size):
-        super().__init__()
+    def __init__(self, marker_id, **kwargs):
+        super().__init__(**kwargs)
         self.marker_id = marker_id
-        self.marker_size = marker_size
-        self.marker_dictionary = cv2.aruco.getPredefinedDictionary(marker_dict_id)
 
     def capture_frame(self):
         return cv2.aruco.drawMarker(
