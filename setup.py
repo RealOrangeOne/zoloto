@@ -8,6 +8,6 @@ setup(
     description="A fiducial marker system powered by OpenCV - Supports ArUco and April",
     packages=["yuri"],
     pathon_requires=">=3.6",
-    install_requires=[],
+    install_requires=["opencv-contrib-python-headless==4.1.0.25"],
     project_urls={"GitHub: Issues": "https://github.com/realorangeone/yuri/issues"},
 )
