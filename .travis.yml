@@ -2,6 +2,7 @@ language: python
 dist: xenial
 os:
   - linux
+  - windows
 
 python:
   - '3.6'
