@@ -5,7 +5,7 @@ setup(
     version="0.0.0",
     url="https://github.com/realorangeone/yuri",
     author="Jake Howard",
-    description="",
+    description="A fiducial marker system powered by OpenCV - Supports ArUco and April",
     packages=["yuri"],
     pathon_requires=">=3.6",
     install_requires=[],
