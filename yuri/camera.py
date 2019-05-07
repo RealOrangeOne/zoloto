@@ -1,6 +1,10 @@
 import os
+from typing import Tuple
 
 import cv2
+
+from .calibration import get_fake_calibration_parameters
+from .marker import Marker
 
 MARKER_SIZE_MM = 100
 
@@ -11,6 +15,15 @@ class BaseCamera:
         self.marker_dictionary = cv2.aruco.getPredefinedDictionary(
             kwargs["marker_dict"]
         )
+        self.calibration_file = kwargs.get("calibration_file")
+
+    def get_calibrations(self):
+        # TODO: Parse file
+        raise NotImplementedError()
+
+    def get_resolution(self) -> Tuple[int, int]:
+        # TODO: Implement everywhere else
+        raise NotImplementedError()
 
     def capture_frame(self):
         raise NotImplementedError()
@@ -20,6 +33,20 @@ class BaseCamera:
             frame = self.capture_frame()
         cv2.imwrite(filename, frame)
         return frame
+
+    def process_frame(self, frame=None):
+        if frame is None:
+            frame = self.capture_frame()
+        corners, ids, _ = cv2.aruco.detectMarkers(frame, self.marker_dictionary)
+        if not corners or not ids:
+            return []
+        corners = corners[0]
+        ids = ids[0]
+        markers = []
+        calibration_params = self.get_calibrations()
+        for corners, id in zip(corners, ids):
+            markers.append(Marker(id, corners, self.marker_size, calibration_params))
+        return markers
 
     def close(self):
         pass
@@ -80,11 +107,29 @@ class MarkerCamera(BaseCamera):
     A camera which always returns a single full-screen marker
     """
 
+    BORDER_SIZE = 40
+
     def __init__(self, marker_id, **kwargs):
         super().__init__(**kwargs)
         self.marker_id = marker_id
 
+    def get_calibrations(self):
+        return get_fake_calibration_parameters(self.marker_size)
+
+    def get_resolution(self) -> Tuple[int, int]:
+        size = int(self.marker_size + self.BORDER_SIZE * 2)
+        return size, size
+
     def capture_frame(self):
-        return cv2.aruco.drawMarker(
+        image = cv2.aruco.drawMarker(
             self.marker_dictionary, self.marker_id, self.marker_size
+        )
+        return cv2.copyMakeBorder(
+            image,
+            self.BORDER_SIZE,
+            self.BORDER_SIZE,
+            self.BORDER_SIZE,
+            self.BORDER_SIZE,
+            cv2.BORDER_CONSTANT,
+            value=[255, 0, 0],
         )
