@@ -2,9 +2,6 @@
 
 set -e
 
-export PATH=env/bin:${PATH}
-
-
 echo "> Running tests..."
 nose2 $@ -C --coverage yuri --verbose --coverage-report term --coverage-report html
 
