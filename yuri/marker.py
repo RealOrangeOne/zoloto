@@ -1,5 +1,5 @@
 from cached_property import cached_property
-from cv2 import aruco
+from cv2 import aruco, moments
 
 from .calibration import CalibrationParameters
 from .coords import Coordinates
@@ -25,6 +25,13 @@ class Marker:
     @cached_property
     def pixel_corners(self):
         return [Coordinates(*coords) for coords in self.__pixel_corners]
+
+    @cached_property
+    def pixel_centre(self):
+        moment = moments(self.__pixel_corners)
+        return Coordinates(
+            int(moment["m10"] / moment["m00"]), int(moment["m01"] / moment["m00"])
+        )
 
     @cached_property
     def __vectors(self):
