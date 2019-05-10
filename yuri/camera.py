@@ -45,9 +45,7 @@ class BaseCamera:
         markers = []
         calibration_params = self.get_calibrations()
         for corners, id in zip(corners, ids):
-            markers.append(
-                Marker(id, corners.tolist(), self.marker_size, calibration_params)
-            )
+            markers.append(Marker(id, corners, self.marker_size, calibration_params))
         return markers
 
     def close(self):

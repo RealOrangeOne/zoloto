@@ -2,6 +2,7 @@ from cached_property import cached_property
 from cv2 import aruco
 
 from .calibration import CalibrationParameters
+from .coords import Coordinates
 
 
 class Marker:
@@ -20,6 +21,10 @@ class Marker:
     @property
     def size(self):
         return self.__size
+
+    @cached_property
+    def pixel_corners(self):
+        return [Coordinates(*coords) for coords in self.__pixel_corners]
 
     @cached_property
     def __vectors(self):

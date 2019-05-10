@@ -2,6 +2,7 @@ from cv2 import aruco
 
 from tests import BaseTestCase
 from yuri.camera import MarkerCamera
+from yuri.coords import Coordinates
 
 
 class MarkerTestCase(BaseTestCase):
@@ -21,3 +22,14 @@ class MarkerTestCase(BaseTestCase):
 
     def test_marker_id(self):
         self.assertEqual(self.marker.id, self.MARKER_ID)
+
+    def test_pixel_corners(self):
+        self.assertEqual(len(self.marker.pixel_corners), 4)
+        border_size = self.marker_camera.BORDER_SIZE
+        tl, tr, br, bl = self.marker.pixel_corners
+        self.assertEqual(tl, (border_size, border_size))
+        self.assertEqual(tr, (self.MARKER_SIZE + border_size - 1, border_size))
+        self.assertEqual(
+            br, (self.MARKER_SIZE + border_size - 1, self.MARKER_SIZE + border_size - 1)
+        )
+        self.assertEqual(bl, (border_size, self.MARKER_SIZE + border_size - 1))
