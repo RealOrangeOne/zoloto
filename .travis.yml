@@ -12,8 +12,7 @@ cache:
     - $HOME/.cache/pip
 
 install:
-  - pip install -e .
-  - pip install -r dev-requirements.txt
+  - ./scripts/setup.sh
 
 script:
   - ./scripts/test.sh
