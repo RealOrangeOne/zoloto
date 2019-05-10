@@ -40,3 +40,6 @@ class MarkerTestCase(BaseTestCase):
             self.marker.pixel_centre,
             (tl.x + (self.MARKER_SIZE / 2) - 1, br.y - (self.MARKER_SIZE / 2)),
         )
+
+    def test_distance(self):
+        self.assertEqual(self.marker.distance, 992)

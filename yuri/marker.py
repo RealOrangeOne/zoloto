@@ -1,5 +1,6 @@
 from cached_property import cached_property
 from cv2 import aruco, moments
+from numpy import linalg
 
 from .calibration import CalibrationParameters
 from .coords import Coordinates
@@ -7,7 +8,7 @@ from .coords import Coordinates
 
 class Marker:
     def __init__(
-        self, id: int, corners, size, calibration_params: CalibrationParameters
+        self, id: int, corners, size: int, calibration_params: CalibrationParameters
     ):
         self.__id = id
         self.__pixel_corners = corners
@@ -34,9 +35,13 @@ class Marker:
         )
 
     @cached_property
+    def distance(self):
+        return int(linalg.norm(self.tvec))
+
+    @cached_property
     def __vectors(self):
         rvec, tvec, _ = aruco.estimatePoseSingleMarkers(
-            self.__pixel_corners,
+            [self.__pixel_corners],
             self.__size,
             self.__camera_calibration_params.camera_matrix,
             self.__camera_calibration_params.distance_coefficients,
