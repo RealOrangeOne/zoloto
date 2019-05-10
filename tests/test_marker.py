@@ -48,3 +48,9 @@ class MarkerTestCase(BaseTestCase):
         self.assertEqual(int(rot_x), 3)
         self.assertEqual(int(rot_y), 0)
         self.assertEqual(int(rot_z), 0)
+
+    def test_coordinates(self):
+        x, y, z = self.marker.cartesian
+        self.assertEqual(int(x), 49)
+        self.assertEqual(int(y), 24)
+        self.assertEqual(int(z), 991)

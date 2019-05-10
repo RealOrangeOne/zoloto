@@ -3,7 +3,7 @@ from cv2 import aruco, moments
 from numpy import linalg
 
 from .calibration import CalibrationParameters
-from .coords import Coordinates, Orientation
+from .coords import Coordinates, Orientation, ThreeDCoordinates
 
 
 class Marker:
@@ -43,6 +43,10 @@ class Marker:
         return Orientation(*self.rvec)
 
     @cached_property
+    def cartesian(self):
+        return ThreeDCoordinates(*self.tvec)
+
+    @cached_property
     def __vectors(self):
         rvec, tvec, _ = aruco.estimatePoseSingleMarkers(
             [self.__pixel_corners],
@@ -50,7 +54,7 @@ class Marker:
             self.__camera_calibration_params.camera_matrix,
             self.__camera_calibration_params.distance_coefficients,
         )
-        return rvec[0][0], tvec
+        return rvec[0][0], tvec[0][0]
 
     @cached_property
     def rvec(self):
