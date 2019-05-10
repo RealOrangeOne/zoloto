@@ -3,23 +3,22 @@ from typing import Tuple
 
 import cv2
 
-from .calibration import get_fake_calibration_parameters
+from .calibration import get_fake_calibration_parameters, parse_calibration_file
 from .marker import Marker
-
-MARKER_SIZE_MM = 100
 
 
 class BaseCamera:
     def __init__(self, **kwargs):
-        self.marker_size = kwargs.get("marker_size", MARKER_SIZE_MM)
+        self.marker_size = kwargs["marker_size"]
         self.marker_dictionary = cv2.aruco.getPredefinedDictionary(
             kwargs["marker_dict"]
         )
         self.calibration_file = kwargs.get("calibration_file")
 
     def get_calibrations(self):
-        # TODO: Parse file
-        raise NotImplementedError()
+        if self.calibration_file is None:
+            raise FileNotFoundError("Missing calibration file")
+        return parse_calibration_file(self.calibration_file)
 
     def get_resolution(self) -> Tuple[int, int]:
         # TODO: Implement everywhere else

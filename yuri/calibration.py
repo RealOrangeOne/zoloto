@@ -1,11 +1,36 @@
+import json
+import os
 from functools import lru_cache
 from typing import NamedTuple
 
-from cv2 import aruco
+from cv2 import FileStorage, aruco
+from numpy import array
 
 CalibrationParameters = NamedTuple(
     "CalibrationParameters", [("camera_matrix", list), ("distance_coefficients", list)]
 )
+
+
+def parse_calibration_file(calibration_file: str) -> CalibrationParameters:
+    _, file_extension = os.path.splitext(calibration_file)
+    if file_extension == ".json":
+        with open(calibration_file) as f:
+            mtx, dist = json.load(f)
+            return CalibrationParameters(array(mtx), array(dist))
+    if file_extension == ".xml":
+        storage = FileStorage(calibration_file)
+        params = CalibrationParameters(
+            storage.getNode("cameraMatrix").mat(), storage.getNode("dist_coeffs").mat()
+        )
+        storage.release()
+        return params
+    else:
+        raise ValueError("Unknown calibration file format: " + calibration_file)
+
+
+def save_calibrations(params: CalibrationParameters, filename: str):
+    with open(filename, "w") as f:
+        json.dump(params, f)
 
 
 @lru_cache()
