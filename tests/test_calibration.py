@@ -29,3 +29,13 @@ class CalibrationsFileTestCase(BaseTestCase):
         self.assertEqual(read_params[0].tolist(), original_params[0].tolist())
         self.assertEqual(read_params[1].tolist(), original_params[1].tolist())
         os.remove(calibrations_file)
+
+    def test_cant_load_invalid_extension(self):
+        with self.assertRaises(ValueError) as e:
+            parse_calibration_file("test.unknown")
+        self.assertIn("Unknown calibration file format", str(e.exception))
+
+    def test_cant_save_invalid_extension(self):
+        with self.assertRaises(ValueError) as e:
+            save_calibrations(get_fake_calibration_parameters(200), "test.unknown")
+        self.assertIn("Unknown calibration file format", str(e.exception))
