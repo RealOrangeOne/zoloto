@@ -7,7 +7,8 @@ from cv2 import FILE_STORAGE_READ, FileStorage, aruco
 from numpy import array
 
 CalibrationParameters = NamedTuple(
-    "CalibrationParameters", [("camera_matrix", list), ("distance_coefficients", list)]
+    "CalibrationParameters",
+    [("camera_matrix", array), ("distance_coefficients", array)],
 )
 
 
@@ -31,7 +32,9 @@ def parse_calibration_file(calibration_file: str) -> CalibrationParameters:
 
 def save_calibrations(params: CalibrationParameters, filename: str):
     with open(filename, "w") as f:
-        json.dump(params, f)
+        json.dump(
+            [params.camera_matrix.tolist(), params.distance_coefficients.tolist()], f
+        )
 
 
 @lru_cache()
