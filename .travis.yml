@@ -7,6 +7,10 @@ python:
   - '3.6'
   - '3.7'
 
+env:
+  - PYTHONOPTIMIZE=
+  - PYTHONOPTIMIZE=1
+
 cache:
   directories:
     - $HOME/.cache/pip
