@@ -2,4 +2,4 @@ from functools import partial
 
 from hypothesis import strategies
 
-reasonable_image_size = partial(strategies.integers, 10, 2 ** 10)
+reasonable_image_size = partial(strategies.integers, 100, 2 ** 12)
