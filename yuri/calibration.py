@@ -3,7 +3,7 @@ import os
 from functools import lru_cache
 from typing import NamedTuple
 
-from cv2 import FileStorage, aruco
+from cv2 import FileStorage, aruco, FILE_STORAGE_READ
 from numpy import array
 
 CalibrationParameters = NamedTuple(
@@ -18,7 +18,7 @@ def parse_calibration_file(calibration_file: str) -> CalibrationParameters:
             mtx, dist = json.load(f)
             return CalibrationParameters(array(mtx), array(dist))
     if file_extension == ".xml":
-        storage = FileStorage(calibration_file)
+        storage = FileStorage(calibration_file, FILE_STORAGE_READ)
         params = CalibrationParameters(
             storage.getNode("cameraMatrix").mat(), storage.getNode("dist_coeffs").mat()
         )
