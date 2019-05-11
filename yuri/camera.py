@@ -56,7 +56,7 @@ class BaseCamera:
         pass
 
 
-class ImageFileCamera(BaseCamera):
+class FileCamera(BaseCamera):
     def __init__(self, image_path, **kwargs):
         self.image = None
         assert os.path.exists(image_path)
