@@ -3,7 +3,7 @@ import os
 from functools import lru_cache
 from typing import NamedTuple
 
-from cv2 import FILE_STORAGE_READ, FileStorage, aruco
+from cv2 import FILE_STORAGE_READ, FILE_STORAGE_WRITE, FileStorage, aruco
 from numpy import array
 
 CalibrationParameters = NamedTuple(
@@ -19,22 +19,31 @@ def parse_calibration_file(calibration_file: str) -> CalibrationParameters:
         with open(calibration_file) as f:
             mtx, dist = json.load(f)
             return CalibrationParameters(array(mtx), array(dist))
-    if file_extension == ".xml":
+    elif file_extension == ".xml":
         storage = FileStorage(calibration_file, FILE_STORAGE_READ)
         params = CalibrationParameters(
             storage.getNode("cameraMatrix").mat(), storage.getNode("dist_coeffs").mat()
         )
         storage.release()
         return params
-    else:
-        raise ValueError("Unknown calibration file format: " + calibration_file)
+    raise ValueError("Unknown calibration file format: " + calibration_file)
 
 
 def save_calibrations(params: CalibrationParameters, filename: str):
-    with open(filename, "w") as f:
-        json.dump(
-            [params.camera_matrix.tolist(), params.distance_coefficients.tolist()], f
-        )
+    _, file_extension = os.path.splitext(filename)
+    if file_extension == ".json":
+        with open(filename, "w") as f:
+            json.dump(
+                [params.camera_matrix.tolist(), params.distance_coefficients.tolist()],
+                f,
+            )
+    elif file_extension == ".xml":
+        storage = FileStorage(filename, FILE_STORAGE_WRITE)
+        storage.write("cameraMatrix", params.camera_matrix)
+        storage.write("dist_coeffs", params.distance_coefficients)
+        storage.release()
+    else:
+        raise ValueError("Unknown calibration file format: " + filename)
 
 
 @lru_cache()
