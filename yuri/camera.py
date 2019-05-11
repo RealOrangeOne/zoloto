@@ -56,7 +56,7 @@ class ImageFileCamera(BaseCamera):
         self.image = None
         assert os.path.exists(image_path)
         self.image_path = image_path
-        super().__init__(self)
+        super().__init__(**kwargs)
 
     def capture_frame(self):
         if self.image is None:
