@@ -25,6 +25,14 @@ class MarkerCameraTestCase(BaseTestCase):
         self.assertEqual(len(markers), 1)
         self.assertEqual(markers[0].id, marker_id)
 
+    @given(strategies.integers(1, 49))  # TODO: 0 doesn't work for some reason
+    @settings(deadline=None)
+    def test_detects_marker_ids(self, marker_id):
+        markers = camera.MarkerCamera(
+            marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
+        ).get_visible_markers()
+        self.assertEqual(markers, [marker_id])
+
     def test_sees_nothing_in_blank_image(self):
         marker_camera = camera.MarkerCamera(
             25, marker_dict=aruco.DICT_6X6_50, marker_size=200

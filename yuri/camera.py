@@ -38,19 +38,25 @@ class BaseCamera:
         cv2.imwrite(filename, frame)
         return frame
 
-    def process_frame(self, frame=None):
+    def _get_ids_and_corners(self, frame=None):
         if frame is None:
             frame = self.capture_frame()
         corners, ids, _ = cv2.aruco.detectMarkers(frame, self.marker_dictionary)
         if not corners or not ids:
-            return []
-        corners = corners[0]
-        ids = ids[0]
+            return [], []
+        return ids[0], corners[0]
+
+    def process_frame(self, frame=None):
+        ids, corners = self._get_ids_and_corners(frame)
         calibration_params = self.get_calibrations()
         return [
             Marker(id, corners, self.get_marker_size(id), calibration_params)
             for corners, id in zip(corners, ids)
         ]
+
+    def get_visible_markers(self, frame=None):
+        ids, _ = self._get_ids_and_corners(frame)
+        return ids
 
     def close(self):
         pass
