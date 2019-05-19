@@ -8,12 +8,18 @@ from .coords import Coordinates, Orientation, ThreeDCoordinates
 
 class Marker:
     def __init__(
-        self, id: int, corners, size: int, calibration_params: CalibrationParameters
+        self,
+        id: int,
+        corners,
+        size: int,
+        calibration_params: CalibrationParameters,
+        precalculated_vectors=None,
     ):
         self.__id = id
         self.__pixel_corners = corners
         self.__size = size
         self.__camera_calibration_params = calibration_params
+        self.__precalculated_vectors = precalculated_vectors
 
     @property
     def id(self):
@@ -22,6 +28,9 @@ class Marker:
     @property
     def size(self):
         return self.__size
+
+    def _is_eager(self):
+        return bool(self.__precalculated_vectors)
 
     @cached_property
     def pixel_corners(self):
@@ -48,11 +57,11 @@ class Marker:
 
     @cached_property
     def __vectors(self):
+        if self.__precalculated_vectors is not None:
+            return self.__precalculated_vectors
+
         rvec, tvec, _ = aruco.estimatePoseSingleMarkers(
-            [self.__pixel_corners],
-            self.__size,
-            self.__camera_calibration_params.camera_matrix,
-            self.__camera_calibration_params.distance_coefficients,
+            [self.__pixel_corners], self.__size, *self.__camera_calibration_params
         )
         return rvec[0][0], tvec[0][0]
 

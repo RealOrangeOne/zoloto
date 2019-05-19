@@ -1,4 +1,5 @@
 import os
+from itertools import groupby
 from typing import Tuple
 
 import cv2
@@ -53,6 +54,26 @@ class BaseCamera:
             Marker(id, corners, self.get_marker_size(id), calibration_params)
             for corners, id in zip(corners, ids)
         ]
+
+    def process_frame_eager(self, frame=None):
+        ids, corners = self._get_ids_and_corners(frame)
+        calibration_params = self.get_calibrations()
+        markers = []
+
+        def get_marker_size(id_and_corners):
+            return self.get_marker_size(id_and_corners[0])
+
+        sorted_corners = sorted(zip(ids, corners), key=get_marker_size)
+        for size, ids_and_corners in groupby(sorted_corners, get_marker_size):
+            ids, corners = zip(*ids_and_corners)
+            rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(
+                corners, size, *calibration_params
+            )
+            for id, corners, rvec, tvec in zip(ids, corners, rvecs, tvecs):
+                markers.append(
+                    Marker(id, corners, size, calibration_params, (rvecs, tvecs))
+                )
+        return markers
 
     def get_visible_markers(self, frame=None):
         ids, _ = self._get_ids_and_corners(frame)
