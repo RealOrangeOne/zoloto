@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from cached_property import cached_property
 from cv2 import aruco, moments
 from numpy import linalg
@@ -55,9 +57,9 @@ class Marker:
     def cartesian(self):
         return ThreeDCoordinates(*self._tvec)
 
-    @cached_property
-    def __vectors(self):
-        if self.__precalculated_vectors is not None:
+    @lru_cache(maxsize=None)
+    def __get_pose_vectors(self):
+        if self._is_eager():
             return self.__precalculated_vectors
 
         rvec, tvec, _ = aruco.estimatePoseSingleMarkers(
@@ -67,10 +69,10 @@ class Marker:
 
     @property
     def _rvec(self):
-        rvec, _ = self.__vectors
+        rvec, _ = self.__get_pose_vectors()
         return rvec
 
     @property
     def _tvec(self):
-        _, tvec = self.__vectors
+        _, tvec = self.__get_pose_vectors()
         return tvec
