@@ -10,7 +10,6 @@ from .marker import Marker
 
 class BaseCamera:
     def __init__(self, **kwargs):
-        self.marker_size = kwargs.get("marker_size")
         self.marker_dictionary = cv2.aruco.getPredefinedDictionary(
             kwargs["marker_dict"]
         )
@@ -26,9 +25,7 @@ class BaseCamera:
         raise NotImplementedError()
 
     def get_marker_size(self, marker_id: int) -> int:
-        if self.marker_size is not None:
-            return self.marker_size
-        raise ValueError("Can't get marker size for marker {}".format(marker_id))
+        raise NotImplementedError()
 
     def capture_frame(self):
         raise NotImplementedError()
@@ -143,6 +140,10 @@ class MarkerCamera(BaseCamera):
     def __init__(self, marker_id, **kwargs):
         super().__init__(**kwargs)
         self.marker_id = marker_id
+        self.marker_size = kwargs["marker_size"]
+
+    def get_marker_size(self, marker_id: int):
+        return self.marker_size
 
     def get_calibrations(self):
         return get_fake_calibration_parameters(self.marker_size)
