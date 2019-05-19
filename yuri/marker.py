@@ -32,7 +32,7 @@ class Marker:
     def _is_eager(self):
         return bool(self.__precalculated_vectors)
 
-    @cached_property
+    @property
     def pixel_corners(self):
         return [Coordinates(*coords) for coords in self.__pixel_corners]
 
@@ -45,15 +45,15 @@ class Marker:
 
     @cached_property
     def distance(self):
-        return int(linalg.norm(self.tvec))
+        return int(linalg.norm(self._tvec))
 
-    @cached_property
+    @property
     def orientation(self):
-        return Orientation(*self.rvec)
+        return Orientation(*self._rvec)
 
-    @cached_property
+    @property
     def cartesian(self):
-        return ThreeDCoordinates(*self.tvec)
+        return ThreeDCoordinates(*self._tvec)
 
     @cached_property
     def __vectors(self):
@@ -65,12 +65,12 @@ class Marker:
         )
         return rvec[0][0], tvec[0][0]
 
-    @cached_property
-    def rvec(self):
+    @property
+    def _rvec(self):
         rvec, _ = self.__vectors
         return rvec
 
-    @cached_property
-    def tvec(self):
+    @property
+    def _tvec(self):
         _, tvec = self.__vectors
         return tvec
