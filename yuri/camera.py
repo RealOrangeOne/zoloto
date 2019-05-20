@@ -73,6 +73,15 @@ class BaseCamera:
     def close(self):
         pass
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, tb):
+        if tb:
+            return False
+
+        self.close()
+
 
 class FileCamera(BaseCamera):
     def __init__(self, image_path, **kwargs):

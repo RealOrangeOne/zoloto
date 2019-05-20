@@ -54,3 +54,10 @@ class MarkerCameraTestCase(BaseTestCase):
         self.assertEqual(len(markers), 1)
         self.assertEqual(markers[0].id, marker_id)
         self.assertTrue(markers[0]._is_eager())
+
+    def test_camera_as_context_manager(self):
+        with camera.MarkerCamera(
+            25, marker_dict=aruco.DICT_6X6_50, marker_size=200
+        ) as marker_camera:
+            markers = list(marker_camera.get_visible_markers())
+            self.assertEqual(markers, [25])
