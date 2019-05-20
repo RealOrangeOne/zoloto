@@ -136,7 +136,7 @@ class SnapshotCamera(Camera):
 
     def capture_frame(self):
         frame = super().capture_frame()
-        self.video_capture.release()  # explicitly release the previos video capture
+        self.video_capture.release()  # explicitly release the previous video capture
         self.video_capture = self._create_video_capture()
         return frame
 
