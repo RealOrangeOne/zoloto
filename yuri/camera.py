@@ -14,6 +14,9 @@ class BaseCamera:
             kwargs["marker_dict"]
         )
         self.calibration_file = kwargs.get("calibration_file")
+        self.detector_params = self.get_detector_params(
+            cv2.aruco.DetectorParameters_create()
+        )
 
     def get_calibrations(self):
         if self.calibration_file is None:
@@ -23,6 +26,9 @@ class BaseCamera:
     def get_resolution(self) -> Tuple[int, int]:
         # TODO: Implement everywhere else
         raise NotImplementedError()
+
+    def get_detector_params(self, params):
+        return params
 
     def get_marker_size(self, marker_id: int) -> int:
         raise NotImplementedError()
@@ -39,7 +45,9 @@ class BaseCamera:
     def _get_ids_and_corners(self, frame=None):
         if frame is None:
             frame = self.capture_frame()
-        corners, ids, _ = cv2.aruco.detectMarkers(frame, self.marker_dictionary)
+        corners, ids, _ = cv2.aruco.detectMarkers(
+            frame, self.marker_dictionary, parameters=self.detector_params
+        )
         if not corners or not ids:
             return [], []
         return ids[0], corners[0]
