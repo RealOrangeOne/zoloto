@@ -19,9 +19,11 @@ class MarkerCameraTestCase(BaseTestCase):
     @given(strategies.integers(1, 49))  # TODO: 0 doesn't work for some reason
     @settings(deadline=None)
     def test_detects_markers(self, marker_id):
-        markers = camera.MarkerCamera(
-            marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
-        ).process_frame()
+        markers = list(
+            camera.MarkerCamera(
+                marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
+            ).process_frame()
+        )
         self.assertEqual(len(markers), 1)
         self.assertEqual(markers[0].id, marker_id)
 
@@ -38,15 +40,17 @@ class MarkerCameraTestCase(BaseTestCase):
             25, marker_dict=aruco.DICT_6X6_50, marker_size=200
         )
         empty_frame = numpy.zeros((200, 200, 3), numpy.uint8)
-        markers = marker_camera.process_frame(frame=empty_frame)
+        markers = list(marker_camera.process_frame(frame=empty_frame))
         self.assertEqual(markers, [])
 
     @given(strategies.integers(1, 49))  # TODO: 0 doesn't work for some reason
     @settings(deadline=None)
     def test_eager_capture(self, marker_id):
-        markers = camera.MarkerCamera(
-            marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
-        ).process_frame_eager()
+        markers = list(
+            camera.MarkerCamera(
+                marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
+            ).process_frame_eager()
+        )
         self.assertEqual(len(markers), 1)
         self.assertEqual(markers[0].id, marker_id)
         self.assertTrue(markers[0]._is_eager())
