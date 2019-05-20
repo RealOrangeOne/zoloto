@@ -129,7 +129,7 @@ class Camera(BaseCamera):
 
 class SnapshotCamera(Camera):
     """
-    A modified version of Camera optimised for singe use.
+    A modified version of Camera optimised for single use.
 
     - Doesn't keep the camera open between captures
     """
@@ -143,7 +143,7 @@ class SnapshotCamera(Camera):
 
 class MarkerCamera(BaseCamera):
     """
-    A camera which always returns a single full-screen marker
+    A camera which always returns a single, full-screen marker
     """
 
     BORDER_SIZE = 40
