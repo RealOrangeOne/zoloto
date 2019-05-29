@@ -20,5 +20,4 @@ def test_process_frame(benchmark, marker_camera):
 
 
 def test_capture_frame(benchmark, marker_camera):
-    marker_camera = MarkerCamera(25, marker_dict=aruco.DICT_6X6_50, marker_size=200)
     benchmark(marker_camera.capture_frame)
