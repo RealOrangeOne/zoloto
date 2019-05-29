@@ -7,4 +7,5 @@ flake8-tuple==0.2.13
 hypothesis==4.21.1
 isort==4.3.4
 mypy==0.641
-nose2==0.8.0
+pytest==4.5.0
+pytest-cov==2.7.1
