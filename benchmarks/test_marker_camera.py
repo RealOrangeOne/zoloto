@@ -11,7 +11,7 @@ def marker_camera():
 
 def test_process_frame_eager(benchmark, marker_camera):
     frame = marker_camera.capture_frame()
-    benchmark(marker_camera.process_frame_eager, frame=frame)
+    benchmark(lambda: list(marker_camera.process_frame_eager(frame)))
 
 
 def test_process_frame(benchmark, marker_camera):
