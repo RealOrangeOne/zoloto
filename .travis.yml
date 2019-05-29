@@ -20,3 +20,4 @@ install:
 
 script:
   - ./scripts/test.sh
+  - ./scripts/benchmark.sh

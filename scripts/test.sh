@@ -7,9 +7,6 @@ export PATH=env/bin:${PATH}
 echo "> Running tests..."
 pytest --verbose --cov yuri/ --cov-report term --cov-report html tests/
 
-echo "> Running benchmarks..."
-pytest --verbose --benchmark-verbose benchmarks/
-
 echo "> Running formatter..."
 black yuri tests setup.py benchmarks --check
 
