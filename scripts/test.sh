@@ -5,7 +5,7 @@ set -e
 export PATH=env/bin:${PATH}
 
 echo "> Running tests..."
-pytest --cov yuri/ --cov-report term --cov-report html tests/
+pytest --verbose --cov yuri/ --cov-report term --cov-report html tests/
 
 echo "> Running formatter..."
 black yuri tests setup.py --check
