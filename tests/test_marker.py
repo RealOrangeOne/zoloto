@@ -1,10 +1,11 @@
+from unittest import TestCase
+
 from cv2 import aruco
 
-from tests import BaseTestCase
 from yuri.camera import MarkerCamera
 
 
-class MarkerTestCase(BaseTestCase):
+class MarkerTestCase(TestCase):
     MARKER_SIZE = 200
     MARKER_ID = 25
 
