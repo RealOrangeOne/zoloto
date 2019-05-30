@@ -21,3 +21,8 @@ def test_process_frame(benchmark, marker_camera):
 
 def test_capture_frame(benchmark, marker_camera):
     benchmark(marker_camera.capture_frame)
+
+
+def test_get_visible_markers(benchmark, marker_camera):
+    frame = marker_camera.capture_frame()
+    benchmark(marker_camera.get_visible_markers, frame=frame)
