@@ -90,6 +90,9 @@ class BaseCamera:
 
         self.close()
 
+    def __del__(self):
+        self.close()
+
 
 class FileCamera(BaseCamera):
     def __init__(self, image_path, **kwargs):
