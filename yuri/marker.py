@@ -58,7 +58,7 @@ class Marker:
         return ThreeDCoordinates(*self._tvec)
 
     @lru_cache(maxsize=None)
-    def __get_pose_vectors(self):
+    def _get_pose_vectors(self):
         if self._is_eager():
             return self.__precalculated_vectors
 
@@ -69,10 +69,10 @@ class Marker:
 
     @property
     def _rvec(self):
-        rvec, _ = self.__get_pose_vectors()
+        rvec, _ = self._get_pose_vectors()
         return rvec
 
     @property
     def _tvec(self):
-        _, tvec = self.__get_pose_vectors()
+        _, tvec = self._get_pose_vectors()
         return tvec
