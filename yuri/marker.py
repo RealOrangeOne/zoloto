@@ -1,7 +1,6 @@
-from functools import lru_cache
-
 from cached_property import cached_property
 from cv2 import aruco, moments
+from fastcache import clru_cache
 from numpy import linalg
 
 from .calibration import CalibrationParameters
@@ -57,7 +56,7 @@ class Marker:
     def cartesian(self):
         return ThreeDCoordinates(*self._tvec)
 
-    @lru_cache(maxsize=None)
+    @clru_cache(maxsize=None)
     def _get_pose_vectors(self):
         if self._is_eager():
             return self.__precalculated_vectors

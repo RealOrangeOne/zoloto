@@ -1,9 +1,9 @@
 import json
 import os
-from functools import lru_cache
 from typing import NamedTuple
 
 from cv2 import FILE_STORAGE_READ, FILE_STORAGE_WRITE, FileStorage, aruco
+from fastcache import clru_cache
 from numpy import array
 
 CalibrationParameters = NamedTuple(
@@ -12,7 +12,7 @@ CalibrationParameters = NamedTuple(
 )
 
 
-@lru_cache()
+@clru_cache()
 def parse_calibration_file(calibration_file: str) -> CalibrationParameters:
     _, file_extension = os.path.splitext(calibration_file)
     if file_extension == ".json":
@@ -46,7 +46,7 @@ def save_calibrations(params: CalibrationParameters, filename: str):
         raise ValueError("Unknown calibration file format: " + filename)
 
 
-@lru_cache()
+@clru_cache()
 def get_fake_calibration_parameters(
     size: int, iterations: int = 15
 ) -> CalibrationParameters:
