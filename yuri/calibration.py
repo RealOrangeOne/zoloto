@@ -53,7 +53,6 @@ def get_fake_calibration_parameters(
     """
     HACK: Generate fake calibration parameters
     """
-    assert iterations >= 10
     dictionary = aruco.getPredefinedDictionary(aruco.DICT_6X6_1000)
     seen_corners = []
     seen_ids = []

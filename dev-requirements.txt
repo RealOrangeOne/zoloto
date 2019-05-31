@@ -1,3 +1,4 @@
+bandit==1.6.0
 black==19.3b0
 flake8==3.7.7
 flake8-comprehensions==2.1.0

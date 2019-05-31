@@ -20,3 +20,6 @@ echo "> Running type checker..."
 mypy yuri
 mypy tests
 mypy benchmarks
+
+echo "> Running bandit..."
+bandit -r yuri/

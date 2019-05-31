@@ -1,4 +1,3 @@
-import os
 from itertools import groupby
 from typing import Tuple
 
@@ -97,7 +96,6 @@ class BaseCamera:
 class FileCamera(BaseCamera):
     def __init__(self, image_path, **kwargs):
         self.image = None
-        assert os.path.exists(image_path)
         self.image_path = image_path
         super().__init__(**kwargs)
 
