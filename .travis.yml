@@ -6,6 +6,7 @@ os:
 python:
   - '3.6'
   - '3.7'
+  - 'pypy3.6-7.1.1'
 
 env:
   - ''  # Run with default environment
