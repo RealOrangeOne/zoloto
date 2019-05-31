@@ -17,4 +17,6 @@ echo "> Running isort..."
 isort -rc -c yuri tests setup.py benchmarks
 
 echo "> Running type checker..."
-mypy --strict-optional --ignore-missing-imports yuri tests benchmarks
+mypy yuri
+mypy tests
+mypy benchmarks
