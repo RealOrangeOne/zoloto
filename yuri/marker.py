@@ -5,18 +5,19 @@ from numpy import linalg
 
 from .calibration import CalibrationParameters
 from .coords import Coordinates, Orientation, ThreeDCoordinates
+from .utils import numpy_to_py
 
 
 class Marker:
     def __init__(
         self,
-        id: int,
+        id,
         corners,
         size: int,
         calibration_params: CalibrationParameters,
         precalculated_vectors=None,
     ):
-        self.__id = id
+        self.__id = int(id)
         self.__pixel_corners = corners
         self.__size = size
         self.__camera_calibration_params = calibration_params
@@ -75,3 +76,12 @@ class Marker:
     def _tvec(self):
         _, tvec = self._get_pose_vectors()
         return tvec
+
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "size": self.size,
+            "pixel_corners": list(numpy_to_py(self.__pixel_corners)),
+            "rvec": list(numpy_to_py(self._rvec)),
+            "tvec": list(numpy_to_py(self._tvec)),
+        }

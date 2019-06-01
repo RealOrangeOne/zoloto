@@ -1,5 +1,7 @@
+import json
 from unittest import TestCase
 
+import ujson
 from cv2 import aruco
 
 from yuri.camera import MarkerCamera
@@ -60,3 +62,19 @@ class MarkerTestCase(TestCase):
         self.assertEqual(int(x), 49)
         self.assertEqual(int(y), 24)
         self.assertEqual(int(z), 991)
+
+    def test_as_dict(self):
+        marker_dict = self.marker.as_dict()
+        self.assertIsInstance(marker_dict, dict)
+        self.assertEqual(marker_dict["size"], self.MARKER_SIZE)
+        self.assertEqual(marker_dict["id"], self.MARKER_ID)
+
+    def test_as_json(self):
+        marker_dict = self.marker.as_dict()
+        created_marker_dict = json.loads(json.dumps(marker_dict))
+        self.assertEqual(marker_dict, created_marker_dict)
+
+    def test_as_ujson(self):
+        marker_dict = self.marker.as_dict()
+        created_marker_dict = ujson.loads(ujson.dumps(marker_dict))
+        self.assertEqual(marker_dict, created_marker_dict)

@@ -11,3 +11,4 @@ mypy==0.701
 pytest==4.5.0
 pytest-benchmark==3.2.2
 pytest-cov==2.7.1
+ujson==1.35
