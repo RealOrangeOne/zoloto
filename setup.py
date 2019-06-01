@@ -13,6 +13,7 @@ setup(
         "cached-property==1.5.1",
         "coordinates==0.3.0",
         "fastcache==1.1.0",
+        "ujson==1.35",
     ],
     project_urls={"GitHub: Issues": "https://github.com/realorangeone/yuri/issues"},
 )

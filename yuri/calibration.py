@@ -1,7 +1,7 @@
-import json
 import os
 from typing import NamedTuple
 
+import ujson
 from cv2 import FILE_STORAGE_READ, FILE_STORAGE_WRITE, FileStorage, aruco
 from fastcache import clru_cache
 from numpy import array
@@ -17,7 +17,7 @@ def parse_calibration_file(calibration_file: str) -> CalibrationParameters:
     _, file_extension = os.path.splitext(calibration_file)
     if file_extension == ".json":
         with open(calibration_file) as f:
-            mtx, dist = json.load(f)
+            mtx, dist = ujson.load(f)
             return CalibrationParameters(array(mtx), array(dist))
     elif file_extension == ".xml":
         storage = FileStorage(calibration_file, FILE_STORAGE_READ)
@@ -33,7 +33,7 @@ def save_calibrations(params: CalibrationParameters, filename: str):
     _, file_extension = os.path.splitext(filename)
     if file_extension == ".json":
         with open(filename, "w") as f:
-            json.dump(
+            ujson.dump(
                 [params.camera_matrix.tolist(), params.distance_coefficients.tolist()],
                 f,
             )
