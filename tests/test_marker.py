@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 import ujson
 from cv2 import aruco
+from pytest import approx
 
 from yuri.camera import MarkerCamera
 from yuri.marker import Marker
@@ -70,10 +71,19 @@ class MarkerTestCase(TestCase):
     def test_as_json(self):
         marker_dict = self.marker.as_dict()
         created_marker_dict = json.loads(json.dumps(marker_dict))
+        self.assertEqual(marker_dict, created_marker_dict)
 
     def test_as_ujson(self):
         marker_dict = self.marker.as_dict()
         created_marker_dict = ujson.loads(ujson.dumps(marker_dict))
+        self.assertEqual(marker_dict["id"], created_marker_dict["id"])
+        self.assertEqual(marker_dict["size"], created_marker_dict["size"])
+        for expected_corner, corner in zip(
+            marker_dict["pixel_corners"], created_marker_dict["pixel_corners"]
+        ):
+            self.assertEqual(expected_corner, approx(corner))
+        self.assertEqual(marker_dict["rvec"], approx(created_marker_dict["rvec"]))
+        self.assertEqual(marker_dict["tvec"], approx(created_marker_dict["tvec"]))
 
 
 class EagerMarkerTestCase(MarkerTestCase):
