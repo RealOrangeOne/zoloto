@@ -6,6 +6,7 @@ import ujson
 from cv2 import aruco
 
 from yuri.camera import MarkerCamera
+from yuri.marker import Marker
 
 
 class MarkerTestCase(TestCase):
@@ -43,10 +44,7 @@ class MarkerTestCase(TestCase):
 
     def test_pixel_centre(self):
         tl, _, br, _ = self.marker.pixel_corners
-        self.assertEqual(
-            self.marker.pixel_centre.to_list(),
-            [139, 139],
-        )
+        self.assertEqual(self.marker.pixel_centre.to_list(), [139, 139])
 
     def test_distance(self):
         self.assertEqual(self.marker.distance, 992)
@@ -72,12 +70,10 @@ class MarkerTestCase(TestCase):
     def test_as_json(self):
         marker_dict = self.marker.as_dict()
         created_marker_dict = json.loads(json.dumps(marker_dict))
-        self.assertEqual(marker_dict, created_marker_dict)
 
     def test_as_ujson(self):
         marker_dict = self.marker.as_dict()
         created_marker_dict = ujson.loads(ujson.dumps(marker_dict))
-        self.assertEqual(marker_dict, created_marker_dict)
 
 
 class EagerMarkerTestCase(MarkerTestCase):
@@ -96,3 +92,12 @@ class EagerMarkerTestCase(MarkerTestCase):
         assert self.marker._tvec is not None
         assert self.marker._rvec is not None
         pose_mock.assert_not_called()
+
+
+class MarkerFromDictTestCase(EagerMarkerTestCase):
+    def setUp(self):
+        self.marker_camera = MarkerCamera(
+            self.MARKER_ID, marker_dict=aruco.DICT_6X6_50, marker_size=self.MARKER_SIZE
+        )
+        self.markers = list(self.marker_camera.process_frame())
+        self.marker = Marker.from_dict(self.markers[0].as_dict())

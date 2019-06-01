@@ -1,11 +1,12 @@
+from typing import Optional
+
 from cached_property import cached_property
-from cv2 import aruco, moments
+from cv2 import aruco
 from fastcache import clru_cache
-from numpy import linalg
+from numpy import array, linalg
 
 from .calibration import CalibrationParameters
 from .coords import Coordinates, Orientation, ThreeDCoordinates
-from .utils import numpy_to_py
 
 
 class Marker:
@@ -14,7 +15,7 @@ class Marker:
         id,
         corners,
         size: int,
-        calibration_params: CalibrationParameters,
+        calibration_params: Optional[CalibrationParameters] = None,
         precalculated_vectors=None,
     ):
         self.__id = int(id)
@@ -41,9 +42,7 @@ class Marker:
     @cached_property
     def pixel_centre(self):
         tl, _, br, _ = self.__pixel_corners
-        return Coordinates(
-            [tl[0] + (self.__size / 2) - 1, br[1] - (self.__size / 2)]
-        )
+        return Coordinates([tl[0] + (self.__size / 2) - 1, br[1] - (self.__size / 2)])
 
     @cached_property
     def distance(self):
@@ -81,7 +80,17 @@ class Marker:
         return {
             "id": self.id,
             "size": self.size,
-            "pixel_corners": list(numpy_to_py(self.__pixel_corners)),
-            "rvec": list(numpy_to_py(self._rvec)),
-            "tvec": list(numpy_to_py(self._tvec)),
+            "pixel_corners": self.__pixel_corners.tolist(),
+            "rvec": self._rvec.tolist(),
+            "tvec": self._tvec.tolist(),
         }
+
+    @classmethod
+    def from_dict(cls, marker_dict):
+        return cls(
+            marker_dict["id"],
+            array(marker_dict["pixel_corners"]),
+            marker_dict["size"],
+            None,
+            (array(marker_dict["rvec"]), array(marker_dict["tvec"])),
+        )
