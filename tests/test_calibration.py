@@ -15,13 +15,8 @@ def test_saving_calibrations_json(make_temp_file):
     calibrations_file = make_temp_file(".json")
     save_calibrations(original_params, calibrations_file)
     read_params = parse_calibration_file(calibrations_file)
-    read_matrix, read_coefficients = read_params
-    original_matrix, original_coefficients = original_params
-    assert read_coefficients[0].tolist() == pytest.approx(
-        original_coefficients[0].tolist()
-    )
-    for read_value, original_value in zip(read_matrix, original_matrix):
-        assert read_value.tolist() == pytest.approx(original_value.tolist())
+    assert read_params[0].tolist() == original_params[0].tolist()
+    assert read_params[1].tolist() == original_params[1].tolist()
 
 
 def test_saving_calibrations_xml():
