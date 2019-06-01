@@ -5,4 +5,4 @@ set -e
 export PATH=env/bin:${PATH}
 
 echo "> Running benchmarks..."
-pytest --verbose --benchmark-sort=fullname benchmarks/
+pytest --verbose --benchmark-sort=fullname --benchmark-name=long --benchmark-columns=min,max,mean,stddev,ops benchmarks/
