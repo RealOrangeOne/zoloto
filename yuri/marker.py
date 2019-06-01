@@ -40,9 +40,9 @@ class Marker:
 
     @cached_property
     def pixel_centre(self):
-        moment = moments(self.__pixel_corners)
+        tl, _, br, _ = self.__pixel_corners
         return Coordinates(
-            int(moment["m10"] / moment["m00"]), int(moment["m01"] / moment["m00"])
+            [tl[0] + (self.__size / 2) - 1, br[1] - (self.__size / 2)]
         )
 
     @cached_property
