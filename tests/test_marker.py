@@ -1,5 +1,6 @@
 import json
 from unittest import TestCase
+from unittest.mock import patch
 
 import ujson
 from cv2 import aruco
@@ -16,7 +17,6 @@ class MarkerTestCase(TestCase):
             self.MARKER_ID, marker_dict=aruco.DICT_6X6_50, marker_size=self.MARKER_SIZE
         )
         self.markers = list(self.marker_camera.process_frame())
-        self.assertEqual(len(self.markers), 1)
         self.marker = self.markers[0]
 
     def test_marker_size(self):
@@ -78,3 +78,21 @@ class MarkerTestCase(TestCase):
         marker_dict = self.marker.as_dict()
         created_marker_dict = ujson.loads(ujson.dumps(marker_dict))
         self.assertEqual(marker_dict, created_marker_dict)
+
+
+class EagerMarkerTestCase(MarkerTestCase):
+    def setUp(self):
+        self.marker_camera = MarkerCamera(
+            self.MARKER_ID, marker_dict=aruco.DICT_6X6_50, marker_size=self.MARKER_SIZE
+        )
+        self.markers = list(self.marker_camera.process_frame_eager())
+        self.marker = self.markers[0]
+
+    def test_is_eager(self):
+        self.assertTrue(self.marker._is_eager())
+
+    @patch("cv2.aruco.estimatePoseSingleMarkers")
+    def test_doesnt_calculate_pose(self, pose_mock):
+        assert self.marker._tvec is not None
+        assert self.marker._rvec is not None
+        pose_mock.assert_not_called()
