@@ -68,12 +68,17 @@ class MarkerTestCase(TestCase):
         self.assertEqual(marker_dict["size"], self.MARKER_SIZE)
         self.assertEqual(marker_dict["id"], self.MARKER_ID)
 
-    def test_as_json(self):
+    def test_dict_as_json(self):
         marker_dict = self.marker.as_dict()
         created_marker_dict = json.loads(json.dumps(marker_dict))
         self.assertEqual(marker_dict, created_marker_dict)
 
-    def test_as_ujson(self):
+    def test_many_as_ujson(self):
+        created_markers_dict = ujson.loads(ujson.dumps(self.markers))
+        self.assertEqual(len(created_markers_dict), 1)
+        self.assertEqual({marker['id'] for marker in created_markers_dict}, {self.MARKER_ID})
+
+    def test_dict_as_ujson(self):
         marker_dict = self.marker.as_dict()
         created_marker_dict = ujson.loads(ujson.dumps(marker_dict))
         self.assertEqual(marker_dict["id"], created_marker_dict["id"])
