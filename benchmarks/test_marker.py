@@ -1,5 +1,7 @@
 from functools import partial
 
+from yuri.marker import Marker
+
 
 def get_uncached_marker_func(marker, func):
     return partial(getattr(marker.__class__, func).func, marker)
@@ -27,3 +29,8 @@ def test_marker_orientation(benchmark, marker):
 
 def test_marker_cartesian(benchmark, marker):
     benchmark(lambda: marker.cartesian)
+
+
+def test_marker_from_dict(benchmark, marker):
+    marker_dict = marker.as_dict()
+    benchmark(partial(Marker.from_dict, marker_dict))
