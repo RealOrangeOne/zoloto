@@ -128,17 +128,24 @@ class Camera(BaseCamera):
         self.video_capture.release()
 
 
-class SnapshotCamera(Camera):
+class SnapshotCamera(BaseCamera):
     """
     A modified version of Camera optimised for single use.
 
     - Doesn't keep the camera open between captures
     """
 
+    def __init__(self, camera_id, **kwargs):
+        super().__init__(**kwargs)
+        self.camera_id = camera_id
+
+    def _create_video_capture(self):
+        return cv2.VideoCapture(self.camera_id)
+
     def capture_frame(self):
-        frame = super().capture_frame()
-        self.video_capture.release()  # explicitly release the previous video capture
-        self.video_capture = self._create_video_capture()
+        video_capture = self._create_video_capture()
+        _, frame = video_capture.read()
+        video_capture.release()
         return frame
 
 
