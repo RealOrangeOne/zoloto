@@ -4,5 +4,5 @@ set -e
 
 export PATH=env/bin:${PATH}
 
-black setup.py yuri tests benchmarks
-isort -rc setup.py yuri tests benchmarks
+black setup.py yuri tests benchmarks examples
+isort -rc setup.py yuri tests benchmarks examples
