@@ -1,5 +1,6 @@
-from cv2 import aruco
 import sys
+
+from cv2 import aruco
 
 from yuri.camera import FileCamera
 
