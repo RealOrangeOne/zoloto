@@ -32,5 +32,4 @@ def test_marker_cartesian(benchmark, marker):
 
 
 def test_marker_from_dict(benchmark, marker):
-    marker_dict = marker.as_dict()
-    benchmark(partial(Marker.from_dict, marker_dict))
+    benchmark(Marker.from_dict, marker.as_dict())
