@@ -47,7 +47,7 @@ class BaseCamera:
         corners, ids, _ = cv2.aruco.detectMarkers(
             frame, self.marker_dictionary, parameters=self.detector_params
         )
-        if not corners or not ids:
+        if ids is None:
             return [], []
         return ids[0], corners[0]
 

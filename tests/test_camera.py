@@ -15,7 +15,7 @@ def test_captures_frame_at_correct_resolution(resolution):
     assert frame.shape == marker_camera.get_resolution()
 
 
-@given(strategies.integers(1, 49))  # TODO: 0 doesn't work for some reason
+@given(strategies.integers(0, 49))
 @settings(deadline=None)
 def test_detects_markers(marker_id):
     markers = list(
@@ -27,7 +27,7 @@ def test_detects_markers(marker_id):
     assert markers[0].id == marker_id
 
 
-@given(strategies.integers(1, 49))  # TODO: 0 doesn't work for some reason
+@given(strategies.integers(0, 49))
 @settings(deadline=None)
 def test_detects_marker_ids(marker_id):
     markers = camera.MarkerCamera(
@@ -45,7 +45,7 @@ def test_sees_nothing_in_blank_image():
     assert markers == []
 
 
-@given(strategies.integers(1, 49))  # TODO: 0 doesn't work for some reason
+@given(strategies.integers(0, 49))
 @settings(deadline=None)
 def test_eager_capture(marker_id):
     markers = list(
@@ -64,3 +64,11 @@ def test_camera_as_context_manager():
     ) as marker_camera:
         markers = list(marker_camera.get_visible_markers())
         assert markers == [25]
+
+
+def test_marker_with_falsy_id():
+    with camera.MarkerCamera(
+        0, marker_dict=aruco.DICT_6X6_50, marker_size=200
+    ) as marker_camera:
+        markers = list(marker_camera.get_visible_markers())
+        assert markers == [0]
