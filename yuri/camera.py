@@ -35,9 +35,12 @@ class BaseCamera:
     def capture_frame(self):
         raise NotImplementedError()
 
-    def save_frame(self, filename, frame=None):
+    def save_frame(self, filename, annotate=False, frame=None):
         if frame is None:
             frame = self.capture_frame()
+        if annotate:
+            ids, corners = self._get_ids_and_corners(frame)
+            cv2.aruco.drawDetectedMarkers(frame, [corners], ids)
         cv2.imwrite(filename, frame)
         return frame
 
@@ -95,19 +98,11 @@ class BaseCamera:
 
 class FileCamera(BaseCamera):
     def __init__(self, image_path, **kwargs):
-        self.image = None
         self.image_path = image_path
         super().__init__(**kwargs)
 
     def capture_frame(self):
-        if self.image is None:
-            self.image = cv2.imread(self.image_path)
-        return self.image
-
-    def close(self):
-        super().close()
-        if self.image is not None:
-            self.image.release()
+        return cv2.imread(self.image_path)
 
 
 class Camera(BaseCamera):
