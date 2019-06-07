@@ -5,6 +5,7 @@ import pytest
 from cv2 import aruco
 
 from yuri.calibration import get_fake_calibration_parameters
+from yuri.cameras.file import ImageFileCamera
 from yuri.cameras.marker import MarkerCamera
 
 
@@ -30,6 +31,13 @@ def make_temp_file(request):
 @pytest.fixture
 def marker_camera():
     return MarkerCamera(25, marker_dict=aruco.DICT_6X6_50, marker_size=200)
+
+
+@pytest.fixture
+def image_file_camera(marker_camera, make_temp_file):
+    output_file = make_temp_file(".png")
+    marker_camera.save_frame(output_file)
+    return ImageFileCamera(output_file, marker_dict=aruco.DICT_6X6_50)
 
 
 @pytest.fixture
