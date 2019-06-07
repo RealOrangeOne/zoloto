@@ -81,8 +81,10 @@ def test_saved_image(make_temp_file, marker_id):
     )
     output_file = make_temp_file(".png")
     marker_camera.save_frame(output_file)
-    file_camera = camera.FileCamera(output_file, marker_dict=aruco.DICT_6X6_50)
-    assert file_camera.get_visible_markers() == [marker_id]
+    image_file_camera = camera.ImageFileCamera(
+        output_file, marker_dict=aruco.DICT_6X6_50
+    )
+    assert image_file_camera.get_visible_markers() == [marker_id]
 
 
 @given(strategies.integers(0, 49))

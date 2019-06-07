@@ -96,7 +96,7 @@ class BaseCamera:
         self.close()
 
 
-class FileCamera(BaseCamera):
+class ImageFileCamera(BaseCamera):
     def __init__(self, image_path, **kwargs):
         self.image_path = image_path
         super().__init__(**kwargs)
@@ -106,13 +106,23 @@ class FileCamera(BaseCamera):
 
 
 class Camera(BaseCamera):
-    def __init__(self, camera_id, **kwargs):
+    def __init__(self, camera_id: int, **kwargs):
         super().__init__(**kwargs)
-        self.camera_id = camera_id
-        self.video_capture = self._create_video_capture()
+        self.video_capture = cv2.VideoCapture(camera_id)
 
-    def _create_video_capture(self):
-        return cv2.VideoCapture(self.camera_id)
+    def capture_frame(self):
+        _, frame = self.video_capture.read()
+        return frame
+
+    def close(self):
+        super().close()
+        self.video_capture.release()
+
+
+class VideoFileCamera(BaseCamera):
+    def __init__(self, video_path: str, **kwargs):
+        super().__init__(**kwargs)
+        self.video_file = cv2.VideoCapture(video_path)
 
     def capture_frame(self):
         _, frame = self.video_capture.read()
@@ -130,15 +140,12 @@ class SnapshotCamera(BaseCamera):
     - Doesn't keep the camera open between captures
     """
 
-    def __init__(self, camera_id, **kwargs):
+    def __init__(self, camera_id: int, **kwargs):
         super().__init__(**kwargs)
         self.camera_id = camera_id
 
-    def _create_video_capture(self):
-        return cv2.VideoCapture(self.camera_id)
-
     def capture_frame(self):
-        video_capture = self._create_video_capture()
+        video_capture = cv2.VideoCapture(self.camera_id)
         _, frame = video_capture.read()
         video_capture.release()
         return frame
