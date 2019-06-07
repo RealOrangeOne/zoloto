@@ -1,5 +1,4 @@
 from itertools import groupby
-from typing import Tuple
 
 import cv2
 
@@ -21,10 +20,6 @@ class BaseCamera:
         if self.calibration_file is None:
             raise FileNotFoundError("Missing calibration file")
         return parse_calibration_file(self.calibration_file)
-
-    def get_resolution(self) -> Tuple[int, int]:
-        # TODO: Implement everywhere else
-        raise NotImplementedError()
 
     def get_detector_params(self, params):
         return params
