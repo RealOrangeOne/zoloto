@@ -6,7 +6,7 @@ import ujson
 from cv2 import aruco
 from pytest import approx
 
-from yuri.camera import MarkerCamera
+from yuri.cameras.marker import MarkerCamera
 from yuri.marker import Marker
 
 

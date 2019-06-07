@@ -3,12 +3,13 @@ from cv2 import aruco
 from hypothesis import given, settings, strategies
 
 from tests.strategies import reasonable_image_size
-from yuri import camera
+from yuri.cameras.file import ImageFileCamera
+from yuri.cameras.marker import MarkerCamera
 
 
 @given(reasonable_image_size())
 def test_captures_frame_at_correct_resolution(resolution):
-    marker_camera = camera.MarkerCamera(
+    marker_camera = MarkerCamera(
         25, marker_dict=aruco.DICT_6X6_50, marker_size=resolution
     )
     frame = marker_camera.capture_frame()
@@ -19,7 +20,7 @@ def test_captures_frame_at_correct_resolution(resolution):
 @settings(deadline=None)
 def test_detects_markers(marker_id):
     markers = list(
-        camera.MarkerCamera(
+        MarkerCamera(
             marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
         ).process_frame()
     )
@@ -30,16 +31,14 @@ def test_detects_markers(marker_id):
 @given(strategies.integers(0, 49))
 @settings(deadline=None)
 def test_detects_marker_ids(marker_id):
-    markers = camera.MarkerCamera(
+    markers = MarkerCamera(
         marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
     ).get_visible_markers()
     assert markers == [marker_id]
 
 
 def test_sees_nothing_in_blank_image():
-    marker_camera = camera.MarkerCamera(
-        25, marker_dict=aruco.DICT_6X6_50, marker_size=200
-    )
+    marker_camera = MarkerCamera(25, marker_dict=aruco.DICT_6X6_50, marker_size=200)
     empty_frame = numpy.zeros((200, 200, 3), numpy.uint8)
     markers = list(marker_camera.process_frame(frame=empty_frame))
     assert markers == []
@@ -49,7 +48,7 @@ def test_sees_nothing_in_blank_image():
 @settings(deadline=None)
 def test_eager_capture(marker_id):
     markers = list(
-        camera.MarkerCamera(
+        MarkerCamera(
             marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
         ).process_frame_eager()
     )
@@ -59,7 +58,7 @@ def test_eager_capture(marker_id):
 
 
 def test_camera_as_context_manager():
-    with camera.MarkerCamera(
+    with MarkerCamera(
         25, marker_dict=aruco.DICT_6X6_50, marker_size=200
     ) as marker_camera:
         markers = list(marker_camera.get_visible_markers())
@@ -67,7 +66,7 @@ def test_camera_as_context_manager():
 
 
 def test_marker_with_falsy_id():
-    with camera.MarkerCamera(
+    with MarkerCamera(
         0, marker_dict=aruco.DICT_6X6_50, marker_size=200
     ) as marker_camera:
         markers = list(marker_camera.get_visible_markers())
@@ -76,20 +75,18 @@ def test_marker_with_falsy_id():
 
 @given(strategies.integers(0, 49))
 def test_saved_image(make_temp_file, marker_id):
-    marker_camera = camera.MarkerCamera(
+    marker_camera = MarkerCamera(
         marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
     )
     output_file = make_temp_file(".png")
     marker_camera.save_frame(output_file)
-    image_file_camera = camera.ImageFileCamera(
-        output_file, marker_dict=aruco.DICT_6X6_50
-    )
+    image_file_camera = ImageFileCamera(output_file, marker_dict=aruco.DICT_6X6_50)
     assert image_file_camera.get_visible_markers() == [marker_id]
 
 
 @given(strategies.integers(0, 49))
 def test_saved_image_with_annotation(make_temp_file, marker_id):
-    marker_camera = camera.MarkerCamera(
+    marker_camera = MarkerCamera(
         marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
     )
     output_file = make_temp_file(".png")

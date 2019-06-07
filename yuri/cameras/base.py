@@ -3,8 +3,8 @@ from typing import Tuple
 
 import cv2
 
-from .calibration import get_fake_calibration_parameters, parse_calibration_file
-from .marker import Marker
+from yuri.calibration import parse_calibration_file
+from yuri.marker import Marker
 
 
 class BaseCamera:
@@ -94,95 +94,3 @@ class BaseCamera:
 
     def __del__(self):
         self.close()
-
-
-class ImageFileCamera(BaseCamera):
-    def __init__(self, image_path, **kwargs):
-        self.image_path = image_path
-        super().__init__(**kwargs)
-
-    def capture_frame(self):
-        return cv2.imread(self.image_path)
-
-
-class Camera(BaseCamera):
-    def __init__(self, camera_id: int, **kwargs):
-        super().__init__(**kwargs)
-        self.video_capture = cv2.VideoCapture(camera_id)
-
-    def capture_frame(self):
-        _, frame = self.video_capture.read()
-        return frame
-
-    def close(self):
-        super().close()
-        self.video_capture.release()
-
-
-class VideoFileCamera(BaseCamera):
-    def __init__(self, video_path: str, **kwargs):
-        super().__init__(**kwargs)
-        self.video_file = cv2.VideoCapture(video_path)
-
-    def capture_frame(self):
-        _, frame = self.video_capture.read()
-        return frame
-
-    def close(self):
-        super().close()
-        self.video_capture.release()
-
-
-class SnapshotCamera(BaseCamera):
-    """
-    A modified version of Camera optimised for single use.
-
-    - Doesn't keep the camera open between captures
-    """
-
-    def __init__(self, camera_id: int, **kwargs):
-        super().__init__(**kwargs)
-        self.camera_id = camera_id
-
-    def capture_frame(self):
-        video_capture = cv2.VideoCapture(self.camera_id)
-        _, frame = video_capture.read()
-        video_capture.release()
-        return frame
-
-
-class MarkerCamera(BaseCamera):
-    """
-    A camera which always returns a single, full-screen marker
-    """
-
-    BORDER_SIZE = 40
-
-    def __init__(self, marker_id, **kwargs):
-        super().__init__(**kwargs)
-        self.marker_id = marker_id
-        self.marker_size = kwargs["marker_size"]
-
-    def get_marker_size(self, marker_id: int):
-        return self.marker_size
-
-    def get_calibrations(self):
-        return get_fake_calibration_parameters(self.marker_size)
-
-    def get_resolution(self) -> Tuple[int, int]:
-        size = int(self.get_marker_size(self.marker_id) + self.BORDER_SIZE * 2)
-        return size, size
-
-    def capture_frame(self):
-        image = cv2.aruco.drawMarker(
-            self.marker_dictionary, self.marker_id, self.marker_size
-        )
-        return cv2.copyMakeBorder(
-            image,
-            self.BORDER_SIZE,
-            self.BORDER_SIZE,
-            self.BORDER_SIZE,
-            self.BORDER_SIZE,
-            cv2.BORDER_CONSTANT,
-            value=[255, 0, 0],
-        )

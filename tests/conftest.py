@@ -5,7 +5,7 @@ import pytest
 from cv2 import aruco
 
 from yuri.calibration import get_fake_calibration_parameters
-from yuri.camera import MarkerCamera
+from yuri.cameras.marker import MarkerCamera
 
 
 @pytest.fixture
