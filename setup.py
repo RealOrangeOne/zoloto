@@ -16,4 +16,5 @@ setup(
         "ujson==1.35",
     ],
     project_urls={"GitHub: Issues": "https://github.com/realorangeone/yuri/issues"},
+    extras_require={"rpi": ["picamera[array]"]},
 )
