@@ -15,7 +15,10 @@ class ImageFileCamera(BaseCamera):
 class VideoFileCamera(BaseCamera):
     def __init__(self, video_path: str, **kwargs):
         super().__init__(**kwargs)
-        self.video_file = VideoCapture(video_path)
+        self.video_capture = self.get_video_capture(video_path)
+
+    def get_video_capture(self, video_path):
+        return VideoCapture(video_path)
 
     def capture_frame(self):
         _, frame = self.video_capture.read()
