@@ -1,6 +1,6 @@
 from cv2 import aruco
 
-from yuri.camera import Camera
+from yuri.cameras.camera import Camera
 
 camera = Camera(0, marker_dict=aruco.DICT_6X6_50)
 
