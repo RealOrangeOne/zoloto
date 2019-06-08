@@ -34,10 +34,14 @@ class BaseCamera:
         if frame is None:
             frame = self.capture_frame()
         if annotate:
-            ids, corners = self._get_ids_and_corners(frame)
-            cv2.aruco.drawDetectedMarkers(frame, [corners], ids)
+            self._annotate_frame(frame)
         cv2.imwrite(filename, frame)
         return frame
+
+    def _annotate_frame(self, frame):
+        ids, corners = self._get_ids_and_corners(frame)
+        if len(ids):
+            cv2.aruco.drawDetectedMarkers(frame, [corners], ids)
 
     def _get_ids_and_corners(self, frame=None):
         if frame is None:
