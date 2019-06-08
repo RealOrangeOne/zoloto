@@ -8,7 +8,12 @@ from cv2.aruco import DICT_6X6_50
 
 from yuri.cameras.camera import Camera
 
-camera = Camera(0, marker_dict=DICT_6X6_50)
+
+class TestCamera(Camera):
+    pass
+
+
+camera = TestCamera(0, marker_dict=DICT_6X6_50)
 
 while True:
     with Timer() as capture_timer:

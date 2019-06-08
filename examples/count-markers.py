@@ -2,7 +2,12 @@ from cv2 import aruco
 
 from yuri.cameras.camera import Camera
 
-camera = Camera(0, marker_dict=aruco.DICT_6X6_50)
+
+class TestCamera(Camera):
+    pass
+
+
+camera = TestCamera(0, marker_dict=aruco.DICT_6X6_50)
 
 while True:
     marker_ids = camera.get_visible_markers()
