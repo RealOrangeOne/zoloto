@@ -7,8 +7,11 @@ export PATH=env/bin:${PATH}
 echo "> Running tests..."
 pytest --verbose --cov yuri/ --cov-report term --cov-report html tests/
 
-echo "> Running formatter..."
-black yuri tests setup.py benchmarks examples --check
+if hash black 2>/dev/null;
+then
+    echo "> Running formatter..."
+    black yuri tests setup.py benchmarks examples --check
+fi
 
 echo "> Running linter..."
 flake8 yuri tests setup.py benchmarks examples --ignore=E128,E501

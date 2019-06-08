@@ -7,7 +7,7 @@ setup(
     author="Jake Howard",
     description="A fiducial marker system powered by OpenCV - Supports ArUco and April",
     packages=["yuri"],
-    python_requires=">=3.6",
+    python_requires=">=3.5",
     install_requires=[
         "opencv-contrib-python-headless==4.1.0.25",
         "cached-property==1.5.1",
