@@ -2,7 +2,7 @@ from typing import Tuple
 
 import cv2
 
-from yuri.calibration import get_fake_calibration_parameters
+from zoloto.calibration import get_fake_calibration_parameters
 
 from .base import BaseCamera
 

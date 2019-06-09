@@ -3,8 +3,8 @@ from cv2 import aruco
 from hypothesis import given, settings, strategies
 
 from tests.strategies import reasonable_image_size
-from yuri.cameras.file import ImageFileCamera
-from yuri.cameras.marker import MarkerCamera
+from zoloto.cameras.file import ImageFileCamera
+from zoloto.cameras.marker import MarkerCamera
 
 
 @given(reasonable_image_size())

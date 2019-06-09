@@ -3,7 +3,7 @@ from tempfile import mkstemp
 
 import pytest
 
-from yuri.calibration import (
+from zoloto.calibration import (
     get_fake_calibration_parameters,
     parse_calibration_file,
     save_calibrations,

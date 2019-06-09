@@ -5,8 +5,8 @@ from tempfile import mkstemp
 import pytest
 from cv2 import aruco
 
-from yuri.calibration import get_fake_calibration_parameters
-from yuri.cameras.marker import MarkerCamera
+from zoloto.calibration import get_fake_calibration_parameters
+from zoloto.cameras.marker import MarkerCamera
 
 TEST_DATA_DIR = "tests/images/"
 

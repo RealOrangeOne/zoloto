@@ -1,5 +1,5 @@
-import yuri
+import zoloto
 
 
 def test_exposes_version():
-    assert hasattr(yuri, "__version__")
+    assert hasattr(zoloto, "__version__")

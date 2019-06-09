@@ -1,6 +1,6 @@
 from functools import partial
 
-from yuri.marker import Marker
+from zoloto.marker import Marker
 
 
 def get_uncached_marker_func(marker, func):

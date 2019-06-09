@@ -4,7 +4,7 @@ import pytest
 from cv2.aruco import DICT_APRILTAG_36H11
 
 from tests.conftest import IMAGE_DATA, TEST_DATA_DIR
-from yuri.cameras.file import ImageFileCamera
+from zoloto.cameras.file import ImageFileCamera
 
 
 @pytest.fixture(params=IMAGE_DATA.keys())

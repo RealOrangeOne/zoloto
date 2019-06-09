@@ -6,8 +6,8 @@ import ujson
 from cv2 import aruco
 from pytest import approx
 
-from yuri.cameras.marker import MarkerCamera
-from yuri.marker import Marker
+from zoloto.cameras.marker import MarkerCamera
+from zoloto.marker import Marker
 
 
 class MarkerTestCase(TestCase):

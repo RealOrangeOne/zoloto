@@ -2,8 +2,8 @@ from itertools import groupby
 
 import cv2
 
-from yuri.calibration import parse_calibration_file
-from yuri.marker import Marker
+from zoloto.calibration import parse_calibration_file
+from zoloto.marker import Marker
 
 
 class BaseCamera:

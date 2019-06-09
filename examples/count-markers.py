@@ -1,6 +1,6 @@
 from cv2 import aruco
 
-from yuri.cameras.camera import Camera
+from zoloto.cameras.camera import Camera
 
 
 class TestCamera(Camera):

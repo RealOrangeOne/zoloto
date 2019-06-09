@@ -6,7 +6,7 @@ from chrono import Timer
 from cv2 import imshow, waitKey
 from cv2.aruco import DICT_6X6_50
 
-from yuri.cameras.camera import Camera
+from zoloto.cameras.camera import Camera
 
 
 class TestCamera(Camera):

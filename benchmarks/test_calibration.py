@@ -1,4 +1,4 @@
-from yuri.calibration import parse_calibration_file, save_calibrations
+from zoloto.calibration import parse_calibration_file, save_calibrations
 
 
 def test_save_calibrations_json(benchmark, fake_calibration_params, make_temp_file):
