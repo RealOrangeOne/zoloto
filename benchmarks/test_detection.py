@@ -14,6 +14,10 @@ def image_camera(request):
     )
 
 
+def test_capture_frame(benchmark, image_camera):
+    benchmark(image_camera.capture_frame)
+
+
 def test_get_visible_markers(benchmark, image_camera):
     benchmark(image_camera.get_visible_markers)
 
