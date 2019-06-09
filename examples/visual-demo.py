@@ -2,10 +2,10 @@
 This example required `opencv-contrib-python` rather than `opencv-contrib-python-headless`
 """
 
-from chrono import Timer
 from cv2 import imshow, waitKey
 from cv2.aruco import DICT_6X6_50
 
+from chrono import Timer
 from yuri.cameras.camera import Camera
 
 
