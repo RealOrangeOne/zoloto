@@ -57,11 +57,17 @@ class BaseCamera:
             return [], []
         return ids.flatten(), corners[0]
 
+    def _get_marker(self, id, corners, calibration_params):
+        return Marker(id, corners, self.get_marker_size(id), calibration_params)
+
+    def _get_eager_marker(self, id, corners, size, calibration_params, tvec, rvec):
+        return Marker(id, corners, size, calibration_params, (rvec, tvec))
+
     def process_frame(self, frame=None):
         ids, corners = self._get_ids_and_corners(frame)
         calibration_params = self.get_calibrations()
         for corners, id in zip(corners, ids):
-            yield Marker(id, corners, self.get_marker_size(id), calibration_params)
+            yield self._get_marker(id, corners, calibration_params)
 
     def process_frame_eager(self, frame=None):
         ids, corners = self._get_ids_and_corners(frame)
@@ -77,7 +83,9 @@ class BaseCamera:
                 corners, size, *calibration_params
             )
             for id, corners, rvec, tvec in zip(ids, corners, rvecs[0], tvecs[0]):
-                yield Marker(id, corners, size, calibration_params, (rvec, tvec))
+                yield self._get_eager_marker(
+                    id, corners, size, calibration_params, tvec, rvec
+                )
 
     def get_visible_markers(self, frame=None):
         ids, _ = self._get_ids_and_corners(frame)
