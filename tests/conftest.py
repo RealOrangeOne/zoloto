@@ -1,3 +1,4 @@
+import json
 import os
 from tempfile import mkstemp
 
@@ -7,6 +8,11 @@ from cv2 import aruco
 from yuri.calibration import get_fake_calibration_parameters
 from yuri.cameras.file import ImageFileCamera
 from yuri.cameras.marker import MarkerCamera
+
+TEST_DATA_DIR = "tests/images/"
+
+with open(os.path.join(TEST_DATA_DIR, "markers.json")) as f:
+    IMAGE_DATA = json.load(f)
 
 
 @pytest.fixture
