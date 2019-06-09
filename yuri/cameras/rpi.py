@@ -1,4 +1,5 @@
 import picamera
+import picamera.array
 
 from .base import BaseCamera
 
