@@ -55,7 +55,7 @@ class BaseCamera:
         ids, corners = self.__get_raw_ids_and_corners(frame)
         if ids is None:
             return [], []
-        return ids.flatten(), corners[0]
+        return [id[0] for id in ids], [c[0] for c in corners]
 
     def _get_marker(self, id, corners, calibration_params):
         return Marker(id, corners, self.get_marker_size(id), calibration_params)
