@@ -24,10 +24,10 @@ class BaseCamera:
     def get_detector_params(self, params):
         return params
 
-    def get_marker_size(self, marker_id: int) -> int:
+    def get_marker_size(self, marker_id: int) -> int:  # pragma: no cover
         raise NotImplementedError()
 
-    def capture_frame(self):
+    def capture_frame(self):  # pragma: no cover
         raise NotImplementedError()
 
     def save_frame(self, filename, annotate=False, frame=None):
@@ -98,9 +98,6 @@ class BaseCamera:
         return self
 
     def __exit__(self, type, value, tb):
-        if tb:
-            return False
-
         self.close()
 
     def __del__(self):
