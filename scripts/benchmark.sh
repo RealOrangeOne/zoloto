@@ -4,4 +4,9 @@ set -e
 
 export PATH=env/bin:${PATH}
 
-pytest --verbose --benchmark-sort=fullname --benchmark-columns=min,max,mean,stddev,ops benchmarks/ --benchmark-group-by=func --benchmark-name=long
+run_benchmark() {
+    pytest --verbose --benchmark-sort=fullname --benchmark-columns=min,max,mean,stddev,ops --benchmark-group-by=func $@
+}
+
+run_benchmark benchmarks/
+run_benchmark benchmarks/detection.py --benchmark-name=long
