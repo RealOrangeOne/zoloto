@@ -17,9 +17,9 @@ def test_get_visible_markers(benchmark, marker_camera):
     benchmark(marker_camera.get_visible_markers, frame=frame)
 
 
-def test_save_frame(benchmark, marker_camera, make_temp_file):
-    benchmark(marker_camera.save_frame, make_temp_file(".png"))
+def test_save_frame(benchmark, marker_camera, temp_image_file):
+    benchmark(marker_camera.save_frame, temp_image_file)
 
 
-def test_save_frame_with_annotation(benchmark, marker_camera, make_temp_file):
-    benchmark(marker_camera.save_frame, make_temp_file(".png"), annotate=True)
+def test_save_frame_with_annotation(benchmark, marker_camera, temp_image_file):
+    benchmark(marker_camera.save_frame, temp_image_file, annotate=True)

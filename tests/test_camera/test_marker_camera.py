@@ -74,20 +74,19 @@ def test_marker_with_falsy_id():
 
 
 @given(strategies.integers(0, 49))
-def test_saved_image(make_temp_file, marker_id):
+def test_saved_image(temp_image_file, marker_id):
     marker_camera = MarkerCamera(
         marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
     )
-    output_file = make_temp_file(".png")
-    marker_camera.save_frame(output_file)
-    image_file_camera = ImageFileCamera(output_file, marker_dict=aruco.DICT_6X6_50)
+    marker_camera.save_frame(temp_image_file)
+    image_file_camera = ImageFileCamera(temp_image_file, marker_dict=aruco.DICT_6X6_50)
     assert image_file_camera.get_visible_markers() == [marker_id]
 
 
 @given(strategies.integers(0, 49))
-def test_saved_image_with_annotation(make_temp_file, marker_id):
+def test_saved_image_with_annotation(temp_image_file, marker_id):
     marker_camera = MarkerCamera(
         marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
     )
-    output_file = make_temp_file(".png")
+    output_file = temp_image_file
     marker_camera.save_frame(output_file, annotate=True)

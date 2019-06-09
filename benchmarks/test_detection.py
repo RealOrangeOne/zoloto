@@ -22,16 +22,16 @@ def test_get_visible_markers(benchmark, image_camera):
     benchmark(image_camera.get_visible_markers)
 
 
-def test_save_frame(benchmark, image_camera, make_temp_file):
-    benchmark(image_camera.save_frame, make_temp_file(".png"))
+def test_save_frame(benchmark, image_camera, temp_image_file):
+    benchmark(image_camera.save_frame, temp_image_file)
 
 
-def test_save_frame_with_annotation(benchmark, image_camera, make_temp_file):
-    benchmark(image_camera.save_frame, make_temp_file(".png"), annotate=True)
+def test_save_frame_with_annotation(benchmark, image_camera, temp_image_file):
+    benchmark(image_camera.save_frame, temp_image_file, annotate=True)
 
 
 @pytest.mark.parametrize("filename", IMAGE_DATA.keys())
-def test_process_frame(filename, benchmark, make_temp_file):
+def test_process_frame(filename, benchmark, temp_image_file):
     class TestCamera(ImageFileCamera):
         def get_marker_size(self, id):
             return 100
@@ -42,4 +42,4 @@ def test_process_frame(filename, benchmark, make_temp_file):
     camera = TestCamera(
         os.path.join(TEST_DATA_DIR, filename), marker_dict=DICT_APRILTAG_36H11
     )
-    benchmark(camera.save_frame, make_temp_file(".png"))
+    benchmark(camera.save_frame, temp_image_file)

@@ -22,12 +22,11 @@ def test_detects_marker_ids(filename, detection_data):
 
 
 @pytest.mark.parametrize("filename", IMAGE_DATA.keys())
-def test_annotates_frame(filename, make_temp_file):
-    output_file = make_temp_file(".png")
+def test_annotates_frame(filename, temp_image_file):
     camera = ImageFileCamera(
         os.path.join(TEST_DATA_DIR, filename), marker_dict=DICT_APRILTAG_36H11
     )
-    camera.save_frame(output_file, annotate=True)
+    camera.save_frame(temp_image_file, annotate=True)
 
 
 @pytest.mark.parametrize("filename,detection_data", IMAGE_DATA.items())

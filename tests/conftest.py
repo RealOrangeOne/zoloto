@@ -34,6 +34,11 @@ def make_temp_file(request):
 
 
 @pytest.fixture
+def temp_image_file(make_temp_file):
+    return make_temp_file(".png")
+
+
+@pytest.fixture
 def marker_camera():
     return MarkerCamera(25, marker_dict=aruco.DICT_6X6_50, marker_size=200)
 
