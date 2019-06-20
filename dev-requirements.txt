@@ -7,7 +7,7 @@ flake8-print==3.1.0
 flake8-tuple==0.3.1
 hypothesis==4.24.3
 isort==4.3.20
-mypy==0.701
+mypy==0.710
 pytest==4.6.3
 pytest-benchmark==3.2.2
 pytest-cov==2.7.1
