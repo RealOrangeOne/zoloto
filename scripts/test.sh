@@ -14,16 +14,17 @@ then
 fi
 
 echo "> Running linter..."
-flake8 zoloto tests setup.py benchmarks examples --ignore=E128,E501
+flake8 zoloto tests setup.py benchmarks examples scripts --ignore=E128,E501,W503
 
 echo "> Running isort..."
-isort -rc -c zoloto tests setup.py benchmarks examples
+isort -rc -c zoloto tests setup.py benchmarks examples scripts
 
 echo "> Running type checker..."
 mypy zoloto
 mypy tests
 mypy benchmarks
 mypy examples
+mypy scripts
 
 echo "> Running bandit..."
 bandit -r zoloto/
