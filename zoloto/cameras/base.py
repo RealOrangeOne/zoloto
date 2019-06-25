@@ -40,11 +40,11 @@ class BaseCamera:
         return frame
 
     def _annotate_frame(self, frame):
-        ids, corners = self.__get_raw_ids_and_corners(frame)
+        ids, corners = self._get_raw_ids_and_corners(frame)
         if corners:
             cv2.aruco.drawDetectedMarkers(frame, corners, ids)
 
-    def __get_raw_ids_and_corners(self, frame):
+    def _get_raw_ids_and_corners(self, frame):
         corners, ids, _ = cv2.aruco.detectMarkers(
             frame, self.marker_dictionary, parameters=self.detector_params
         )
@@ -53,7 +53,7 @@ class BaseCamera:
     def _get_ids_and_corners(self, frame=None):
         if frame is None:
             frame = self.capture_frame()
-        ids, corners = self.__get_raw_ids_and_corners(frame)
+        ids, corners = self._get_raw_ids_and_corners(frame)
         if ids is None:
             return [], []
         return [id[0] for id in ids], [c[0] for c in corners]
