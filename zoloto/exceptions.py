@@ -1,0 +1,2 @@
+class MissingCalibrationsError(Exception):
+    pass

@@ -7,6 +7,7 @@ from numpy import array, linalg
 
 from .calibration import CalibrationParameters
 from .coords import Coordinates, Orientation, ThreeDCoordinates
+from .exceptions import MissingCalibrationsError
 
 
 class Marker:
@@ -61,6 +62,9 @@ class Marker:
         if self._is_eager():
             return self.__precalculated_vectors
 
+        if self.__camera_calibration_params is None:
+            raise MissingCalibrationsError()
+
         rvec, tvec, _ = aruco.estimatePoseSingleMarkers(
             [self.__pixel_corners], self.__size, *self.__camera_calibration_params
         )
@@ -77,20 +81,31 @@ class Marker:
         return tvec
 
     def as_dict(self):
-        return {
+        marker_dict = {
             "id": self.id,
             "size": self.size,
             "pixel_corners": self.__pixel_corners.tolist(),
-            "rvec": self._rvec.tolist(),
-            "tvec": self._tvec.tolist(),
         }
+        try:
+            marker_dict.update(
+                {"rvec": self._rvec.tolist(), "tvec": self._tvec.tolist()}
+            )
+        except MissingCalibrationsError:
+            pass
+        return marker_dict
 
     @classmethod
     def from_dict(cls, marker_dict):
-        return cls(
+        marker_args = [
             marker_dict["id"],
             array(marker_dict["pixel_corners"]),
             marker_dict["size"],
             None,
-            (array(marker_dict["rvec"]), array(marker_dict["tvec"])),
-        )
+        ]
+        if "rvec" in marker_dict and "tvec" in marker_dict:
+            marker_args.append(
+                CalibrationParameters(
+                    array(marker_dict["rvec"]), array(marker_dict["tvec"])
+                )
+            )
+        return cls(*marker_args)

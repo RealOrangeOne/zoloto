@@ -4,9 +4,10 @@ from unittest.mock import patch
 
 import ujson
 from cv2 import aruco
-from pytest import approx
+from pytest import approx, raises
 
 from zoloto.cameras.marker import MarkerCamera
+from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import Marker
 
 
@@ -65,6 +66,9 @@ class MarkerTestCase(TestCase):
     def test_as_dict(self):
         marker_dict = self.marker.as_dict()
         self.assertIsInstance(marker_dict, dict)
+        self.assertEqual(
+            {"id", "size", "pixel_corners", "rvec", "tvec"}, set(marker_dict.keys())
+        )
         self.assertEqual(marker_dict["size"], self.MARKER_SIZE)
         self.assertEqual(marker_dict["id"], self.MARKER_ID)
 
@@ -118,3 +122,58 @@ class MarkerFromDictTestCase(EagerMarkerTestCase):
         )
         self.markers = list(self.marker_camera.process_frame())
         self.marker = Marker.from_dict(self.markers[0].as_dict())
+
+
+class MarkerSansCalibrationsTestCase(MarkerTestCase):
+    class TestCamera(MarkerCamera):
+        def get_calibrations(self):
+            return None
+
+    def setUp(self):
+        self.marker_camera = self.TestCamera(
+            self.MARKER_ID, marker_dict=aruco.DICT_6X6_50, marker_size=self.MARKER_SIZE
+        )
+        self.markers = list(self.marker_camera.process_frame())
+        self.marker = self.markers[0]
+
+    def __getattribute__(self, name):
+        attr = super().__getattribute__(name)
+        if name in ["test_orientation", "test_distance", "test_coordinates"]:
+
+            def test_raises(*args, **kwargs):
+                with raises(MissingCalibrationsError):
+                    attr(*args, **kwargs)
+
+            return test_raises
+        return attr
+
+    def test_as_dict(self):
+        marker_dict = self.marker.as_dict()
+        self.assertIsInstance(marker_dict, dict)
+        self.assertEqual({"id", "size", "pixel_corners"}, set(marker_dict.keys()))
+        self.assertEqual(marker_dict["size"], self.MARKER_SIZE)
+        self.assertEqual(marker_dict["id"], self.MARKER_ID)
+
+    def test_dict_as_ujson(self):
+        marker_dict = self.marker.as_dict()
+        created_marker_dict = ujson.loads(ujson.dumps(marker_dict))
+        self.assertEqual(marker_dict["id"], created_marker_dict["id"])
+        self.assertEqual(marker_dict["size"], created_marker_dict["size"])
+        for expected_corner, corner in zip(
+            marker_dict["pixel_corners"], created_marker_dict["pixel_corners"]
+        ):
+            self.assertEqual(expected_corner, approx(corner))
+        self.assertNotIn("rvec", created_marker_dict)
+        self.assertNotIn("tvec", created_marker_dict)
+
+
+class MarkerSansCalibrationsFromDictTestCase(MarkerSansCalibrationsTestCase):
+    def setUp(self):
+        self.marker_camera = self.TestCamera(
+            self.MARKER_ID, marker_dict=aruco.DICT_6X6_50, marker_size=self.MARKER_SIZE
+        )
+        self.markers = list(self.marker_camera.process_frame())
+        self.marker = Marker.from_dict(self.markers[0].as_dict())
+
+    def test_is_not_eager(self):
+        self.assertFalse(self.marker._is_eager())

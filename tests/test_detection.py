@@ -35,9 +35,6 @@ def test_gets_markers(filename, detection_data):
         def get_marker_size(self, id):
             return 100
 
-        def get_calibrations(self):
-            return None
-
     camera = TestCamera(
         os.path.join(TEST_DATA_DIR, filename), marker_dict=DICT_APRILTAG_36H11
     )

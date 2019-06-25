@@ -3,6 +3,7 @@ from itertools import groupby
 import cv2
 
 from zoloto.calibration import parse_calibration_file
+from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import Marker
 
 
@@ -18,7 +19,7 @@ class BaseCamera:
 
     def get_calibrations(self):
         if self.calibration_file is None:
-            raise FileNotFoundError("Missing calibration file")
+            return None
         return parse_calibration_file(self.calibration_file)
 
     def get_detector_params(self, params):
@@ -70,8 +71,10 @@ class BaseCamera:
             yield self._get_marker(id, corners, calibration_params)
 
     def process_frame_eager(self, frame=None):
-        ids, corners = self._get_ids_and_corners(frame)
         calibration_params = self.get_calibrations()
+        if not calibration_params:
+            raise MissingCalibrationsError()
+        ids, corners = self._get_ids_and_corners(frame)
 
         def get_marker_size(id_and_corners):
             return self.get_marker_size(id_and_corners[0])

@@ -1,10 +1,12 @@
 import numpy
+import pytest
 from cv2 import aruco
 from hypothesis import given, settings, strategies
 
 from tests.strategies import reasonable_image_size
 from zoloto.cameras.file import ImageFileCamera
 from zoloto.cameras.marker import MarkerCamera
+from zoloto.exceptions import MissingCalibrationsError
 
 
 @given(reasonable_image_size())
@@ -90,3 +92,13 @@ def test_saved_image_with_annotation(temp_image_file, marker_id):
     )
     output_file = temp_image_file
     marker_camera.save_frame(output_file, annotate=True)
+
+
+def test_process_eager_frame_without_calibrations():
+    class TestCamera(MarkerCamera):
+        def get_calibrations(self):
+            return None
+
+    marker_camera = TestCamera(25, marker_dict=aruco.DICT_6X6_50, marker_size=200)
+    with pytest.raises(MissingCalibrationsError):
+        list(marker_camera.process_frame_eager())
