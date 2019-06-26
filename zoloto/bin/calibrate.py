@@ -1,15 +1,12 @@
 import cv2
 
-from zoloto import has_gui_components
+from zoloto import assert_has_gui_components
 from zoloto.calibration import CalibrationParameters, save_calibrations
 from zoloto.cameras.camera import Camera
 
 FRAMES = 250
 
-if not has_gui_components():
-    raise ImportError(
-        "GUI components cannot be imported. You need to install `opencv-contrib-python`."
-    )
+assert_has_gui_components()
 
 camera = Camera(0, marker_dict=cv2.aruco.DICT_6X6_250)
 

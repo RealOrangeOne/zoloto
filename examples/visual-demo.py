@@ -2,13 +2,10 @@ from chrono import Timer
 from cv2 import imshow, waitKey
 from cv2.aruco import DICT_6X6_50
 
-from zoloto import has_gui_components
+from zoloto import assert_has_gui_components
 from zoloto.cameras.camera import Camera
 
-if not has_gui_components():
-    raise ImportError(
-        "GUI components cannot be imported. You need to install `opencv-contrib-python`."
-    )
+assert_has_gui_components()
 
 
 class TestCamera(Camera):
