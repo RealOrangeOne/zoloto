@@ -1,19 +1,28 @@
+import argparse
+import logging
+
 import cv2
 
 from zoloto import assert_has_gui_components
 from zoloto.calibration import CalibrationParameters, save_calibrations
 from zoloto.cameras.camera import Camera
 
-FRAMES = 250
 FEED_WINDOW_NAME = "Feed"
 
 assert_has_gui_components()
 
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--id", type=int, default=0)
+    parser.add_argument("--frames", type=int, default=250)
+    parser.add_argument("-v", "--verbose", help="Run verbosely", action="store_true")
+    return parser.parse_args()
+
+
 def wait_for_markers(camera):
     while True:
         frame = camera.capture_frame()
-        print(frame)
         cv2.imshow(FEED_WINDOW_NAME, frame)
         cv2.waitKey(1)
         visible_markers = camera.get_visible_markers(frame)
@@ -21,12 +30,12 @@ def wait_for_markers(camera):
             return
 
 
-def capture_frames(camera, board):
+def capture_frames(frames, camera, board):
     decimator = 0
     all_corners = []
     all_ids = []
 
-    for i in range(FRAMES):
+    for i in range(frames):
         frame = camera.capture_frame()
         ids, corners = camera._get_raw_ids_and_corners(frame)
         if not len(corners):
@@ -43,9 +52,9 @@ def capture_frames(camera, board):
             all_corners.append(charuco_corners)
             all_ids.append(charuco_ids)
         cv2.aruco.drawDetectedMarkers(frame, corners, ids)
-        cv2.imshow("Feed", frame)
+        cv2.imshow(FEED_WINDOW_NAME, frame)
         cv2.waitKey(1)
-        print("Frames captured: {}/{}".format(i + 1, FRAMES), end="\r")  # noqa: T001
+        logging.debug("Frames captured: {}/{}".format(i + 1, frames))
         decimator += 1
 
     return all_ids, all_corners
@@ -60,6 +69,12 @@ def process_frames(all_ids, all_corners, camera, board):
 
 
 def main():
+    args = parse_args()
+    logging.basicConfig(
+        level=logging.NOTSET if args.verbose else logging.INFO,
+        format="[%(levelname)s]: %(message)s",
+    )
+    logging.info("Creating calibration image...")
     camera = Camera(0, marker_dict=cv2.aruco.DICT_6X6_250)
 
     board = cv2.aruco.CharucoBoard_create(6, 6, 0.025, 0.0125, camera.marker_dictionary)
@@ -67,25 +82,24 @@ def main():
     cv2.imshow("Calibration image", board.draw((200 * 6, 200 * 6)))
     cv2.waitKey(1)
 
-    print("Waiting until markers in view...")  # noqa: T001
+    logging.info("Waiting until markers in view...")
     wait_for_markers(camera)
 
-    print("Capturing frames...")  # noqa: T001
-    all_ids, all_corners = capture_frames(camera, board)
+    logging.info("Capturing frames...")
+    all_ids, all_corners = capture_frames(args.frames, camera, board)
 
     cv2.destroyAllWindows()
 
-    print()  # noqa: T001
-    print("Processing frames...")  # noqa: T001
+    logging.info("Processing frames...")
     camera_matrix, distance_coefficients = process_frames(
         all_ids, all_corners, camera, board
     )
 
-    print("Saving calibration...")  # noqa: T001
+    logging.info("Saving calibration...")
     calibration_params = CalibrationParameters(camera_matrix, distance_coefficients)
 
     save_calibrations(calibration_params, "calibrations.xml")
-    print("Calibrations saved to 'calibrations.xml'")  # noqa: T001
+    logging.info("Calibrations saved to 'calibrations.xml'")
 
 
 if __name__ == "__main__":
