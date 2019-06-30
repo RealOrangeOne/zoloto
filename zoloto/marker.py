@@ -3,10 +3,10 @@ from typing import Optional
 from cached_property import cached_property
 from cv2 import aruco
 from fastcache import clru_cache
-from numpy import array, linalg
+from numpy import arctan2, array, linalg
 
 from .calibration import CalibrationParameters
-from .coords import Coordinates, Orientation, ThreeDCoordinates
+from .coords import Coordinates, Orientation, Spherical, ThreeDCoordinates
 from .exceptions import MissingCalibrationsError
 
 
@@ -52,6 +52,11 @@ class Marker:
     @property
     def orientation(self):
         return Orientation(*self._rvec)
+
+    @cached_property
+    def spherical(self):
+        x, y, z = self._tvec
+        return Spherical(rot_x=arctan2(y, z), rot_y=arctan2(x, z), dist=self.distance)
 
     @property
     def cartesian(self):

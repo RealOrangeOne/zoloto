@@ -31,5 +31,9 @@ def test_marker_cartesian(benchmark, marker):
     benchmark(lambda: marker.cartesian)
 
 
+def test_marker_spherical(benchmark, marker):
+    benchmark(lambda: marker.spherical)
+
+
 def test_marker_from_dict(benchmark, marker):
     benchmark(Marker.from_dict, marker.as_dict())

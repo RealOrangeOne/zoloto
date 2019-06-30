@@ -57,11 +57,17 @@ class MarkerTestCase(TestCase):
         self.assertEqual(int(rot_y), 0)
         self.assertEqual(int(rot_z), 0)
 
-    def test_coordinates(self):
+    def test_cartesian_coordinates(self):
         x, y, z = self.marker.cartesian.values()
         self.assertEqual(int(x), 49)
         self.assertEqual(int(y), 24)
         self.assertEqual(int(z), 991)
+
+    def test_spherical_coordinates(self):
+        rot_x, rot_y, dist = self.marker.spherical
+        self.assertEqual(dist, self.marker.distance)
+        self.assertEqual(rot_x, approx(0.025, abs=1e-3))
+        self.assertEqual(rot_y, approx(0.05, abs=1e-3))
 
     def test_as_dict(self):
         marker_dict = self.marker.as_dict()
@@ -138,7 +144,12 @@ class MarkerSansCalibrationsTestCase(MarkerTestCase):
 
     def __getattribute__(self, name):
         attr = super().__getattribute__(name)
-        if name in ["test_orientation", "test_distance", "test_coordinates"]:
+        if name in [
+            "test_orientation",
+            "test_distance",
+            "test_cartesian_coordinates",
+            "test_spherical_coordinates",
+        ]:
 
             def test_raises(*args, **kwargs):
                 with raises(MissingCalibrationsError):

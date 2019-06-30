@@ -9,3 +9,5 @@ Orientation = NamedTuple(
 )
 
 ThreeDCoordinates = spaced_coordinate("ThreeDCoordinates", "xyz")
+
+Spherical = NamedTuple("Spherical", [("rot_x", float), ("rot_y", float), ("dist", int)])
