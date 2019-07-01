@@ -30,6 +30,11 @@ def wait_for_markers(camera):
             return
 
 
+def create_board(camera, board_size=6):
+    board = cv2.aruco.CharucoBoard_create(board_size, board_size, 0.025, 0.0125, camera.marker_dictionary)
+    return board.draw((150 * board_size, 150 * board_size)), board
+
+
 def capture_frames(frames, camera, board):
     decimator = 0
     all_corners = []
@@ -77,9 +82,8 @@ def main():
     logging.info("Creating calibration image...")
     camera = Camera(args.id, marker_dict=cv2.aruco.DICT_6X6_250)
 
-    board = cv2.aruco.CharucoBoard_create(6, 6, 0.025, 0.0125, camera.marker_dictionary)
-
-    cv2.imshow("Calibration image", board.draw((200 * 6, 200 * 6)))
+    board_image, board = create_board(camera, board_size=5)
+    cv2.imshow("Calibration Board", board_image)
     cv2.waitKey(1)
 
     logging.info("Waiting until markers in view...")
