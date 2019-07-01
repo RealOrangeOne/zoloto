@@ -75,7 +75,7 @@ def main():
         format="[%(levelname)s]: %(message)s",
     )
     logging.info("Creating calibration image...")
-    camera = Camera(0, marker_dict=cv2.aruco.DICT_6X6_250)
+    camera = Camera(args.id, marker_dict=cv2.aruco.DICT_6X6_250)
 
     board = cv2.aruco.CharucoBoard_create(6, 6, 0.025, 0.0125, camera.marker_dictionary)
 
