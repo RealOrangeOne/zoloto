@@ -65,8 +65,7 @@ def capture_frames(frames, camera, board):
     return all_ids, all_corners
 
 
-def process_frames(all_ids, all_corners, camera, board):
-    image_size = cv2.cvtColor(camera.capture_frame(), cv2.COLOR_BGR2GRAY).shape
+def process_frames(all_ids, all_corners, image_size, board):
     ret, mtx, dist, rvecs, tvecs = cv2.aruco.calibrateCameraCharuco(
         all_corners, all_ids, board, image_size, None, None
     )
@@ -93,10 +92,12 @@ def main():
     all_ids, all_corners = capture_frames(args.frames, camera, board)
 
     cv2.destroyAllWindows()
+    image_size = cv2.cvtColor(camera.capture_frame(), cv2.COLOR_BGR2GRAY).shape
+    del camera  # Explicitly close the camera so the light turns off
 
     logging.info("Processing frames...")
     camera_matrix, distance_coefficients = process_frames(
-        all_ids, all_corners, camera, board
+        all_ids, all_corners, image_size, board
     )
 
     logging.info("Saving calibration...")
