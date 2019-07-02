@@ -17,5 +17,10 @@ setup(
     ],
     project_urls={"GitHub: Issues": "https://github.com/realorangeone/zoloto/issues"},
     extras_require={"rpi": ["picamera[array]"]},
-    entry_points={"console_scripts": ["zoloto-calibrate=zoloto.cli.calibrate:main"]},
+    entry_points={
+        "console_scripts": [
+            "zoloto-calibrate=zoloto.cli.calibrate:main",
+            "zoloto-preview=zoloto.cli.preview:main",
+        ]
+    },
 )
