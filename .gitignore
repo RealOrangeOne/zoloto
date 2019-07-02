@@ -129,4 +129,4 @@ dmypy.json
 
 # End of https://www.gitignore.io/api/python
 
-calibrations.xml
+/calibrations.xml

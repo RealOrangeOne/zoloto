@@ -10,9 +10,14 @@ from zoloto.cameras.marker import MarkerCamera
 
 TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 TEST_IMAGE_DIR = os.path.join(TEST_DATA_DIR, "images")
+CALIBRATIONS_DIR = os.path.join(TEST_DATA_DIR, "calibrations")
 
 with open(os.path.join(TEST_IMAGE_DIR, "markers.json")) as f:
     IMAGE_DATA = json.load(f)
+
+
+def get_calibration(camera: str):
+    return os.path.join(CALIBRATIONS_DIR, camera + ".xml")
 
 
 @pytest.fixture

@@ -3,7 +3,7 @@ import os
 import pytest
 from cv2.aruco import DICT_APRILTAG_36H11
 
-from tests.conftest import IMAGE_DATA, TEST_IMAGE_DIR
+from tests.conftest import IMAGE_DATA, TEST_IMAGE_DIR, get_calibration
 from zoloto.cameras.file import ImageFileCamera
 
 
@@ -38,5 +38,19 @@ def test_process_frame(filename, benchmark, temp_image_file):
 
     camera = TestCamera(
         os.path.join(TEST_IMAGE_DIR, filename), marker_dict=DICT_APRILTAG_36H11
+    )
+    benchmark(camera.save_frame, temp_image_file)
+
+
+@pytest.mark.parametrize("filename,detection_data", IMAGE_DATA.items())
+def test_process_frame_eager(filename, detection_data, benchmark, temp_image_file):
+    class TestCamera(ImageFileCamera):
+        def get_marker_size(self, id):
+            return 100
+
+    camera = TestCamera(
+        os.path.join(TEST_IMAGE_DIR, filename),
+        marker_dict=DICT_APRILTAG_36H11,
+        calibration_file=get_calibration(detection_data["camera"]),
     )
     benchmark(camera.save_frame, temp_image_file)
