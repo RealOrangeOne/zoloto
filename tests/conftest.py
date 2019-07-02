@@ -8,9 +8,10 @@ from cv2 import aruco
 from zoloto.calibration import get_fake_calibration_parameters
 from zoloto.cameras.marker import MarkerCamera
 
-TEST_DATA_DIR = "tests/data/images/"
+TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+TEST_IMAGE_DIR = os.path.join(TEST_DATA_DIR, "images")
 
-with open(os.path.join(TEST_DATA_DIR, "markers.json")) as f:
+with open(os.path.join(TEST_IMAGE_DIR, "markers.json")) as f:
     IMAGE_DATA = json.load(f)
 
 

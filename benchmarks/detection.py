@@ -3,14 +3,14 @@ import os
 import pytest
 from cv2.aruco import DICT_APRILTAG_36H11
 
-from tests.conftest import IMAGE_DATA, TEST_DATA_DIR
+from tests.conftest import IMAGE_DATA, TEST_IMAGE_DIR
 from zoloto.cameras.file import ImageFileCamera
 
 
 @pytest.fixture(params=IMAGE_DATA.keys())
 def image_camera(request):
     return ImageFileCamera(
-        os.path.join(TEST_DATA_DIR, request.param), marker_dict=DICT_APRILTAG_36H11
+        os.path.join(TEST_IMAGE_DIR, request.param), marker_dict=DICT_APRILTAG_36H11
     )
 
 
@@ -37,6 +37,6 @@ def test_process_frame(filename, benchmark, temp_image_file):
             return 100
 
     camera = TestCamera(
-        os.path.join(TEST_DATA_DIR, filename), marker_dict=DICT_APRILTAG_36H11
+        os.path.join(TEST_IMAGE_DIR, filename), marker_dict=DICT_APRILTAG_36H11
     )
     benchmark(camera.save_frame, temp_image_file)
