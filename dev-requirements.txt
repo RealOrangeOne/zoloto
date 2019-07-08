@@ -1,4 +1,4 @@
-bandit==1.6.1
+bandit==1.6.2
 chrono==1.0.2
 flake8==3.7.7
 flake8-comprehensions==2.1.0
