@@ -1,5 +1,4 @@
 import operator
-import os
 
 import pytest
 
@@ -9,7 +8,7 @@ from zoloto.marker_dict import MarkerDict
 
 
 def test_has_data_for_all_images():
-    assert len(IMAGE_DATA) == len(os.listdir(TEST_IMAGE_DIR)) - 1
+    assert len(IMAGE_DATA) == len(list(TEST_IMAGE_DIR.glob("*.jpg")))
     for filename in IMAGE_DATA.keys():
         assert TEST_IMAGE_DIR.joinpath(filename).exists()
 
