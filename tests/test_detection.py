@@ -57,7 +57,5 @@ def test_gets_marker_eager(filename, detection_data):
         calibration_file=get_calibration(detection_data["camera"]),
     )
     markers = list(camera.process_frame_eager())
-    assert sorted([marker.id for marker in markers]) == sorted(
-        detection_data["markers"]
-    )
+    assert sorted(marker.id for marker in markers) == sorted(detection_data["markers"])
     assert {marker.size for marker in markers} == {100}
