@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 from tempfile import mkstemp
 
 import pytest
@@ -8,16 +9,15 @@ from zoloto.calibration import get_fake_calibration_parameters
 from zoloto.cameras.marker import MarkerCamera
 from zoloto.marker_dict import MarkerDict
 
-TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
-TEST_IMAGE_DIR = os.path.join(TEST_DATA_DIR, "images")
-CALIBRATIONS_DIR = os.path.join(TEST_DATA_DIR, "calibrations")
+TEST_DATA_DIR = Path(__file__).parent.joinpath("data")
+TEST_IMAGE_DIR = TEST_DATA_DIR.joinpath("images")
+CALIBRATIONS_DIR = TEST_DATA_DIR.joinpath("calibrations")
 
-with open(os.path.join(TEST_IMAGE_DIR, "markers.json")) as f:
-    IMAGE_DATA = json.load(f)
+IMAGE_DATA = json.loads(TEST_IMAGE_DIR.joinpath("markers.json").read_text())
 
 
 def get_calibration(camera: str):
-    return os.path.join(CALIBRATIONS_DIR, camera + ".xml")
+    return CALIBRATIONS_DIR.joinpath(camera + ".xml")
 
 
 @pytest.fixture

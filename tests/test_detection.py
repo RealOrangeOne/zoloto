@@ -10,14 +10,13 @@ from zoloto.marker_dict import MarkerDict
 def test_has_data_for_all_images():
     assert len(IMAGE_DATA) == len(os.listdir(TEST_IMAGE_DIR)) - 1
     for filename in IMAGE_DATA.keys():
-        assert os.path.exists(os.path.join(TEST_IMAGE_DIR, filename))
+        assert TEST_IMAGE_DIR.joinpath(filename).exists()
 
 
 @pytest.mark.parametrize("filename,detection_data", IMAGE_DATA.items())
 def test_detects_marker_ids(filename, detection_data):
     camera = ImageFileCamera(
-        os.path.join(TEST_IMAGE_DIR, filename),
-        marker_dict=MarkerDict.DICT_APRILTAG_36H11,
+        TEST_IMAGE_DIR.joinpath(filename), marker_dict=MarkerDict.DICT_APRILTAG_36H11
     )
     assert sorted(camera.get_visible_markers()) == sorted(detection_data["markers"])
 
@@ -25,8 +24,7 @@ def test_detects_marker_ids(filename, detection_data):
 @pytest.mark.parametrize("filename", IMAGE_DATA.keys())
 def test_annotates_frame(filename, temp_image_file):
     camera = ImageFileCamera(
-        os.path.join(TEST_IMAGE_DIR, filename),
-        marker_dict=MarkerDict.DICT_APRILTAG_36H11,
+        TEST_IMAGE_DIR.joinpath(filename), marker_dict=MarkerDict.DICT_APRILTAG_36H11
     )
     camera.save_frame(temp_image_file, annotate=True)
 
@@ -38,8 +36,7 @@ def test_gets_markers(filename, detection_data):
             return 100
 
     camera = TestCamera(
-        os.path.join(TEST_IMAGE_DIR, filename),
-        marker_dict=MarkerDict.DICT_APRILTAG_36H11,
+        TEST_IMAGE_DIR.joinpath(filename), marker_dict=MarkerDict.DICT_APRILTAG_36H11
     )
     markers = list(camera.process_frame())
     assert len(markers) == len(detection_data["markers"])
@@ -55,7 +52,7 @@ def test_gets_marker_eager(filename, detection_data):
             return 100
 
     camera = TestCamera(
-        os.path.join(TEST_IMAGE_DIR, filename),
+        TEST_IMAGE_DIR.joinpath(filename),
         marker_dict=MarkerDict.DICT_APRILTAG_36H11,
         calibration_file=get_calibration(detection_data["camera"]),
     )

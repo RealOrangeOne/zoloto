@@ -1,5 +1,3 @@
-import os
-
 import pytest
 
 from tests.conftest import IMAGE_DATA, TEST_IMAGE_DIR, get_calibration
@@ -10,7 +8,7 @@ from zoloto.marker_dict import MarkerDict
 @pytest.fixture(params=IMAGE_DATA.keys())
 def image_camera(request):
     return ImageFileCamera(
-        os.path.join(TEST_IMAGE_DIR, request.param),
+        TEST_IMAGE_DIR.joinpath(request.param),
         marker_dict=MarkerDict.DICT_APRILTAG_36H11,
     )
 
@@ -38,8 +36,7 @@ def test_process_frame(filename, benchmark, temp_image_file):
             return 100
 
     camera = TestCamera(
-        os.path.join(TEST_IMAGE_DIR, filename),
-        marker_dict=MarkerDict.DICT_APRILTAG_36H11,
+        TEST_IMAGE_DIR.joinpath(filename), marker_dict=MarkerDict.DICT_APRILTAG_36H11
     )
     benchmark(camera.save_frame, temp_image_file)
 
@@ -51,7 +48,7 @@ def test_process_frame_eager(filename, detection_data, benchmark, temp_image_fil
             return 100
 
     camera = TestCamera(
-        os.path.join(TEST_IMAGE_DIR, filename),
+        TEST_IMAGE_DIR.joinpath(filename),
         marker_dict=MarkerDict.DICT_APRILTAG_36H11,
         calibration_file=get_calibration(detection_data["camera"]),
     )

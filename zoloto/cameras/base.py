@@ -1,4 +1,5 @@
 from itertools import groupby
+from pathlib import Path
 from typing import Optional
 
 import cv2
@@ -10,7 +11,9 @@ from zoloto.marker_dict import MarkerDict
 
 
 class BaseCamera:
-    def __init__(self, marker_dict: MarkerDict, calibration_file: Optional[str] = None):
+    def __init__(
+        self, marker_dict: MarkerDict, calibration_file: Optional[Path] = None
+    ):
         self.marker_dictionary = cv2.aruco.getPredefinedDictionary(marker_dict)
         self.calibration_file = calibration_file
         self.detector_params = self.get_detector_params(
@@ -31,12 +34,12 @@ class BaseCamera:
     def capture_frame(self):  # pragma: no cover
         raise NotImplementedError()
 
-    def save_frame(self, filename, annotate=False, frame=None):
+    def save_frame(self, filename: Path, annotate=False, frame=None):
         if frame is None:
             frame = self.capture_frame()
         if annotate:
             self._annotate_frame(frame)
-        cv2.imwrite(filename, frame)
+        cv2.imwrite(str(filename), frame)
         return frame
 
     def _annotate_frame(self, frame):
