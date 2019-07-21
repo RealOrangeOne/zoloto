@@ -16,6 +16,8 @@ CalibrationParameters = NamedTuple(
 
 @clru_cache()
 def parse_calibration_file(calibration_file: str) -> CalibrationParameters:
+    if not os.path.exists(calibration_file):
+        raise FileNotFoundError(calibration_file)
     _, file_extension = os.path.splitext(calibration_file)
     if file_extension == ".json":
         with open(calibration_file) as f:
