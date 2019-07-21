@@ -1,9 +1,9 @@
 from chrono import Timer
 from cv2 import imshow, waitKey
-from cv2.aruco import DICT_6X6_50
 
 from zoloto import assert_has_gui_components
 from zoloto.cameras.camera import Camera
+from zoloto.marker_dict import MarkerDict
 
 assert_has_gui_components()
 
@@ -12,7 +12,7 @@ class TestCamera(Camera):
     pass
 
 
-camera = TestCamera(0, marker_dict=DICT_6X6_50)
+camera = TestCamera(0, marker_dict=MarkerDict.DICT_6X6_50)
 
 while True:
     with Timer() as capture_timer:

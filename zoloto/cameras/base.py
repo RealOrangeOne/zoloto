@@ -1,18 +1,18 @@
 from itertools import groupby
+from typing import Optional
 
 import cv2
 
 from zoloto.calibration import parse_calibration_file
 from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import Marker
+from zoloto.marker_dict import MarkerDict
 
 
 class BaseCamera:
-    def __init__(self, **kwargs):
-        self.marker_dictionary = cv2.aruco.getPredefinedDictionary(
-            kwargs["marker_dict"]
-        )
-        self.calibration_file = kwargs.get("calibration_file")
+    def __init__(self, marker_dict: MarkerDict, calibration_file: Optional[str] = None):
+        self.marker_dictionary = cv2.aruco.getPredefinedDictionary(marker_dict)
+        self.calibration_file = calibration_file
         self.detector_params = self.get_detector_params(
             cv2.aruco.DetectorParameters_create()
         )

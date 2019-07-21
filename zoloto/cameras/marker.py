@@ -14,10 +14,10 @@ class MarkerCamera(BaseCamera):
 
     BORDER_SIZE = 40
 
-    def __init__(self, marker_id, **kwargs):
+    def __init__(self, marker_id: int, marker_size: int, **kwargs):
         super().__init__(**kwargs)
         self.marker_id = marker_id
-        self.marker_size = kwargs["marker_size"]
+        self.marker_size = marker_size
 
     def get_marker_size(self, marker_id: int):
         return self.marker_size

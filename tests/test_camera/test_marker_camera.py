@@ -1,18 +1,18 @@
 import numpy
 import pytest
-from cv2 import aruco
 from hypothesis import given, settings, strategies
 
 from tests.strategies import reasonable_image_size
 from zoloto.cameras.file import ImageFileCamera
 from zoloto.cameras.marker import MarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
+from zoloto.marker_dict import MarkerDict
 
 
 @given(reasonable_image_size())
 def test_captures_frame_at_correct_resolution(resolution):
     marker_camera = MarkerCamera(
-        25, marker_dict=aruco.DICT_6X6_50, marker_size=resolution
+        25, marker_dict=MarkerDict.DICT_6X6_50, marker_size=resolution
     )
     frame = marker_camera.capture_frame()
     assert frame.shape == marker_camera.get_resolution()
@@ -23,7 +23,7 @@ def test_captures_frame_at_correct_resolution(resolution):
 def test_detects_markers(marker_id):
     markers = list(
         MarkerCamera(
-            marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
+            marker_id, marker_dict=MarkerDict.DICT_6X6_50, marker_size=200
         ).process_frame()
     )
     assert len(markers) == 1
@@ -34,13 +34,15 @@ def test_detects_markers(marker_id):
 @settings(deadline=None)
 def test_detects_marker_ids(marker_id):
     markers = MarkerCamera(
-        marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
+        marker_id, marker_dict=MarkerDict.DICT_6X6_50, marker_size=200
     ).get_visible_markers()
     assert markers == [marker_id]
 
 
 def test_sees_nothing_in_blank_image():
-    marker_camera = MarkerCamera(25, marker_dict=aruco.DICT_6X6_50, marker_size=200)
+    marker_camera = MarkerCamera(
+        25, marker_dict=MarkerDict.DICT_6X6_50, marker_size=200
+    )
     empty_frame = numpy.zeros((200, 200, 3), numpy.uint8)
     markers = list(marker_camera.process_frame(frame=empty_frame))
     assert markers == []
@@ -51,7 +53,7 @@ def test_sees_nothing_in_blank_image():
 def test_eager_capture(marker_id):
     markers = list(
         MarkerCamera(
-            marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
+            marker_id, marker_dict=MarkerDict.DICT_6X6_50, marker_size=200
         ).process_frame_eager()
     )
     assert len(markers) == 1
@@ -61,7 +63,7 @@ def test_eager_capture(marker_id):
 
 def test_camera_as_context_manager():
     with MarkerCamera(
-        25, marker_dict=aruco.DICT_6X6_50, marker_size=200
+        25, marker_dict=MarkerDict.DICT_6X6_50, marker_size=200
     ) as marker_camera:
         markers = list(marker_camera.get_visible_markers())
         assert markers == [25]
@@ -69,7 +71,7 @@ def test_camera_as_context_manager():
 
 def test_marker_with_falsy_id():
     with MarkerCamera(
-        0, marker_dict=aruco.DICT_6X6_50, marker_size=200
+        0, marker_dict=MarkerDict.DICT_6X6_50, marker_size=200
     ) as marker_camera:
         markers = list(marker_camera.get_visible_markers())
         assert markers == [0]
@@ -78,17 +80,19 @@ def test_marker_with_falsy_id():
 @given(strategies.integers(0, 49))
 def test_saved_image(temp_image_file, marker_id):
     marker_camera = MarkerCamera(
-        marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
+        marker_id, marker_dict=MarkerDict.DICT_6X6_50, marker_size=200
     )
     marker_camera.save_frame(temp_image_file)
-    image_file_camera = ImageFileCamera(temp_image_file, marker_dict=aruco.DICT_6X6_50)
+    image_file_camera = ImageFileCamera(
+        temp_image_file, marker_dict=MarkerDict.DICT_6X6_50
+    )
     assert image_file_camera.get_visible_markers() == [marker_id]
 
 
 @given(strategies.integers(0, 49))
 def test_saved_image_with_annotation(temp_image_file, marker_id):
     marker_camera = MarkerCamera(
-        marker_id, marker_dict=aruco.DICT_6X6_50, marker_size=200
+        marker_id, marker_dict=MarkerDict.DICT_6X6_50, marker_size=200
     )
     output_file = temp_image_file
     marker_camera.save_frame(output_file, annotate=True)
@@ -99,6 +103,6 @@ def test_process_eager_frame_without_calibrations():
         def get_calibrations(self):
             return None
 
-    marker_camera = TestCamera(25, marker_dict=aruco.DICT_6X6_50, marker_size=200)
+    marker_camera = TestCamera(25, marker_dict=MarkerDict.DICT_6X6_50, marker_size=200)
     with pytest.raises(MissingCalibrationsError):
         list(marker_camera.process_frame_eager())

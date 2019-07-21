@@ -6,6 +6,7 @@ import cv2
 from zoloto import assert_has_gui_components
 from zoloto.calibration import CalibrationParameters, save_calibrations
 from zoloto.cameras.camera import Camera
+from zoloto.marker_dict import MarkerDict
 
 FEED_WINDOW_NAME = "Feed"
 
@@ -81,7 +82,7 @@ def main():
         format="[%(levelname)s]: %(message)s",
     )
     logging.info("Creating calibration image...")
-    camera = Camera(args.id, marker_dict=cv2.aruco.DICT_6X6_250)
+    camera = Camera(args.id, marker_dict=MarkerDict.DICT_6X6_250)
 
     board_image, board = create_board(camera, board_size=5)
     cv2.imshow("Calibration Board", board_image)
