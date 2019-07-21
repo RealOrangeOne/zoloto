@@ -8,3 +8,24 @@
 ![PyPI - License](https://img.shields.io/pypi/l/zoloto.svg)
 
 A fiducial marker system powered by OpenCV - Supports ArUco and April
+
+## Installation
+
+```
+pip install zoloto
+```
+
+## Examples
+
+```python
+from pathlib import Path
+
+from zoloto import MarkerDict
+from zoloto.cameras import ImageFileCamera
+
+with ImageFileCamera(Path("my-image.png"), marker_dict=MarkerDict.DICT_6X6_50) as camera:
+    camera.save_frame("my-annotated-image.png", annotate=True)
+    print("I saved an image with {} markers in.".format(len(camera.get_visible_markers())))
+```
+
+More examples can be found in the [`examples/`](https://github.com/RealOrangeOne/zoloto/tree/master/examples) directory.
