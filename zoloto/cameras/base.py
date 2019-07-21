@@ -85,9 +85,9 @@ class BaseCamera:
             rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(
                 corners, size, *calibration_params
             )
-            for id, corners, rvec, tvec in zip(ids, corners, rvecs, tvecs):
+            for id, corners, tvec, rvec in zip(ids, corners, tvecs, rvecs):
                 yield self._get_eager_marker(
-                    id, corners, size, calibration_params, tvec, rvec
+                    id, corners, size, calibration_params, tvec[0], rvec[0]
                 )
 
     def get_visible_markers(self, frame=None):
