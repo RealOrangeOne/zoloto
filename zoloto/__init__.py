@@ -1,6 +1,9 @@
 import pkg_resources
 
+from zoloto.coords import Coordinates, Orientation, Spherical, ThreeDCoordinates  # noqa
 from zoloto.exceptions import MissingGUIComponents
+from zoloto.marker import Marker  # noqa
+from zoloto.marker_dict import MarkerDict  # noqa
 
 __version__ = pkg_resources.require("zoloto")[0].version
 
