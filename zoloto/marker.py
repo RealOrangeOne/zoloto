@@ -108,9 +108,5 @@ class Marker:
             None,
         ]
         if "rvec" in marker_dict and "tvec" in marker_dict:
-            marker_args.append(
-                CalibrationParameters(
-                    array(marker_dict["rvec"]), array(marker_dict["tvec"])
-                )
-            )
+            marker_args.append((array(marker_dict["rvec"]), array(marker_dict["tvec"])))
         return cls(*marker_args)
