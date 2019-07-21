@@ -1,11 +1,17 @@
 from setuptools import setup
 
+with open("README.md") as f:
+    readme = f.read()
+
 setup(
     name="zoloto",
     version="0.0.0",
     url="https://github.com/realorangeone/zoloto",
     author="Jake Howard",
     description="A fiducial marker system powered by OpenCV - Supports ArUco and April",
+    long_description=readme,
+    long_description_content_type="text/markdown",
+    license="BSD",
     packages=["zoloto"],
     python_requires=">=3.5",
     install_requires=[
@@ -23,4 +29,12 @@ setup(
             "zoloto-preview=zoloto.cli.preview:main",
         ]
     },
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+    ],
 )
