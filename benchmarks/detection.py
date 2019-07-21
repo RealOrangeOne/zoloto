@@ -41,8 +41,8 @@ def test_process_frame(filename, benchmark, temp_image_file):
     benchmark(camera.save_frame, temp_image_file)
 
 
-@pytest.mark.parametrize("filename,detection_data", IMAGE_DATA.items())
-def test_process_frame_eager(filename, detection_data, benchmark, temp_image_file):
+@pytest.mark.parametrize("filename,camera_name", IMAGE_DATA.items())
+def test_process_frame_eager(filename, camera_name, benchmark, temp_image_file):
     class TestCamera(ImageFileCamera):
         def get_marker_size(self, id):
             return 100
@@ -50,6 +50,6 @@ def test_process_frame_eager(filename, detection_data, benchmark, temp_image_fil
     camera = TestCamera(
         TEST_IMAGE_DIR.joinpath(filename),
         marker_dict=MarkerDict.DICT_APRILTAG_36H11,
-        calibration_file=get_calibration(detection_data["camera"]),
+        calibration_file=get_calibration(camera_name),
     )
     benchmark(camera.save_frame, temp_image_file)

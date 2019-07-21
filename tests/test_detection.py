@@ -1,3 +1,4 @@
+import operator
 import os
 
 import pytest
@@ -13,12 +14,12 @@ def test_has_data_for_all_images():
         assert TEST_IMAGE_DIR.joinpath(filename).exists()
 
 
-@pytest.mark.parametrize("filename,detection_data", IMAGE_DATA.items())
-def test_detects_marker_ids(filename, detection_data):
+@pytest.mark.parametrize("filename", IMAGE_DATA.keys())
+def test_detects_marker_ids(filename, snapshot):
     camera = ImageFileCamera(
         TEST_IMAGE_DIR.joinpath(filename), marker_dict=MarkerDict.DICT_APRILTAG_36H11
     )
-    assert sorted(camera.get_visible_markers()) == sorted(detection_data["markers"])
+    snapshot.assert_match(sorted(camera.get_visible_markers()))
 
 
 @pytest.mark.parametrize("filename", IMAGE_DATA.keys())
@@ -29,8 +30,8 @@ def test_annotates_frame(filename, temp_image_file):
     camera.save_frame(temp_image_file, annotate=True)
 
 
-@pytest.mark.parametrize("filename,detection_data", IMAGE_DATA.items())
-def test_gets_markers(filename, detection_data):
+@pytest.mark.parametrize("filename", IMAGE_DATA.keys())
+def test_gets_markers(filename, snapshot):
     class TestCamera(ImageFileCamera):
         def get_marker_size(self, id):
             return 100
@@ -38,15 +39,26 @@ def test_gets_markers(filename, detection_data):
     camera = TestCamera(
         TEST_IMAGE_DIR.joinpath(filename), marker_dict=MarkerDict.DICT_APRILTAG_36H11
     )
-    markers = list(camera.process_frame())
-    assert len(markers) == len(detection_data["markers"])
-    marker_ids = [marker.id for marker in markers]
-    assert sorted(marker_ids) == sorted(detection_data["markers"])
-    assert {marker.size for marker in markers} == {100}
+    snapshot.assert_match(
+        sorted(
+            (
+                {
+                    "id": marker.id,
+                    "size": marker.size,
+                    "pixel_corners": [
+                        coords.to_list() for coords in marker.pixel_corners
+                    ],
+                    "pixel_centre": marker.pixel_centre.to_list(),
+                }
+                for marker in camera.process_frame()
+            ),
+            key=operator.itemgetter("pixel_centre"),
+        )
+    )
 
 
-@pytest.mark.parametrize("filename,detection_data", IMAGE_DATA.items())
-def test_gets_marker_eager(filename, detection_data):
+@pytest.mark.parametrize("filename,camera_name", IMAGE_DATA.items())
+def test_gets_markers_eager(filename, camera_name, snapshot):
     class TestCamera(ImageFileCamera):
         def get_marker_size(self, id):
             return 100
@@ -54,8 +66,58 @@ def test_gets_marker_eager(filename, detection_data):
     camera = TestCamera(
         TEST_IMAGE_DIR.joinpath(filename),
         marker_dict=MarkerDict.DICT_APRILTAG_36H11,
-        calibration_file=get_calibration(detection_data["camera"]),
+        calibration_file=get_calibration(camera_name),
     )
-    markers = list(camera.process_frame_eager())
-    assert sorted(marker.id for marker in markers) == sorted(detection_data["markers"])
-    assert {marker.size for marker in markers} == {100}
+    snapshot.assert_match(
+        sorted(
+            (
+                {
+                    "id": marker.id,
+                    "size": marker.size,
+                    "pixel_corners": [
+                        coords.to_list() for coords in marker.pixel_corners
+                    ],
+                    "pixel_centre": marker.pixel_centre.to_list(),
+                    "distance": marker.distance,
+                    "orientation": tuple(marker.orientation),
+                    "spherical": tuple(marker.spherical),
+                    "cartesian": marker.cartesian.to_list(),
+                }
+                for marker in camera.process_frame_eager()
+            ),
+            key=operator.itemgetter("pixel_centre"),
+        )
+    )
+
+
+@pytest.mark.parametrize("filename,camera_name", IMAGE_DATA.items())
+def test_gets_markers_with_calibration(filename, camera_name, snapshot):
+    class TestCamera(ImageFileCamera):
+        def get_marker_size(self, id):
+            return 100
+
+    camera = TestCamera(
+        TEST_IMAGE_DIR.joinpath(filename),
+        marker_dict=MarkerDict.DICT_APRILTAG_36H11,
+        calibration_file=get_calibration(camera_name),
+    )
+    snapshot.assert_match(
+        sorted(
+            (
+                {
+                    "id": marker.id,
+                    "size": marker.size,
+                    "pixel_corners": [
+                        coords.to_list() for coords in marker.pixel_corners
+                    ],
+                    "pixel_centre": marker.pixel_centre.to_list(),
+                    "distance": marker.distance,
+                    "orientation": tuple(marker.orientation),
+                    "spherical": tuple(marker.spherical),
+                    "cartesian": marker.cartesian.to_list(),
+                }
+                for marker in camera.process_frame()
+            ),
+            key=operator.itemgetter("pixel_centre"),
+        )
+    )
