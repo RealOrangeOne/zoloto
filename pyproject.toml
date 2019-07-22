@@ -39,13 +39,8 @@ picamera = {version = "^1.13", extras=["array"], optional = true}
 bandit = "^1.6"
 chrono = "^1.0"
 flake8 = "^3.7"
-flake8-commas = "^2.0"
 flake8-comprehensions = "^2.1"
-flake8-debugger = "^3.1"
-flake8-docstrings = "^1.3"
-flake8-isort = "^2.7"
 flake8-mutable = "^1.2"
-flake8-todo = "^0.7.0"
 flake8-print = "^3.1"
 flake8-tuple = "^0.4.0"
 hypothesis = "^4.28"
@@ -55,6 +50,8 @@ pytest-benchmark = "^3.2"
 pytest-cov = "^2.7"
 ujson = "^1.35"
 isort = {version = "^4.3",extras = ["pyproject"]}
+black = {version = "^19.3b0", python = "^3.6", allows-prereleases = true}
+snapshottest = "^0.5.1"
 
 [tool.poetry.extras]
 rpi = ["picamera"]

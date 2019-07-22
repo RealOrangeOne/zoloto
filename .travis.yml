@@ -20,9 +20,9 @@ before_install:
   - pip install poetry
 
 install:
-  - ./scripts/setup.sh
+  - poetry install
 
 script:
-  - poetry run ./scripts/test.sh
-  - poetry run ./scripts/benchmark.sh
+  - ./scripts/test.sh
+  - ./scripts/benchmark.sh
   - poetry build 
