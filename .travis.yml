@@ -14,12 +14,15 @@ env:
 
 cache:
   directories:
-    - $HOME/.cache/pip
+    - $HOME/.cache/pypoetry
+
+before_install:
+  - pip install poetry
 
 install:
-  - ./scripts/setup.sh
+  - poetry install
 
 script:
   - ./scripts/test.sh
   - ./scripts/benchmark.sh
-  - ./scripts/dist.sh
+  - poetry build 

@@ -2,7 +2,7 @@
 
 set -e
 
-export PATH=env/bin:${PATH}
+export PATH=$(poetry show -v | grep virtualenv | sed 's/Using virtualenv: //')/bin:${PATH}
 
 echo "> Running tests..."
 pytest --verbose --cov zoloto/ --cov-report term --cov-report html tests/
@@ -10,14 +10,14 @@ pytest --verbose --cov zoloto/ --cov-report term --cov-report html tests/
 if hash black 2>/dev/null;
 then
     echo "> Running formatter..."
-    black zoloto tests setup.py benchmarks examples --check
+    black zoloto tests benchmarks examples --check
 fi
 
 echo "> Running linter..."
-flake8 zoloto tests setup.py benchmarks examples --ignore=E128,E501,W503
+flake8 zoloto tests benchmarks examples --ignore=E128,E501,W503
 
 echo "> Running isort..."
-isort -rc -c zoloto tests setup.py benchmarks examples
+isort -rc -c zoloto tests benchmarks examples
 
 echo "> Running type checker..."
 mypy zoloto

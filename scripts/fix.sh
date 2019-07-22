@@ -2,7 +2,7 @@
 
 set -e
 
-export PATH=env/bin:${PATH}
+export PATH=$(poetry show -v | grep virtualenv | sed 's/Using virtualenv: //')/bin:${PATH}
 
-black setup.py zoloto tests benchmarks examples
-isort -rc setup.py zoloto tests benchmarks examples
+black zoloto tests benchmarks examples
+isort -rc zoloto tests benchmarks examples
