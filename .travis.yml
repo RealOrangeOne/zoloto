@@ -25,4 +25,4 @@ install:
 script:
   - poetry run ./scripts/test.sh
   - poetry run ./scripts/benchmark.sh
-  - poetry run ./scripts/dist.sh
+  - poetry build 
