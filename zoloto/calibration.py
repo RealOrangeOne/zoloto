@@ -63,8 +63,8 @@ def get_fake_calibration_parameters(
     seen_ids = []
     image_size = (size, size)
     board = aruco.CharucoBoard_create(6, 6, 0.025, 0.0125, dictionary)
-    for i in range(iterations):
-        image = board.draw(image_size)
+    image = board.draw(image_size)
+    for _ in range(iterations):
         corners, ids, _ = aruco.detectMarkers(image, dictionary)
         _, corners, ids = aruco.interpolateCornersCharuco(corners, ids, image, board)
         seen_corners.append(corners)
