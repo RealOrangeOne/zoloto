@@ -12,7 +12,7 @@ from zoloto.marker_dict import MarkerDict
 
 class BaseCamera:
     def __init__(
-        self, marker_dict: MarkerDict, calibration_file: Optional[Path] = None
+        self, *, marker_dict: MarkerDict, calibration_file: Optional[Path] = None
     ):
         self.marker_dictionary = cv2.aruco.getPredefinedDictionary(marker_dict)
         self.calibration_file = calibration_file
@@ -34,7 +34,7 @@ class BaseCamera:
     def capture_frame(self):  # pragma: no cover
         raise NotImplementedError()
 
-    def save_frame(self, filename: Path, annotate=False, frame=None):
+    def save_frame(self, filename: Path, *, annotate=False, frame=None):
         if frame is None:
             frame = self.capture_frame()
         if annotate:
@@ -67,13 +67,13 @@ class BaseCamera:
     def _get_eager_marker(self, id, corners, size, calibration_params, tvec, rvec):
         return Marker(id, corners, size, calibration_params, (rvec, tvec))
 
-    def process_frame(self, frame=None):
+    def process_frame(self, *, frame=None):
         ids, corners = self._get_ids_and_corners(frame)
         calibration_params = self.get_calibrations()
         for corners, id in zip(corners, ids):
             yield self._get_marker(id, corners, calibration_params)
 
-    def process_frame_eager(self, frame=None):
+    def process_frame_eager(self, *, frame=None):
         calibration_params = self.get_calibrations()
         if not calibration_params:
             raise MissingCalibrationsError()
@@ -93,7 +93,7 @@ class BaseCamera:
                     id, corners, size, calibration_params, tvec[0], rvec[0]
                 )
 
-    def get_visible_markers(self, frame=None):
+    def get_visible_markers(self, *, frame=None):
         ids, _ = self._get_ids_and_corners(frame)
         return ids
 

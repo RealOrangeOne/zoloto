@@ -1,11 +1,11 @@
 def test_process_frame_eager(benchmark, marker_camera):
     frame = marker_camera.capture_frame()
-    benchmark(lambda: list(marker_camera.process_frame_eager(frame)))
+    benchmark(lambda: list(marker_camera.process_frame_eager(frame=frame)))
 
 
 def test_process_frame(benchmark, marker_camera):
     frame = marker_camera.capture_frame()
-    benchmark(lambda: list(marker_camera.process_frame(frame)))
+    benchmark(lambda: list(marker_camera.process_frame(frame=frame)))
 
 
 def test_capture_frame(benchmark, marker_camera):
