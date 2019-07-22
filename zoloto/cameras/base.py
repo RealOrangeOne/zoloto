@@ -61,11 +61,13 @@ class BaseCamera:
             return [], []
         return [marker_id[0] for marker_id in marker_ids], [c[0] for c in corners]
 
-    def _get_marker(self, marker_id, corners, calibration_params):
-        return Marker(marker_id, corners, self.get_marker_size(id), calibration_params)
+    def _get_marker(self, marker_id: int, corners, calibration_params):
+        return Marker(
+            marker_id, corners, self.get_marker_size(marker_id), calibration_params
+        )
 
     def _get_eager_marker(
-        self, marker_id, corners, size, calibration_params, tvec, rvec
+        self, marker_id: int, corners, size: int, calibration_params, tvec, rvec
     ):
         return Marker(marker_id, corners, size, calibration_params, (rvec, tvec))
 
@@ -73,7 +75,7 @@ class BaseCamera:
         ids, corners = self._get_ids_and_corners(frame)
         calibration_params = self.get_calibrations()
         for corners, marker_id in zip(corners, ids):
-            yield self._get_marker(marker_id, corners, calibration_params)
+            yield self._get_marker(int(marker_id), corners, calibration_params)
 
     def process_frame_eager(self, *, frame=None):
         calibration_params = self.get_calibrations()
@@ -92,7 +94,7 @@ class BaseCamera:
             )
             for marker_id, corners, tvec, rvec in zip(ids, corners, tvecs, rvecs):
                 yield self._get_eager_marker(
-                    marker_id, corners, size, calibration_params, tvec[0], rvec[0]
+                    int(marker_id), corners, size, calibration_params, tvec[0], rvec[0]
                 )
 
     def get_visible_markers(self, *, frame=None):
