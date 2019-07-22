@@ -13,19 +13,19 @@ from .exceptions import MissingCalibrationsError
 class Marker:
     def __init__(
         self,
-        id,
+        marker_id,
         corners,
         size: int,
         calibration_params: Optional[CalibrationParameters] = None,
         precalculated_vectors=None,
     ):
-        self.__id = int(id)
+        self.__id = int(marker_id)
         self.__pixel_corners = corners
         self.__size = size
         self.__camera_calibration_params = calibration_params
         self.__precalculated_vectors = precalculated_vectors
 
-    @property
+    @property  # noqa: A003
     def id(self):
         return self.__id
 

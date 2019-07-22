@@ -32,7 +32,7 @@ def test_annotates_frame(filename, temp_image_file):
 @pytest.mark.parametrize("filename", IMAGE_DATA.keys())
 def test_gets_markers(filename, snapshot):
     class TestCamera(ImageFileCamera):
-        def get_marker_size(self, id):
+        def get_marker_size(self, marker_id):
             return 100
 
     camera = TestCamera(
@@ -59,7 +59,7 @@ def test_gets_markers(filename, snapshot):
 @pytest.mark.parametrize("filename,camera_name", IMAGE_DATA.items())
 def test_gets_markers_eager(filename, camera_name, snapshot):
     class TestCamera(ImageFileCamera):
-        def get_marker_size(self, id):
+        def get_marker_size(self, marker_id):
             return 100
 
     camera = TestCamera(
@@ -92,7 +92,7 @@ def test_gets_markers_eager(filename, camera_name, snapshot):
 @pytest.mark.parametrize("filename,camera_name", IMAGE_DATA.items())
 def test_gets_markers_with_calibration(filename, camera_name, snapshot):
     class TestCamera(ImageFileCamera):
-        def get_marker_size(self, id):
+        def get_marker_size(self, marker_id):
             return 100
 
     camera = TestCamera(
