@@ -32,7 +32,7 @@ def test_save_frame_with_annotation(benchmark, image_camera, temp_image_file):
 @pytest.mark.parametrize("filename", IMAGE_DATA.keys())
 def test_process_frame(filename, benchmark, temp_image_file):
     class TestCamera(ImageFileCamera):
-        def get_marker_size(self, id):
+        def get_marker_size(self, marker_id):
             return 100
 
     camera = TestCamera(
@@ -44,7 +44,7 @@ def test_process_frame(filename, benchmark, temp_image_file):
 @pytest.mark.parametrize("filename,camera_name", IMAGE_DATA.items())
 def test_process_frame_eager(filename, camera_name, benchmark, temp_image_file):
     class TestCamera(ImageFileCamera):
-        def get_marker_size(self, id):
+        def get_marker_size(self, marker_id):
             return 100
 
     camera = TestCamera(
