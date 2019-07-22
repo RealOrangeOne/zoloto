@@ -13,6 +13,7 @@ env:
   - PYTHONOPTIMIZE=1
 
 cache:
+  pip: true
   directories:
     - $HOME/.cache/pypoetry
 
@@ -25,4 +26,4 @@ install:
 script:
   - ./scripts/test.sh
   - ./scripts/benchmark.sh
-  - poetry build 
+  - poetry build
