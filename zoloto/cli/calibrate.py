@@ -1,5 +1,6 @@
 import argparse
 import logging
+from pathlib import Path
 
 import cv2
 
@@ -26,7 +27,7 @@ def wait_for_markers(camera):
         frame = camera.capture_frame()
         cv2.imshow(FEED_WINDOW_NAME, frame)
         cv2.waitKey(1)
-        visible_markers = camera.get_visible_markers(frame)
+        visible_markers = camera.get_visible_markers(frame=frame)
         if visible_markers != []:
             return
 
@@ -106,7 +107,7 @@ def main():
     logging.info("Saving calibration...")
     calibration_params = CalibrationParameters(camera_matrix, distance_coefficients)
 
-    save_calibrations(calibration_params, "calibrations.xml")
+    save_calibrations(calibration_params, Path("calibrations.xml"))
     logging.info("Calibrations saved to 'calibrations.xml'")
 
 
