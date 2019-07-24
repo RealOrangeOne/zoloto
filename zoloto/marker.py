@@ -21,11 +21,11 @@ class Marker:
     __precalculated_vectors = attrib(default=None)
     __is_eager = attrib(default=False)  # type: bool
 
-    @property  # noqa: A003
+    @cached_property  # noqa: A003
     def id(self):
         return self.__id
 
-    @property
+    @cached_property
     def size(self):
         return self.__size
 
@@ -45,7 +45,7 @@ class Marker:
     def distance(self):
         return int(linalg.norm(self._tvec))
 
-    @property
+    @cached_property
     def orientation(self):
         return Orientation(*self._rvec)
 
@@ -54,7 +54,7 @@ class Marker:
         x, y, z = self._tvec
         return Spherical(rot_x=arctan2(y, z), rot_y=arctan2(x, z), dist=self.distance)
 
-    @property
+    @cached_property
     def cartesian(self):
         return ThreeDCoordinates(*self._tvec)
 
@@ -73,12 +73,12 @@ class Marker:
 
         return self.__precalculated_vectors
 
-    @property
+    @cached_property
     def _rvec(self):
         rvec, _ = self._get_pose_vectors()
         return rvec
 
-    @property
+    @cached_property
     def _tvec(self):
         _, tvec = self._get_pose_vectors()
         return tvec
