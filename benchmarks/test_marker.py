@@ -20,7 +20,7 @@ def test_marker_pixel_centre(benchmark, marker):
 
 
 def test_marker_pose_vectors(benchmark, marker):
-    benchmark(marker._get_pose_vectors.__wrapped__, marker)
+    benchmark(marker._get_pose_vectors, cache=False)
 
 
 def test_marker_orientation(benchmark, marker):

@@ -16,7 +16,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "1.3.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Classes Without Boilerplate"
 name = "attrs"
 optional = false
@@ -616,7 +616,7 @@ version = "0.5.2"
 rpi = ["picamera"]
 
 [metadata]
-content-hash = "d1b3337a302c9dfe3a5228d707bfb7f3796ea933febe78d6fd290612772507c9"
+content-hash = "94918c0324a3a712d8e0bee8749cd883dd540585aaaec5ef03f0822fcfec224d"
 python-versions = "^3.5"
 
 [metadata.hashes]

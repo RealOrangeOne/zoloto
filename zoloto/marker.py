@@ -1,8 +1,8 @@
 from typing import Optional
 
+from attr import attrib, attrs
 from cached_property import cached_property
 from cv2 import aruco
-from fastcache import clru_cache
 from numpy import arctan2, array, linalg
 
 from .calibration import CalibrationParameters
@@ -10,20 +10,16 @@ from .coords import Coordinates, Orientation, Spherical, ThreeDCoordinates
 from .exceptions import MissingCalibrationsError
 
 
+@attrs
 class Marker:
-    def __init__(
-        self,
-        marker_id: int,
-        corners,
-        size: int,
-        calibration_params: Optional[CalibrationParameters] = None,
-        precalculated_vectors=None,
-    ):
-        self.__id = marker_id
-        self.__pixel_corners = corners
-        self.__size = size
-        self.__camera_calibration_params = calibration_params
-        self.__precalculated_vectors = precalculated_vectors
+    __id = attrib()  # type: int
+    __pixel_corners = attrib()
+    __size = attrib()  # type: int
+    __camera_calibration_params = attrib(
+        default=None
+    )  # type: Optional[CalibrationParameters]
+    __precalculated_vectors = attrib(default=None)
+    __is_eager = attrib(default=False)  # type: bool
 
     @property  # noqa: A003
     def id(self):
@@ -34,9 +30,9 @@ class Marker:
         return self.__size
 
     def _is_eager(self):
-        return self.__precalculated_vectors is not None
+        return self.__is_eager
 
-    @property
+    @cached_property
     def pixel_corners(self):
         return [Coordinates(*coords) for coords in self.__pixel_corners]
 
@@ -62,9 +58,8 @@ class Marker:
     def cartesian(self):
         return ThreeDCoordinates(*self._tvec)
 
-    @clru_cache(maxsize=None)
-    def _get_pose_vectors(self):
-        if self._is_eager():
+    def _get_pose_vectors(self, cache=True):
+        if self.__precalculated_vectors is not None:
             return self.__precalculated_vectors
 
         if self.__camera_calibration_params is None:
@@ -73,7 +68,10 @@ class Marker:
         rvec, tvec, _ = aruco.estimatePoseSingleMarkers(
             [self.__pixel_corners], self.__size, *self.__camera_calibration_params
         )
-        return rvec[0][0], tvec[0][0]
+        if cache:
+            self.__precalculated_vectors = (rvec[0][0], tvec[0][0])
+
+        return self.__precalculated_vectors
 
     @property
     def _rvec(self):
@@ -109,4 +107,5 @@ class Marker:
         ]
         if "rvec" in marker_dict and "tvec" in marker_dict:
             marker_args.append((array(marker_dict["rvec"]), array(marker_dict["tvec"])))
+            marker_args.append(True)  # Mark the marker as eager
         return cls(*marker_args)

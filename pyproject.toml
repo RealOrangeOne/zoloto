@@ -34,6 +34,7 @@ coordinates = "^0.3.0"
 fastcache = "^1.1"
 ujson = "^1.35"
 picamera = {version = "^1.13", extras=["array"], optional = true}
+attrs = "^19.1"
 
 [tool.poetry.dev-dependencies]
 bandit = "^1.6"

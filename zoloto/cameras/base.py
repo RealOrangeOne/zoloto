@@ -69,7 +69,7 @@ class BaseCamera:
     def _get_eager_marker(
         self, marker_id: int, corners, size: int, calibration_params, tvec, rvec
     ):
-        return Marker(marker_id, corners, size, calibration_params, (rvec, tvec))
+        return Marker(marker_id, corners, size, calibration_params, (rvec, tvec), True)
 
     def process_frame(self, *, frame=None):
         ids, corners = self._get_ids_and_corners(frame)
