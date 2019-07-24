@@ -1,5 +1,6 @@
 import argparse
 import logging
+from pathlib import Path
 
 import cv2
 
@@ -106,7 +107,7 @@ def main():
     logging.info("Saving calibration...")
     calibration_params = CalibrationParameters(camera_matrix, distance_coefficients)
 
-    save_calibrations(calibration_params, "calibrations.xml")
+    save_calibrations(calibration_params, Path("calibrations.xml"))
     logging.info("Calibrations saved to 'calibrations.xml'")
 
 
