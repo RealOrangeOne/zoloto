@@ -27,7 +27,7 @@ def wait_for_markers(camera):
         frame = camera.capture_frame()
         cv2.imshow(FEED_WINDOW_NAME, frame)
         cv2.waitKey(1)
-        visible_markers = camera.get_visible_markers(frame)
+        visible_markers = camera.get_visible_markers(frame=frame)
         if visible_markers != []:
             return
 
