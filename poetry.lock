@@ -262,7 +262,7 @@ description = "A library for property based testing"
 name = "hypothesis"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "4.28.2"
+version = "4.31.0"
 
 [package.dependencies]
 attrs = ">=16.0.0"
@@ -616,7 +616,7 @@ version = "0.5.2"
 rpi = ["picamera"]
 
 [metadata]
-content-hash = "d1b3337a302c9dfe3a5228d707bfb7f3796ea933febe78d6fd290612772507c9"
+content-hash = "96f088454b2b27c67116cf3dc55e63fc448e3e9e52d40971c05db0fe748f799d"
 python-versions = "^3.5"
 
 [metadata.hashes]
@@ -645,7 +645,7 @@ flake8-tuple = ["8d41db2e4a5320ffd29cf78a95f1d7da9f22b47949427a4d7f8391333eec2a1
 gitdb = ["a3ebbc27be035a2e874ed904df516e35f4a29a778a764385de09de9e0f139658"]
 gitdb2 = ["83361131a1836661a155172932a13c08bda2db3674e4caa32368aa6eb02f38c2", "e3a0141c5f2a3f635c7209d56c496ebe1ad35da82fe4d3ec4aaa36278d70648a"]
 gitpython = ["7428f1cc5e72d53e65c3259d5cebc22fb2b07f973c49d95b3c3d26c64890a3c3", "a0f744a4941eac5d99033eb0adcbec83bf443ee173fda4292d92a906aedce952"]
-hypothesis = ["4da34bfc2bc8bfbda7fccbc38a1ca8e906c1a31b273805d1df435b1393859947", "8564107158c6853a990c769d5155180a51c6db49c32b5eec6f6960671fde3280"]
+hypothesis = ["ea90434a4ad920cc39a69a4f320b9e649eb09308865677e62f5bcd3101e86d66", "ee0ad8885964ffb8a5a00c0bac76b9e0576fc033e32b38c050a3559ffd48ebf9"]
 importlib-metadata = ["6dfd58dfe281e8d240937776065dd3624ad5469c835248219bd16cf2e12dbeb7", "cb6ee23b46173539939964df59d3d72c3e0c1b5d54b84f1d8a7e912fe43612db"]
 isort = ["54da7e92468955c4fceacd0c86bd0ec997b0e1ee80d97f67c35a78b719dccab1", "6e811fcb295968434526407adb8796944f1988c5b65e8139058f2014cbe100fd"]
 mccabe = ["ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42", "dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"]
