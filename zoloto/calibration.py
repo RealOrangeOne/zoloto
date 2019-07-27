@@ -16,7 +16,7 @@ CalibrationParameters = NamedTuple(
 SUPPORTED_EXTENSIONS = ["xml", "json"]
 
 
-@clru_cache  # type: ignore
+@clru_cache()  # type: ignore
 def parse_calibration_file(calibration_file: Path) -> CalibrationParameters:
     if not calibration_file.exists():
         raise FileNotFoundError(calibration_file)
