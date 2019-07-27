@@ -8,7 +8,7 @@ from zoloto.marker_dict import MarkerDict
 __version__ = pkg_resources.require("zoloto")[0].version
 
 
-def has_gui_components():
+def has_gui_components() -> bool:
     try:
         pkg_resources.require("opencv-contrib-python")
         return True
@@ -16,7 +16,7 @@ def has_gui_components():
         return False
 
 
-def assert_has_gui_components():
+def assert_has_gui_components() -> None:
     if not has_gui_components():
         raise MissingGUIComponents()
 

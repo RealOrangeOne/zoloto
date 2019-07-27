@@ -1,5 +1,7 @@
 import argparse
+from argparse import Namespace
 import logging
+from typing import Tuple, Any, List
 from pathlib import Path
 
 import cv2
@@ -14,7 +16,7 @@ FEED_WINDOW_NAME = "Feed"
 assert_has_gui_components()
 
 
-def parse_args():
+def parse_args() -> Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--id", type=int, default=0)
     parser.add_argument("--frames", type=int, default=250)
@@ -22,7 +24,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def wait_for_markers(camera):
+def wait_for_markers(camera: Camera) -> None:
     while True:
         frame = camera.capture_frame()
         cv2.imshow(FEED_WINDOW_NAME, frame)
@@ -32,14 +34,16 @@ def wait_for_markers(camera):
             return
 
 
-def create_board(camera, board_size=6):
+def create_board(camera: Camera, board_size: int = 6) -> Tuple[Any, Any]:
     board = cv2.aruco.CharucoBoard_create(
         board_size, board_size, 0.025, 0.0125, camera.marker_dictionary
     )
     return board.draw((150 * board_size, 150 * board_size)), board
 
 
-def capture_frames(frames, camera, board):
+def capture_frames(
+    frames: int, camera: Camera, board: Any
+) -> Tuple[List[Any], List[Any]]:
     decimator = 0
     all_corners = []
     all_ids = []
@@ -69,14 +73,16 @@ def capture_frames(frames, camera, board):
     return all_ids, all_corners
 
 
-def process_frames(all_ids, all_corners, image_size, board):
+def process_frames(
+    all_ids: List[Any], all_corners: List[Any], image_size: Any, board: Any
+) -> Tuple[Any, Any]:
     ret, mtx, dist, rvecs, tvecs = cv2.aruco.calibrateCameraCharuco(
         all_corners, all_ids, board, image_size, None, None
     )
     return mtx, dist
 
 
-def main():
+def main() -> None:
     args = parse_args()
     logging.basicConfig(
         level=logging.NOTSET if args.verbose else logging.INFO,

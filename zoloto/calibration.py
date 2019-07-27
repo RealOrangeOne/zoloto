@@ -16,7 +16,7 @@ CalibrationParameters = NamedTuple(
 SUPPORTED_EXTENSIONS = ["xml", "json"]
 
 
-@clru_cache()
+@clru_cache  # type: ignore
 def parse_calibration_file(calibration_file: Path) -> CalibrationParameters:
     if not calibration_file.exists():
         raise FileNotFoundError(calibration_file)
@@ -34,7 +34,7 @@ def parse_calibration_file(calibration_file: Path) -> CalibrationParameters:
     raise ValueError("Unknown calibration file format: " + file_extension)
 
 
-def save_calibrations(params: CalibrationParameters, filename: Path):
+def save_calibrations(params: CalibrationParameters, filename: Path) -> None:
     file_extension = filename.suffix
     if file_extension == ".json":
         filename.write_text(
@@ -51,7 +51,7 @@ def save_calibrations(params: CalibrationParameters, filename: Path):
         raise ValueError("Unknown calibration file format: " + file_extension)
 
 
-@clru_cache()
+@clru_cache()  # type: ignore
 def get_fake_calibration_parameters(
     size: int, iterations: int = 15
 ) -> CalibrationParameters:

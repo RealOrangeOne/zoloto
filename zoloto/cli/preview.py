@@ -6,7 +6,7 @@ from zoloto.cameras.camera import Camera
 from zoloto.marker_dict import MarkerDict
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--id", type=int, default=0)
     args = parser.parse_args()

@@ -1,0 +1,23 @@
+"""
+Coordinates classes:
+
+These are actually implemented using the coordinates library
+"""
+
+class Coordinates:
+    def __init__(self, x: float, y: float): ...
+    @property
+    def x(self) -> float: ...
+    @property
+    def y(self) -> float: ...
+
+class ThreeDCoordinates(Coordinates):
+    def __init__(self, x: float, y: float, z: float): ...
+    @property
+    def z(self) -> float: ...
+
+class Orientation:
+    def __init__(self, rot_x: float, rot_y: float, rot_z: float) -> None: ...
+
+class Spherical:
+    def __init__(self, rot_x: float, rot_y: float, dist: float) -> None: ...

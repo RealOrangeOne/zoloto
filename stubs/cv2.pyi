@@ -1,0 +1,3 @@
+from numpy import ndarray
+
+def imread(path: str) -> ndarray: ...
