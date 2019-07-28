@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zoloto"
-version = "0.2.1"
+version = "0.3.0"
 description = "A fiducial marker system powered by OpenCV - Supports ArUco and April"
 authors = ["Jake Howard <git@theorangeone.net>"]
 license = "BSD-3-Clause"
