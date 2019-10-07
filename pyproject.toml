@@ -49,7 +49,7 @@ hypothesis = "^4.36"
 mypy = "^0.720.0"
 pytest = "^5.1"
 pytest-benchmark = "^3.2"
-pytest-cov = "^2.7"
+pytest-cov = "^2.8"
 ujson = "^1.35"
 isort = {version = "^4.3",extras = ["pyproject"]}
 black = {version = "^19.3b0", python = "^3.6", allows-prereleases = true}
