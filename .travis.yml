@@ -2,6 +2,10 @@ language: python
 dist: xenial
 os:
   - linux
+  
+arch:
+  - amd64
+  - arm64
 
 python:
   - '3.5'
