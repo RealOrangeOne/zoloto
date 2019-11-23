@@ -10,12 +10,12 @@ class Camera(BaseCamera):
 
     def get_video_capture(self, camera_id):
         cap = VideoCapture(camera_id)
-        cap.set(CAP_PROP_BUFFERSIZE)
+        cap.set(CAP_PROP_BUFFERSIZE, 1)
         return cap
 
     def capture_frame(self):
         # Hack: Double capture frames to fill buffer.
-        _, _ = self.video_capture.read()
+        self.video_capture.read()
         _, frame = self.video_capture.read()
         return frame
 
