@@ -14,6 +14,8 @@ class Camera(BaseCamera):
         return cap
 
     def capture_frame(self):
+        # Hack: Double capture frames to fill buffer.
+        _, _ = self.video_capture.read()
         _, frame = self.video_capture.read()
         return frame
 
