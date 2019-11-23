@@ -1,4 +1,4 @@
-from cv2 import VideoCapture, CAP_PROP_BUFFERSIZE
+from cv2 import CAP_PROP_BUFFERSIZE, VideoCapture
 
 from .base import BaseCamera
 
