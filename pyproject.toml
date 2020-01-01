@@ -52,7 +52,7 @@ pytest-benchmark = "^3.2"
 pytest-cov = "^2.8"
 ujson = "^1.35"
 isort = {version = "^4.3",extras = ["pyproject"]}
-black = {version = "^19.3b0", python = "^3.6", allows-prereleases = true}
+black = {version = "^19.10b0", python = "^3.6", allows-prereleases = true}
 snapshottest = "^0.5.1"
 
 [tool.poetry.extras]
