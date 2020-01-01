@@ -21,6 +21,7 @@ setup(
         "zoloto-preview=zoloto.cli.preview:main",
         "zoloto-calibrate=zoloto.cli.calibrate:main"
     ]},
+    python_requires=">=3.5",
     extras_require={'rpi': ['picamera[array]>=1.13,<2.0']},
     classifiers=[
         "Development Status :: 4 - Beta",
