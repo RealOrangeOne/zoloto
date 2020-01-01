@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 with open("README.md") as f:
     readme = f.read()
@@ -15,7 +15,7 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     license="BSD",
-    packages=["zoloto", "zoloto.cameras", "zoloto.cli"],
+    packages=find_packages(include="zoloto*"),
     install_requires=requirements,
     entry_points={
         "console_scripts": [
