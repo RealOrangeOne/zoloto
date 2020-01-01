@@ -2,9 +2,9 @@
 
 set -e
 
-python -m venv env/
+python -m venv env
 
 export PATH=env/bin:${PATH}
 
-env/bin/pip install -e .
-env/bin/pip install -r dev-requirements.txt
+pip install -e .
+pip install -r dev-requirements.txt
