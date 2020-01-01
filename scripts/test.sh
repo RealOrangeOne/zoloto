@@ -2,7 +2,7 @@
 
 set -e
 
-export PATH=$(poetry show -v | grep virtualenv | sed 's/Using virtualenv: //')/bin:${PATH}
+export PATH=env/bin:${PATH}
 
 echo "> Running tests..."
 pytest --verbose --cov zoloto/ --cov-report term --cov-report html tests/
