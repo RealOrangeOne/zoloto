@@ -16,10 +16,9 @@ cache:
   pip: true
 
 install:
-  - pip install -e .
-  - pip install -r dev-requirements.txt
+  - ./scripts/setup.sh
 
 script:
   - ./scripts/test.sh
   - ./scripts/benchmark.sh
-  - python setup.py build
+  - env/bin/python setup.py build
