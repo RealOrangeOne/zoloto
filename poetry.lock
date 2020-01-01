@@ -223,7 +223,7 @@ description = "Check code for 1 element tuple."
 name = "flake8-tuple"
 optional = false
 python-versions = "*"
-version = "0.4.0"
+version = "0.4.1"
 
 [package.dependencies]
 flake8 = "*"
@@ -624,7 +624,7 @@ version = "0.5.2"
 rpi = ["picamera"]
 
 [metadata]
-content-hash = "8619b8c08b66c8bb7875d999b0f292b0f6a764860ea4eaa7713b66cb4f0f300f"
+content-hash = "ac3f67fbb6533ab4c3dca1ffa66a847e9345df49c2266f5531e742dbfdd51adf"
 python-versions = "^3.5"
 
 [metadata.hashes]
@@ -649,7 +649,7 @@ flake8-builtins = ["8d806360767947c0035feada4ddef3ede32f0a586ef457e62d811b8456ad
 flake8-comprehensions = ["6de428c3ac67d3614d527456469c8a3d6638960e9ad7e1222358526a2507400a", "e3a8350a35d7bc71f8a1f64cf3c633a418a26b0edace2219d26ea4dd78ac21f3"]
 flake8-mutable = ["38fd9dadcbcda6550a916197bc40ed76908119dabb37fbcca30873666c31d2d5", "ee9b77111b867d845177bbc289d87d541445ffcc6029a0c5c65865b42b18c6a6"]
 flake8-print = ["324f9e59a522518daa2461bacd7f82da3c34eb26a4314c2a54bd493f8b394a68"]
-flake8-tuple = ["8d41db2e4a5320ffd29cf78a95f1d7da9f22b47949427a4d7f8391333eec2a15"]
+flake8-tuple = ["8a1b42aab134ef4c3fef13c6a8f383363f158b19fbc165bd91aed9c51851a61d"]
 gitdb = ["a3ebbc27be035a2e874ed904df516e35f4a29a778a764385de09de9e0f139658"]
 gitdb2 = ["83361131a1836661a155172932a13c08bda2db3674e4caa32368aa6eb02f38c2", "e3a0141c5f2a3f635c7209d56c496ebe1ad35da82fe4d3ec4aaa36278d70648a"]
 gitpython = ["7428f1cc5e72d53e65c3259d5cebc22fb2b07f973c49d95b3c3d26c64890a3c3", "a0f744a4941eac5d99033eb0adcbec83bf443ee173fda4292d92a906aedce952"]
