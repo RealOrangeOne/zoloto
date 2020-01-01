@@ -15,14 +15,16 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     license="BSD",
-    packages=['zoloto', 'zoloto.cameras', 'zoloto.cli'],
+    packages=["zoloto", "zoloto.cameras", "zoloto.cli"],
     install_requires=requirements,
-    entry_points={"console_scripts": [
-        "zoloto-preview=zoloto.cli.preview:main",
-        "zoloto-calibrate=zoloto.cli.calibrate:main"
-    ]},
+    entry_points={
+        "console_scripts": [
+            "zoloto-preview=zoloto.cli.preview:main",
+            "zoloto-calibrate=zoloto.cli.calibrate:main",
+        ]
+    },
     python_requires=">=3.5",
-    extras_require={'rpi': ['picamera[array]>=1.13,<2.0']},
+    extras_require={"rpi": ["picamera[array]>=1.13,<2.0"]},
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -38,5 +40,5 @@ setup(
         "Topic :: Scientific/Engineering",
         "Topic :: Scientific/Engineering :: Image Recognition",
         "Topic :: Software Development",
-    ]
+    ],
 )
