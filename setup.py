@@ -24,7 +24,7 @@ setup(
         ]
     },
     python_requires=">=3.5",
-    extras_require={"rpi": ["picamera[array]>=1.13,<2.0"]},
+    extras_require={"rpi": ["picamera[array]>=1.13"]},
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
