@@ -1,0 +1,28 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    env:
+      PYTHONOPTIMIZE: ${{ matrix.optimize }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python: [3.5, 3.6, 3.7]
+        optimize: [0, 1]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: ./scripts/setup.sh
+    - name: Run tests
+      run: ./scripts/test.sh
