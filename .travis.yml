@@ -21,4 +21,4 @@ install:
 script:
   - ./scripts/test.sh
   - ./scripts/benchmark.sh
-  - env/bin/python setup.py build
+  - ./scripts/build.sh
