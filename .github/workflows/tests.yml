@@ -7,14 +7,10 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    env:
-      PYTHONOPTIMIZE: ${{ matrix.optimize }}
-
     strategy:
       matrix:
         os: [ubuntu-latest]
         python: [3.5, 3.6, 3.7]
-        optimize: [0, 1]
 
     steps:
     - uses: actions/checkout@v1
