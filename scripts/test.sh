@@ -14,7 +14,7 @@ then
 fi
 
 echo "> Running linter..."
-flake8 zoloto tests benchmarks examples setup.py --ignore=E128,E501,W503
+flake8 zoloto tests benchmarks examples setup.py
 
 echo "> Running isort..."
 isort -rc -c zoloto tests benchmarks examples setup.py
