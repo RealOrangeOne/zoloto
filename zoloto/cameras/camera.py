@@ -1,4 +1,4 @@
-from cv2 import VideoCapture
+from cv2 import CAP_PROP_BUFFERSIZE, VideoCapture
 
 from .base import BaseCamera
 
@@ -9,9 +9,13 @@ class Camera(BaseCamera):
         self.video_capture = self.get_video_capture(camera_id)
 
     def get_video_capture(self, camera_id):
-        return VideoCapture(camera_id)
+        cap = VideoCapture(camera_id)
+        cap.set(CAP_PROP_BUFFERSIZE, 1)
+        return cap
 
     def capture_frame(self):
+        # Hack: Double capture frames to fill buffer.
+        self.video_capture.read()
         _, frame = self.video_capture.read()
         return frame
 
