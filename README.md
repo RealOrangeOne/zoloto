@@ -29,3 +29,13 @@ with ImageFileCamera(Path("my-image.png"), marker_dict=MarkerDict.DICT_6X6_50) a
 ```
 
 More examples can be found in the [`examples/`](https://github.com/RealOrangeOne/zoloto/tree/master/examples) directory.
+
+## Development setup
+
+`./scripts/setup.sh` will create a virtual environment, and install all the required development dependencies into it.
+
+There are some additional useful scripts to assist:
+
+- `./scripts/test.sh`: Run the unit tests and linters
+- `./scripts/fix.sh`: Automatically fix issues from `black` and `isort`
+- `./scripts/benchmark.sh`: Run benchmarks (these can take a couple minutes depending on your hardware)
