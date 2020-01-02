@@ -14,6 +14,6 @@ jobs:
       with:
         python-version: 3.7
     - name: Install dependencies
-      run: ./scripts/setup.sh
+      run: bash ./scripts/setup.sh
     - name: Run benchmarks
-      run: ./scripts/benchmark.sh
+      run: bash ./scripts/benchmark.sh

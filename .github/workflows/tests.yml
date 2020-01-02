@@ -19,6 +19,6 @@ jobs:
       with:
         python-version: ${{ matrix.python }}
     - name: Install dependencies
-      run: ./scripts/setup.sh
+      run: bash ./scripts/setup.sh
     - name: Run tests
-      run: ./scripts/test.sh
+      run: bash ./scripts/test.sh
