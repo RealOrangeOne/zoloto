@@ -41,7 +41,7 @@ def wait_for_markers(camera):
 
 def create_board(camera, board_size=6):
     board = cv2.aruco.CharucoBoard_create(
-        board_size, board_size, 0.025, 0.0125, camera.get_marker_dictionary()
+        board_size, board_size, 0.025, 0.0125, camera.marker_dictionary
     )
     return board.draw((150 * board_size, 150 * board_size)), board
 

@@ -31,7 +31,7 @@ class MarkerCamera(BaseCamera):
 
     def capture_frame(self):
         image = cv2.aruco.drawMarker(
-            self.get_marker_dictionary(), self.marker_id, self.marker_size
+            self.marker_dictionary, self.marker_id, self.marker_size
         )
         return cv2.copyMakeBorder(
             image,

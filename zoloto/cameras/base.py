@@ -18,14 +18,11 @@ class BaseCamera(ABC):
         self.detector_params = self.get_detector_params(
             cv2.aruco.DetectorParameters_create()
         )
+        self.marker_dictionary = cv2.aruco.getPredefinedDictionary(self.marker_dict)
 
     @abstractproperty
     def marker_dict(cls) -> MarkerDict:
         raise NotImplementedError()
-
-    @cached_property
-    def get_marker_dictionary(self):
-        return cv2.aruco.getPredefinedDictionary(self.marker_dict)
 
     def get_calibrations(self):
         if self.calibration_file is None:
@@ -58,7 +55,7 @@ class BaseCamera(ABC):
 
     def _get_raw_ids_and_corners(self, frame):
         corners, ids, _ = cv2.aruco.detectMarkers(
-            frame, self.get_marker_dictionary(), parameters=self.detector_params
+            frame, self.marker_dictionary, parameters=self.detector_params
         )
         return ids, corners
 
