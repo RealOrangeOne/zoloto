@@ -11,6 +11,9 @@ assert_has_gui_components()
 class TestCamera(Camera):
     marker_dict = MarkerDict.DICT_6X6_50
 
+    def get_marker_size(self):
+        return 100
+
 
 camera = TestCamera(0)
 

@@ -5,6 +5,9 @@ from zoloto.marker_dict import MarkerDict
 class TestCamera(Camera):
     marker_dict = MarkerDict.DICT_6X6_50
 
+    def get_marker_size(self):
+        return 100
+
 
 camera = TestCamera(0)
 

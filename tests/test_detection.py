@@ -18,6 +18,9 @@ def test_detects_marker_ids(filename, snapshot):
     class ImageFileCamera(BaseImageFileCamera):
         marker_dict = MarkerDict.DICT_APRILTAG_36H11
 
+        def get_marker_size(self):
+            return 100
+
     camera = ImageFileCamera(TEST_IMAGE_DIR.joinpath(filename),)
     snapshot.assert_match(sorted(camera.get_visible_markers()))
 
@@ -26,6 +29,9 @@ def test_detects_marker_ids(filename, snapshot):
 def test_annotates_frame(filename, temp_image_file):
     class ImageFileCamera(BaseImageFileCamera):
         marker_dict = MarkerDict.DICT_APRILTAG_36H11
+
+        def get_marker_size(self):
+            return 100
 
     camera = ImageFileCamera(TEST_IMAGE_DIR.joinpath(filename),)
     camera.save_frame(temp_image_file, annotate=True)
