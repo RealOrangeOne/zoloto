@@ -20,10 +20,8 @@ echo "> Running isort..."
 isort -rc -c zoloto tests benchmarks examples setup.py
 
 echo "> Running type checker..."
-mypy zoloto
-mypy tests
+mypy zoloto tests examples
 mypy benchmarks
-mypy examples
 
 echo "> Running bandit..."
 bandit -r zoloto/
