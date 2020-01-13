@@ -1,8 +1,10 @@
+from abc import ABC, abstractmethod, abstractproperty
 from itertools import groupby
 from pathlib import Path
 from typing import Optional
 
 import cv2
+from cached_property import cached_property
 
 from zoloto.calibration import parse_calibration_file
 from zoloto.exceptions import MissingCalibrationsError
@@ -10,15 +12,20 @@ from zoloto.marker import Marker
 from zoloto.marker_dict import MarkerDict
 
 
-class BaseCamera:
-    def __init__(
-        self, *, marker_dict: MarkerDict, calibration_file: Optional[Path] = None
-    ):
-        self.marker_dictionary = cv2.aruco.getPredefinedDictionary(marker_dict)
+class BaseCamera(ABC):
+    def __init__(self, *, calibration_file: Optional[Path] = None):
         self.calibration_file = calibration_file
         self.detector_params = self.get_detector_params(
             cv2.aruco.DetectorParameters_create()
         )
+
+    @abstractproperty
+    def marker_dict(cls) -> MarkerDict:
+        raise NotImplementedError()
+
+    @cached_property
+    def get_marker_dictionary(self):
+        return cv2.aruco.getPredefinedDictionary(self.marker_dict)
 
     def get_calibrations(self):
         if self.calibration_file is None:
@@ -28,10 +35,12 @@ class BaseCamera:
     def get_detector_params(self, params):
         return params
 
-    def get_marker_size(self, marker_id: int) -> int:  # pragma: no cover
+    @abstractmethod
+    def get_marker_size(self, marker_id: int) -> int:
         raise NotImplementedError()
 
-    def capture_frame(self):  # pragma: no cover
+    @abstractmethod
+    def capture_frame(self):
         raise NotImplementedError()
 
     def save_frame(self, filename: Path, *, annotate=False, frame=None):
@@ -49,7 +58,7 @@ class BaseCamera:
 
     def _get_raw_ids_and_corners(self, frame):
         corners, ids, _ = cv2.aruco.detectMarkers(
-            frame, self.marker_dictionary, parameters=self.detector_params
+            frame, self.get_marker_dictionary(), parameters=self.detector_params
         )
         return ids, corners
 

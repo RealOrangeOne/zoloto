@@ -5,7 +5,7 @@ from unittest.mock import patch
 import ujson
 from pytest import approx, raises
 
-from zoloto.cameras.marker import MarkerCamera
+from zoloto.cameras.marker import MarkerCamera as BaseMarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import Marker
 from zoloto.marker_dict import MarkerDict
@@ -16,11 +16,10 @@ class MarkerTestCase(TestCase):
     MARKER_ID = 25
 
     def setUp(self):
-        self.marker_camera = MarkerCamera(
-            self.MARKER_ID,
-            marker_dict=MarkerDict.DICT_6X6_50,
-            marker_size=self.MARKER_SIZE,
-        )
+        class MarkerCamera(BaseMarkerCamera):
+            marker_dict = MarkerDict.DICT_6X6_50
+
+        self.marker_camera = MarkerCamera(self.MARKER_ID, marker_size=self.MARKER_SIZE)
         self.markers = list(self.marker_camera.process_frame())
         self.marker = self.markers[0]
 
@@ -107,11 +106,10 @@ class MarkerTestCase(TestCase):
 
 class EagerMarkerTestCase(MarkerTestCase):
     def setUp(self):
-        self.marker_camera = MarkerCamera(
-            self.MARKER_ID,
-            marker_dict=MarkerDict.DICT_6X6_50,
-            marker_size=self.MARKER_SIZE,
-        )
+        class MarkerCamera(BaseMarkerCamera):
+            marker_dict = MarkerDict.DICT_6X6_50
+
+        self.marker_camera = MarkerCamera(self.MARKER_ID, marker_size=self.MARKER_SIZE)
         self.markers = list(self.marker_camera.process_frame_eager())
         self.marker = self.markers[0]
 
@@ -127,25 +125,24 @@ class EagerMarkerTestCase(MarkerTestCase):
 
 class MarkerFromDictTestCase(EagerMarkerTestCase):
     def setUp(self):
-        self.marker_camera = MarkerCamera(
-            self.MARKER_ID,
-            marker_dict=MarkerDict.DICT_6X6_50,
-            marker_size=self.MARKER_SIZE,
-        )
+        class MarkerCamera(BaseMarkerCamera):
+            marker_dict = MarkerDict.DICT_6X6_50
+
+        self.marker_camera = MarkerCamera(self.MARKER_ID, marker_size=self.MARKER_SIZE)
         self.markers = list(self.marker_camera.process_frame())
         self.marker = Marker.from_dict(self.markers[0].as_dict())
 
 
 class MarkerSansCalibrationsTestCase(MarkerTestCase):
-    class TestCamera(MarkerCamera):
+    class TestCamera(BaseMarkerCamera):
+        marker_dict = MarkerDict.DICT_6X6_50
+
         def get_calibrations(self):
             return None
 
     def setUp(self):
         self.marker_camera = self.TestCamera(
-            self.MARKER_ID,
-            marker_dict=MarkerDict.DICT_6X6_50,
-            marker_size=self.MARKER_SIZE,
+            self.MARKER_ID, marker_size=self.MARKER_SIZE,
         )
         self.markers = list(self.marker_camera.process_frame())
         self.marker = self.markers[0]

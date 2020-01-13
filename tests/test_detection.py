@@ -3,7 +3,7 @@ import operator
 import pytest
 
 from tests.conftest import IMAGE_DATA, TEST_IMAGE_DIR, get_calibration
-from zoloto.cameras.file import ImageFileCamera
+from zoloto.cameras.file import ImageFileCamera as BaseImageFileCamera
 from zoloto.marker_dict import MarkerDict
 
 
@@ -15,29 +15,31 @@ def test_has_data_for_all_images():
 
 @pytest.mark.parametrize("filename", IMAGE_DATA.keys())
 def test_detects_marker_ids(filename, snapshot):
-    camera = ImageFileCamera(
-        TEST_IMAGE_DIR.joinpath(filename), marker_dict=MarkerDict.DICT_APRILTAG_36H11
-    )
+    class ImageFileCamera(BaseImageFileCamera):
+        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+
+    camera = ImageFileCamera(TEST_IMAGE_DIR.joinpath(filename),)
     snapshot.assert_match(sorted(camera.get_visible_markers()))
 
 
 @pytest.mark.parametrize("filename", IMAGE_DATA.keys())
 def test_annotates_frame(filename, temp_image_file):
-    camera = ImageFileCamera(
-        TEST_IMAGE_DIR.joinpath(filename), marker_dict=MarkerDict.DICT_APRILTAG_36H11
-    )
+    class ImageFileCamera(BaseImageFileCamera):
+        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+
+    camera = ImageFileCamera(TEST_IMAGE_DIR.joinpath(filename),)
     camera.save_frame(temp_image_file, annotate=True)
 
 
 @pytest.mark.parametrize("filename", IMAGE_DATA.keys())
 def test_gets_markers(filename, snapshot):
-    class TestCamera(ImageFileCamera):
+    class TestCamera(BaseImageFileCamera):
+        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+
         def get_marker_size(self, marker_id):
             return 100
 
-    camera = TestCamera(
-        TEST_IMAGE_DIR.joinpath(filename), marker_dict=MarkerDict.DICT_APRILTAG_36H11
-    )
+    camera = TestCamera(TEST_IMAGE_DIR.joinpath(filename),)
     snapshot.assert_match(
         sorted(
             (
@@ -58,13 +60,14 @@ def test_gets_markers(filename, snapshot):
 
 @pytest.mark.parametrize("filename,camera_name", IMAGE_DATA.items())
 def test_gets_markers_eager(filename, camera_name, snapshot):
-    class TestCamera(ImageFileCamera):
+    class TestCamera(BaseImageFileCamera):
+        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+
         def get_marker_size(self, marker_id):
             return 100
 
     camera = TestCamera(
         TEST_IMAGE_DIR.joinpath(filename),
-        marker_dict=MarkerDict.DICT_APRILTAG_36H11,
         calibration_file=get_calibration(camera_name),
     )
     snapshot.assert_match(
@@ -91,13 +94,14 @@ def test_gets_markers_eager(filename, camera_name, snapshot):
 
 @pytest.mark.parametrize("filename,camera_name", IMAGE_DATA.items())
 def test_gets_markers_with_calibration(filename, camera_name, snapshot):
-    class TestCamera(ImageFileCamera):
+    class TestCamera(BaseImageFileCamera):
+        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+
         def get_marker_size(self, marker_id):
             return 100
 
     camera = TestCamera(
         TEST_IMAGE_DIR.joinpath(filename),
-        marker_dict=MarkerDict.DICT_APRILTAG_36H11,
         calibration_file=get_calibration(camera_name),
     )
     snapshot.assert_match(

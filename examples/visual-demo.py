@@ -9,10 +9,10 @@ assert_has_gui_components()
 
 
 class TestCamera(Camera):
-    pass
+    marker_dict = MarkerDict.DICT_6X6_50
 
 
-camera = TestCamera(0, marker_dict=MarkerDict.DICT_6X6_50)
+camera = TestCamera(0)
 
 while True:
     with Timer() as capture_timer:
