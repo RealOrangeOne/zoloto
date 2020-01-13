@@ -10,7 +10,10 @@ def image_camera(request):
     class ImageFileCamera(BaseImageFileCamera):
         marker_dict = MarkerDict.DICT_APRILTAG_36H11
 
-    return ImageFileCamera(TEST_IMAGE_DIR.joinpath(request.param),)
+        def get_marker_size(self):
+            return 100
+
+    return ImageFileCamera(TEST_IMAGE_DIR.joinpath(request.param))
 
 
 def test_capture_frame(benchmark, image_camera):
