@@ -3,9 +3,6 @@ from setuptools import find_packages, setup
 with open("README.md") as f:
     readme = f.read()
 
-with open("requirements.txt") as f:
-    requirements = f.read().split("\n")
-
 setup(
     name="zoloto",
     version="0.4.0",
