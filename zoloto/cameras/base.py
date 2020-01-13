@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import Optional
 
 import cv2
-from cached_property import cached_property
 
 from zoloto.calibration import parse_calibration_file
 from zoloto.exceptions import MissingCalibrationsError
