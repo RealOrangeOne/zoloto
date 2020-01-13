@@ -25,7 +25,6 @@ class Camera(BaseCamera):
 
     def get_video_capture(self, camera_id):
         cap = VideoCapture(camera_id)
-        assert cap.isOpened()
         cap.set(CAP_PROP_BUFFERSIZE, 1)
         return cap
 
