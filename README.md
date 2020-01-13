@@ -23,7 +23,12 @@ from pathlib import Path
 from zoloto import MarkerDict
 from zoloto.cameras import ImageFileCamera
 
-with ImageFileCamera(Path("my-image.png"), marker_dict=MarkerDict.DICT_6X6_50) as camera:
+
+class MyCamera(ImageFileCamera):
+    marker_dict = MarkerDict.DICT_6X6_50
+
+
+with MyCamera(Path("my-image.png")) as camera:
     camera.save_frame("my-annotated-image.png", annotate=True)
     print("I saved an image with {} markers in.".format(len(camera.get_visible_markers())))
 ```
