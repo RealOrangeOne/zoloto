@@ -5,7 +5,7 @@ with open("README.md") as f:
 
 setup(
     name="zoloto",
-    version="0.4.0",
+    version="0.4.1",
     url="https://github.com/RealOrangeOne/zoloto",
     author="Jake Howard",
     description="A fiducial marker system powered by OpenCV - Supports ArUco and April",
