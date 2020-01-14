@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 from itertools import groupby
 from pathlib import Path
 from typing import Optional
@@ -19,7 +19,8 @@ class BaseCamera(ABC):
         )
         self.marker_dictionary = cv2.aruco.getPredefinedDictionary(self.marker_dict)
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def marker_dict(cls) -> MarkerDict:
         raise NotImplementedError()
 
