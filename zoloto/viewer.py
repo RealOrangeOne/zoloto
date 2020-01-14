@@ -2,7 +2,8 @@ import signal
 import tkinter
 
 import cv2
-from PIL import Image, ImageTk
+from PIL import Image
+from PIL.ImageTk import PhotoImage
 
 from zoloto.cameras.base import BaseCamera
 
@@ -37,7 +38,7 @@ class CameraViewer:
             frame = new_frame
         colour_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
         window_size = (self.window.winfo_width(), self.window.winfo_height())
-        tkinter_image = ImageTk.PhotoImage(
+        tkinter_image = PhotoImage(
             image=Image.fromarray(colour_image).resize(window_size)
         )
         self.label.imagetk = tkinter_image
