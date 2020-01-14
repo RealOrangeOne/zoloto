@@ -1,5 +1,6 @@
 import signal
 import tkinter
+from threading import Thread
 
 import cv2
 from PIL import Image, ImageTk
@@ -8,8 +9,16 @@ from zoloto.cameras.base import BaseCamera
 
 
 class CameraViewer:
-    def __init__(self, camera: BaseCamera, *, size=(600, 600), title="Camera Viewer"):
+    def __init__(
+        self,
+        camera: BaseCamera,
+        *,
+        size=(600, 600),
+        title="Camera Viewer",
+        annotate=False
+    ):
         self.camera = camera
+        self.annotate = annotate
         self.window = tkinter.Tk()
         self.window.wm_title(title)
         self.window.geometry("{}x{}".format(*size))
@@ -22,7 +31,11 @@ class CameraViewer:
 
     def show_frame(self):
         frame = self.camera.capture_frame()
-        self.camera._annotate_frame(frame)
+        if self.annotate:
+            self.camera._annotate_frame(frame)
+        new_frame = self.on_frame(frame)
+        if new_frame is not None:
+            frame = new_frame
         colour_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
         window_size = (self.window.winfo_width(), self.window.winfo_height())
         tkinter_image = ImageTk.PhotoImage(
@@ -30,7 +43,6 @@ class CameraViewer:
         )
         self.label.imagetk = tkinter_image
         self.label.configure(image=tkinter_image)
-        self.on_frame(frame)
         self.label.after(10, self.show_frame)
 
     def signal_handler(self, sig, frame):
@@ -38,7 +50,7 @@ class CameraViewer:
 
     @staticmethod
     def on_frame(frame):
-        pass
+        return frame
 
     def start(self):
         self.show_frame()
