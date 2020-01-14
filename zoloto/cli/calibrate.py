@@ -4,15 +4,12 @@ from pathlib import Path
 
 import cv2
 
-from zoloto import assert_has_gui_components
 from zoloto.calibration import CalibrationParameters, save_calibrations
 from zoloto.cameras.camera import Camera
 from zoloto.marker_dict import MarkerDict
+from zoloto.viewer import CameraViewer
 
 FEED_WINDOW_NAME = "Feed"
-
-assert_has_gui_components()
-
 
 def parse_args():
     parser = argparse.ArgumentParser()
