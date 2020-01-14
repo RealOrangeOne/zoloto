@@ -1,6 +1,5 @@
 import signal
 import tkinter
-from threading import Thread
 
 import cv2
 from PIL import Image, ImageTk
