@@ -20,12 +20,7 @@ setup(
         "fastcache>=1.1",
         "ujson>=1.35",
     ],
-    entry_points={
-        "console_scripts": [
-            "zoloto-preview=zoloto.cli.preview:main",
-            "zoloto-calibrate=zoloto.cli.calibrate:main",
-        ]
-    },
+    entry_points={"console_scripts": ["zoloto-preview=zoloto.cli.preview:main",]},
     python_requires=">=3.5",
     extras_require={"rpi": ["picamera[array]>=1.13"], "viewer": ["Pillow>=7.0.0"]},
     classifiers=[
