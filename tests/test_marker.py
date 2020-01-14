@@ -186,9 +186,7 @@ class MarkerSansCalibrationsTestCase(MarkerTestCase):
 class MarkerSansCalibrationsFromDictTestCase(MarkerSansCalibrationsTestCase):
     def setUp(self):
         self.marker_camera = self.TestCamera(
-            self.MARKER_ID,
-            marker_dict=MarkerDict.DICT_6X6_50,
-            marker_size=self.MARKER_SIZE,
+            self.MARKER_ID, marker_size=self.MARKER_SIZE,
         )
         self.markers = list(self.marker_camera.process_frame())
         self.marker = Marker.from_dict(self.markers[0].as_dict())
