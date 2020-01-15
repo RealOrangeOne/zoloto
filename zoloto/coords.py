@@ -1,4 +1,4 @@
-from typing import NamedTuple, Tuple
+from typing import Iterator, NamedTuple, Tuple
 
 from cached_property import cached_property
 from coordinates import spaced_coordinate
@@ -65,8 +65,8 @@ class Orientation:
         """
         return self._quaternion.yaw_pitch_roll
 
-    def __iter__(self):
-        return iter(self.yaw_pitch_roll)
+    def __iter__(self) -> Iterator[float]:
+        return iter([self.rot_x, self.rot_y, self.rot_z])
 
     @cached_property
     def rotation_matrix(self) -> ndarray:
