@@ -2,7 +2,6 @@ import signal
 import tkinter
 
 import cv2
-from cached_property import cached_property
 from PIL import Image
 from PIL.ImageTk import PhotoImage
 
@@ -10,15 +9,13 @@ from zoloto.cameras.base import BaseCamera
 
 
 class CameraViewer:
-    DEFAULT_SIZE = (640, 480)
-
     def __init__(self, camera: BaseCamera, *, title="Camera Viewer", annotate=False):
         self.camera = camera
         self.annotate = annotate
         self.window = tkinter.Tk()
         self.window.wm_title(title)
         self.window.resizable(False, False)
-        self.window.geometry("{}x{}".format(*self.window_size))
+        self.window.geometry("{}x{}".format(*self.get_window_size(self.camera)))
         self.frame = tkinter.Frame(self.window)
         self.frame.pack()
         self.label = tkinter.Label(self.frame)
@@ -54,7 +51,7 @@ class CameraViewer:
     def stop(self):
         self.window.quit()
 
-    @cached_property
-    def window_size(self):
-        y, x, _ = self.camera.capture_frame().shape
-        return x, y
+    @staticmethod
+    def get_window_size(camera):
+        shape = camera.capture_frame().shape
+        return shape[1], shape[0]
