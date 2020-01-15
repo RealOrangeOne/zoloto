@@ -14,6 +14,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Install tkinter
+      run: sudo apt-get install -y tk-dev
     - name: Set up Python ${{ matrix.python }}
       uses: actions/setup-python@v1
       with:
