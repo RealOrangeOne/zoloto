@@ -4,6 +4,7 @@ from pathlib import Path
 from tempfile import mkstemp
 
 import pytest
+from hypothesis import settings as hypothesis_settings
 
 from zoloto.calibration import get_fake_calibration_parameters
 from zoloto.cameras.marker import MarkerCamera
@@ -14,6 +15,9 @@ TEST_IMAGE_DIR = TEST_DATA_DIR.joinpath("images")
 CALIBRATIONS_DIR = TEST_DATA_DIR.joinpath("calibrations")
 
 IMAGE_DATA = json.loads(TEST_IMAGE_DIR.joinpath("images.json").read_text())
+
+hypothesis_settings.register_profile("main", deadline=None)
+hypothesis_settings.load_profile("main")
 
 
 def get_calibration(camera: str):
