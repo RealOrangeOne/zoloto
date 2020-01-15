@@ -21,7 +21,7 @@ class BaseCamera(ABC):
 
     @property
     @abstractmethod
-    def marker_dict(cls) -> MarkerDict:
+    def marker_dict(cls) -> MarkerDict:  # pragma: nocover
         raise NotImplementedError()
 
     def get_calibrations(self):
@@ -33,11 +33,11 @@ class BaseCamera(ABC):
         return params
 
     @abstractmethod
-    def get_marker_size(self, marker_id: int) -> int:
+    def get_marker_size(self, marker_id: int) -> int:  # pragma: nocover
         raise NotImplementedError()
 
     @abstractmethod
-    def capture_frame(self):
+    def capture_frame(self):  # pragma: nocover
         raise NotImplementedError()
 
     def save_frame(self, filename: Path, *, annotate=False, frame=None):
