@@ -3,12 +3,9 @@ from setuptools import find_packages, setup
 with open("README.md") as f:
     readme = f.read()
 
-with open("requirements.txt") as f:
-    requirements = f.read().split("\n")
-
 setup(
     name="zoloto",
-    version="0.3.0",
+    version="0.4.1",
     url="https://github.com/RealOrangeOne/zoloto",
     author="Jake Howard",
     description="A fiducial marker system powered by OpenCV - Supports ArUco and April",
@@ -16,7 +13,13 @@ setup(
     long_description_content_type="text/markdown",
     license="BSD",
     packages=find_packages(include="zoloto*"),
-    install_requires=requirements,
+    install_requires=[
+        "opencv-contrib-python-headless>=4.0,<4.1",
+        "cached-property>=1.5",
+        "coordinates>=0.3.0",
+        "fastcache>=1.1",
+        "ujson>=1.35",
+    ],
     entry_points={
         "console_scripts": [
             "zoloto-preview=zoloto.cli.preview:main",
