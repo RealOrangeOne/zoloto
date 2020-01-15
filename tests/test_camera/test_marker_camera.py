@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from hypothesis import given, settings, strategies
+from hypothesis import given, strategies
 
 from tests.strategies import reasonable_image_size
 from zoloto.cameras.file import ImageFileCamera
@@ -20,7 +20,6 @@ def test_captures_frame_at_correct_resolution(resolution):
 
 
 @given(strategies.integers(0, 49))
-@settings(deadline=None)
 def test_detects_markers(marker_id):
     class TestCamera(MarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
@@ -31,7 +30,6 @@ def test_detects_markers(marker_id):
 
 
 @given(strategies.integers(0, 49))
-@settings(deadline=None)
 def test_detects_marker_ids(marker_id):
     class TestCamera(MarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
@@ -51,7 +49,6 @@ def test_sees_nothing_in_blank_image():
 
 
 @given(strategies.integers(0, 49))
-@settings(deadline=None)
 def test_eager_capture(marker_id):
     class TestCamera(MarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50

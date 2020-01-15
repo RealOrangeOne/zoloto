@@ -1,0 +1,26 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python: [3.5, 3.6, 3.7]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: bash ./scripts/setup.sh
+    - name: Run tests
+      run: bash ./scripts/test.sh
+    - name: Run package build
+      run: bash ./scripts/build.sh
