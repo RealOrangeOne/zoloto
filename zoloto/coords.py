@@ -16,8 +16,13 @@ Spherical = NamedTuple("Spherical", [("rot_x", float), ("rot_y", float), ("dist"
 class Orientation:
     """The orientation of an object in 3-D space."""
 
-    def __init__(self, *rvec) -> None:
-        rotation_matrix, _ = Rodrigues(rvec)
+    def __init__(self, e_x: float, e_y: float, e_z: float) -> None:
+        """
+        Construct a quaternion given the components of a rotation vector.
+
+        More information: https://w.wiki/Fci
+        """
+        rotation_matrix, _ = Rodrigues((e_x, e_y, e_z))
         self._quaternion = Quaternion(matrix=rotation_matrix)
 
     @property
