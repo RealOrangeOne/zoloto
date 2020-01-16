@@ -38,12 +38,14 @@ class Marker:
 
     @property
     def pixel_corners(self):
-        return [Coordinates(*coords) for coords in self.__pixel_corners]
+        return [Coordinates(x=x, y=y) for x, y in self.__pixel_corners]
 
     @cached_property
     def pixel_centre(self):
         tl, _, br, _ = self.__pixel_corners
-        return Coordinates([tl[0] + (self.__size / 2) - 1, br[1] - (self.__size / 2)])
+        return Coordinates(
+            x=tl[0] + (self.__size / 2) - 1, y=br[1] - (self.__size / 2),
+        )
 
     @cached_property
     def distance(self):
@@ -60,7 +62,7 @@ class Marker:
 
     @property
     def cartesian(self):
-        return ThreeDCoordinates(*self._tvec)
+        return ThreeDCoordinates(x=self._tvec[0], y=self._tvec[1], z=self._tvec[2],)
 
     @clru_cache(maxsize=None)
     def _get_pose_vectors(self):
@@ -92,9 +94,7 @@ class Marker:
             "pixel_corners": self.__pixel_corners.tolist(),
         }
         try:
-            marker_dict.update(
-                {"rvec": self._rvec.tolist(), "tvec": self._tvec.tolist()}
-            )
+            marker_dict.update({"rvec": self._rvec.tolist(), "tvec": list(self._tvec)})
         except MissingCalibrationsError:
             pass
         return marker_dict
