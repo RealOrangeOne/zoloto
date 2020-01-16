@@ -82,7 +82,9 @@ class MarkerTestCase(TestCase):
         self.assertEqual(marker_dict, created_marker_dict)
 
     def test_many_as_ujson(self):
-        created_markers_dict = ujson.loads(ujson.dumps(self.markers))
+        created_markers_dict = ujson.loads(
+            ujson.dumps([m.as_dict() for m in self.markers])
+        )
         self.assertEqual(len(created_markers_dict), 1)
         self.assertEqual(
             {marker["id"] for marker in created_markers_dict}, {self.MARKER_ID}
