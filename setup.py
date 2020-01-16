@@ -19,7 +19,6 @@ setup(
         "coordinates>=0.3.0",
         "fastcache>=1.1",
         "pyquaternion>=0.9.2",
-        "ujson>=1.35",
     ],
     entry_points={
         "console_scripts": [

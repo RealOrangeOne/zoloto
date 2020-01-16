@@ -14,6 +14,13 @@ FEED_WINDOW_NAME = "Feed"
 assert_has_gui_components()
 
 
+class CalibrationCamera(Camera):
+    marker_dict = MarkerDict.DICT_6X6_250
+
+    def get_marker_size(self):
+        return 100
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--id", type=int, default=0)
@@ -83,7 +90,7 @@ def main():
         format="[%(levelname)s]: %(message)s",
     )
     logging.info("Creating calibration image...")
-    camera = Camera(args.id, marker_dict=MarkerDict.DICT_6X6_250)
+    camera = CalibrationCamera(args.id)
 
     board_image, board = create_board(camera, board_size=5)
     cv2.imshow("Calibration Board", board_image)
