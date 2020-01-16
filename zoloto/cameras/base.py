@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from itertools import groupby
 from pathlib import Path
 from typing import Optional
@@ -10,15 +11,18 @@ from zoloto.marker import Marker
 from zoloto.marker_dict import MarkerDict
 
 
-class BaseCamera:
-    def __init__(
-        self, *, marker_dict: MarkerDict, calibration_file: Optional[Path] = None
-    ):
-        self.marker_dictionary = cv2.aruco.getPredefinedDictionary(marker_dict)
+class BaseCamera(ABC):
+    def __init__(self, *, calibration_file: Optional[Path] = None):
         self.calibration_file = calibration_file
         self.detector_params = self.get_detector_params(
             cv2.aruco.DetectorParameters_create()
         )
+        self.marker_dictionary = cv2.aruco.getPredefinedDictionary(self.marker_dict)
+
+    @property
+    @abstractmethod
+    def marker_dict(cls) -> MarkerDict:  # pragma: nocover
+        raise NotImplementedError()
 
     def get_calibrations(self):
         if self.calibration_file is None:
@@ -28,10 +32,12 @@ class BaseCamera:
     def get_detector_params(self, params):
         return params
 
-    def get_marker_size(self, marker_id: int) -> int:  # pragma: no cover
+    @abstractmethod
+    def get_marker_size(self, marker_id: int) -> int:  # pragma: nocover
         raise NotImplementedError()
 
-    def capture_frame(self):  # pragma: no cover
+    @abstractmethod
+    def capture_frame(self):  # pragma: nocover
         raise NotImplementedError()
 
     def save_frame(self, filename: Path, *, annotate=False, frame=None):
