@@ -18,7 +18,6 @@ setup(
         "cached-property>=1.5",
         "coordinates>=0.3.0",
         "fastcache>=1.1",
-        "ujson>=1.35",
     ],
     entry_points={
         "console_scripts": [
