@@ -27,32 +27,32 @@ class Orientation:
 
     @property
     def rot_x(self) -> float:
-        """Get rot_x aka. roll."""
+        """Get rotation angle around x axis in radians."""
         return self.roll
 
     @property
     def rot_y(self) -> float:
-        """Get rot_y aka. pitch."""
+        """Get rotation angle around y axis in radians."""
         return self.pitch
 
     @property
     def rot_z(self) -> float:
-        """Get rot_z aka. yaw."""
+        """Get rotation angle around z axis in radians."""
         return self.yaw
 
     @property
     def yaw(self) -> float:
-        """The yaw of the rotation."""
+        """Get rotation angle around z axis in radians."""
         return self.yaw_pitch_roll[0]
 
     @property
     def pitch(self) -> float:
-        """The pitch of the rotation."""
+        """Get rotation angle around y axis in radians."""
         return self.yaw_pitch_roll[1]
 
     @property
     def roll(self) -> float:
-        """The roll of the rotation."""
+        """Get rotation angle around x axis in radians."""
         return self.yaw_pitch_roll[2]
 
     @cached_property
@@ -71,6 +71,12 @@ class Orientation:
         return self._quaternion.yaw_pitch_roll
 
     def __iter__(self) -> Iterator[float]:
+        """
+        Get an iterator over the rotation angles.
+
+        Returns:
+            An iterator of floating point angles in order x, y, z.
+        """
         return iter([self.rot_x, self.rot_y, self.rot_z])
 
     @cached_property
