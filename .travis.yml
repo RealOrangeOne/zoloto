@@ -8,10 +8,6 @@ python:
   - '3.6'
   - '3.7'
 
-env:
-  - ''  # Run with default environment
-  - PYTHONOPTIMIZE=1
-
 cache:
   pip: true
 
