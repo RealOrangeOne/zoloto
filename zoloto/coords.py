@@ -3,7 +3,6 @@ from typing import Iterator, NamedTuple, Tuple
 from cached_property import cached_property
 from coordinates import spaced_coordinate
 from cv2 import Rodrigues
-from numpy import ndarray
 from pyquaternion import Quaternion
 
 Coordinates = spaced_coordinate("Coordinates", "xy")
@@ -11,6 +10,9 @@ Coordinates = spaced_coordinate("Coordinates", "xy")
 ThreeDCoordinates = spaced_coordinate("ThreeDCoordinates", "xyz")
 
 Spherical = NamedTuple("Spherical", [("rot_x", float), ("rot_y", float), ("dist", int)])
+
+ThreeTuple = Tuple[float, float, float]
+RotationMatrix = Tuple[ThreeTuple, ThreeTuple, ThreeTuple]
 
 
 class Orientation:
@@ -56,7 +58,7 @@ class Orientation:
         return self.yaw_pitch_roll[2]
 
     @cached_property
-    def yaw_pitch_roll(self) -> Tuple[float, float, float]:
+    def yaw_pitch_roll(self) -> ThreeTuple:
         """
         Get the equivalent yaw-pitch-roll angles.
 
@@ -80,9 +82,19 @@ class Orientation:
         return iter([self.rot_x, self.rot_y, self.rot_z])
 
     @cached_property
-    def rotation_matrix(self) -> ndarray:
-        """Get the rotation matrix represented by this orientation."""
-        return self._quaternion.rotation_matrix
+    def rotation_matrix(self) -> RotationMatrix:
+        """
+        Get the rotation matrix represented by this orientation.
+
+        Returns:
+            A 3x3 rotation matrix as a tuple of tuples.
+        """
+        r_m = self._quaternion.rotation_matrix
+        return (
+            (r_m[0][0], r_m[0][1], r_m[0][2]),
+            (r_m[1][0], r_m[1][1], r_m[1][2]),
+            (r_m[2][0], r_m[2][1], r_m[2][2]),
+        )
 
     @property
     def quaternion(self) -> Quaternion:
