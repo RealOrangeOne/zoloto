@@ -54,7 +54,7 @@ class MarkerTestCase(TestCase):
 
     def test_orientation(self):
         rot_x, rot_y, rot_z = self.marker.orientation
-        self.assertEqual(int(rot_x), 3)
+        self.assertEqual(int(rot_x), -3)
         self.assertEqual(int(rot_y), 0)
         self.assertEqual(int(rot_z), 0)
 
