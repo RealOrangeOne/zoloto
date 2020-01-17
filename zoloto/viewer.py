@@ -27,9 +27,7 @@ class CameraViewer:
         frame = self.camera.capture_frame()
         if self.annotate:
             self.camera._annotate_frame(frame)
-        new_frame = self.on_frame(frame)
-        if new_frame is not None:
-            frame = new_frame
+        frame = self.on_frame(frame)
         tkinter_image = PhotoImage(
             image=Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA))
         )
