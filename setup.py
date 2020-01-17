@@ -17,8 +17,6 @@ setup(
         "opencv-contrib-python-headless>=4.0,<4.1",
         "cached-property>=1.5",
         "coordinates>=0.3.0",
-        "fastcache>=1.1",
-        "ujson>=1.35",
     ],
     entry_points={"console_scripts": ["zoloto-preview=zoloto.cli.preview:main"]},
     python_requires=">=3.5",

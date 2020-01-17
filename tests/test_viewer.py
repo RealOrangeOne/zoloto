@@ -12,21 +12,23 @@ from zoloto.viewer import CameraViewer
 
 @pytest.mark.parametrize("filename", IMAGE_DATA.keys())
 def test_gets_window_size_for_file_camera(filename):
+    class TestCamera(ImageFileCamera):
+        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+
+        def get_marker_size(self):
+            return 100
+
     image = Image.open(TEST_IMAGE_DIR.joinpath(filename))
     assert (
-        CameraViewer.get_window_size(
-            ImageFileCamera(
-                TEST_IMAGE_DIR.joinpath(filename),
-                marker_dict=MarkerDict.DICT_APRILTAG_36H11,
-            )
-        )
+        CameraViewer.get_window_size(TestCamera(TEST_IMAGE_DIR.joinpath(filename),))
         == image.size
     )
 
 
 @given(reasonable_image_size())
 def test_gets_window_size_for_marker_camera(image_size):
-    camera = MarkerCamera(
-        0, marker_dict=MarkerDict.DICT_APRILTAG_36H11, marker_size=image_size
-    )
+    class TestCamera(MarkerCamera):
+        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+
+    camera = TestCamera(0, marker_size=image_size)
     assert CameraViewer.get_window_size(camera) == camera.get_resolution()
