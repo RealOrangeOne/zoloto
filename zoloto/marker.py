@@ -38,7 +38,7 @@ class Marker:
 
     @property
     def pixel_corners(self):
-        return [Coordinates(x=x, y=y) for x, y in self.__pixel_corners]
+        return [Coordinates(*coords) for coords in self.__pixel_corners]
 
     @cached_property
     def pixel_centre(self):
@@ -62,7 +62,7 @@ class Marker:
 
     @property
     def cartesian(self):
-        return ThreeDCoordinates(x=self._tvec[0], y=self._tvec[1], z=self._tvec[2],)
+        return ThreeDCoordinates(*self._tvec)
 
     @clru_cache(maxsize=None)
     def _get_pose_vectors(self):
