@@ -7,7 +7,7 @@ import pytest
 from hypothesis import settings as hypothesis_settings
 
 from zoloto.calibration import get_fake_calibration_parameters
-from zoloto.cameras.marker import MarkerCamera
+from zoloto.cameras.marker import MarkerCamera as BaseMarkerCamera
 from zoloto.marker_dict import MarkerDict
 
 TEST_DATA_DIR = Path(__file__).parent.joinpath("data")
@@ -50,7 +50,10 @@ def temp_image_file(make_temp_file):
 
 @pytest.fixture
 def marker_camera():
-    return MarkerCamera(25, marker_dict=MarkerDict.DICT_6X6_50, marker_size=200)
+    class MarkerCamera(BaseMarkerCamera):
+        marker_dict = MarkerDict.DICT_6X6_50
+
+    return MarkerCamera(25, marker_size=200)
 
 
 @pytest.fixture
