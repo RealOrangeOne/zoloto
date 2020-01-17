@@ -18,8 +18,6 @@ setup(
         "cached-property>=1.5",
         "coordinates>=0.3.0",
         "fastcache>=1.1",
-        "ujson>=1.35",
-        "numpy>=1.11.1",  # Keep up to date with `opencv-contrib-python-headless` requirements
     ],
     entry_points={
         "console_scripts": [
