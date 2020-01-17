@@ -16,8 +16,7 @@ setup(
     install_requires=[
         "opencv-contrib-python-headless>=4.0,<4.1",
         "cached-property>=1.5",
-        "fastcache>=1.1",
-        "ujson>=1.35",
+        "pyquaternion>=0.9.2",
     ],
     entry_points={
         "console_scripts": [

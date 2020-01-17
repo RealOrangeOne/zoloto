@@ -1,9 +1,9 @@
 import json
+from functools import lru_cache
 from pathlib import Path
 from typing import NamedTuple
 
 from cv2 import FILE_STORAGE_READ, FILE_STORAGE_WRITE, FileStorage, aruco
-from fastcache import clru_cache
 from numpy import array
 
 from .marker_dict import MarkerDict
@@ -16,7 +16,7 @@ CalibrationParameters = NamedTuple(
 SUPPORTED_EXTENSIONS = ["xml", "json"]
 
 
-@clru_cache()
+@lru_cache()
 def parse_calibration_file(calibration_file: Path) -> CalibrationParameters:
     if not calibration_file.exists():
         raise FileNotFoundError(calibration_file)
@@ -51,7 +51,7 @@ def save_calibrations(params: CalibrationParameters, filename: Path):
         raise ValueError("Unknown calibration file format: " + file_extension)
 
 
-@clru_cache()
+@lru_cache()
 def get_fake_calibration_parameters(
     size: int, iterations: int = 15
 ) -> CalibrationParameters:
