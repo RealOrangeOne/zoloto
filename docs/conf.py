@@ -42,7 +42,7 @@ extensions = [
 
 set_type_checking_flag = True
 
-templates_path = ["_templates"]
+templates_path = []
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
@@ -53,7 +53,7 @@ intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
 
 html_theme = "sphinx_rtd_theme"
 
-html_static_path = ["_static"]
+html_static_path = []
 
 autodoc_default_options = {
     "member-order": "bysource",
