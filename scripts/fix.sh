@@ -4,5 +4,5 @@ set -e
 
 export PATH=env/bin:${PATH}
 
-black zoloto tests benchmarks examples setup.py
-isort -rc zoloto tests benchmarks examples setup.py
+black zoloto tests benchmarks examples setup.py docs
+isort -rc zoloto tests benchmarks examples setup.py docs
