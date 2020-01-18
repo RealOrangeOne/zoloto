@@ -1,6 +1,7 @@
 # Zoloto
 
 [![Build Status](https://travis-ci.com/RealOrangeOne/zoloto.svg?branch=master)](https://travis-ci.com/RealOrangeOne/zoloto)
+[![Documentation Status](https://readthedocs.org/projects/zoloto/badge/?version=latest)](https://zoloto.readthedocs.io/en/latest/?badge=latest)
 ![PyPI](https://img.shields.io/pypi/v/zoloto.svg)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/zoloto.svg)
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/zoloto.svg)
