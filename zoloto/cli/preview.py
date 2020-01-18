@@ -1,9 +1,8 @@
 import argparse
 
-import cv2
-
 from zoloto.cameras.camera import Camera
 from zoloto.marker_dict import MarkerDict
+from zoloto.viewer import CameraViewer
 
 
 class PreviewCamera(Camera):
@@ -18,11 +17,7 @@ def main():
     parser.add_argument("--id", type=int, default=0)
     args = parser.parse_args()
     with PreviewCamera(args.id) as camera:
-        while True:
-            frame = camera.capture_frame()
-            camera._annotate_frame(frame)
-            cv2.imshow("Camera", frame)
-            cv2.waitKey(1)
+        CameraViewer(camera, annotate=True).start()
 
 
 if __name__ == "__main__":
