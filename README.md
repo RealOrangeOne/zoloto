@@ -10,6 +10,8 @@
 
 A fiducial marker system powered by OpenCV - Supports ArUco and April
 
+[Documentation](https://zoloto.readthedocs.io/)
+
 ## Installation
 
 ```text
