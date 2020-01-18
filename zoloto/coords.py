@@ -1,13 +1,14 @@
 from typing import Iterator, NamedTuple, Tuple
 
 from cached_property import cached_property
-from coordinates import spaced_coordinate
 from cv2 import Rodrigues
 from pyquaternion import Quaternion
 
-Coordinates = spaced_coordinate("Coordinates", "xy")
+Coordinates = NamedTuple("Coordinates", [("x", float), ("y", float)])
 
-ThreeDCoordinates = spaced_coordinate("ThreeDCoordinates", "xyz")
+ThreeDCoordinates = NamedTuple(
+    "ThreeDCoordinates", [("x", float), ("y", float), ("z", float)]
+)
 
 Spherical = NamedTuple("Spherical", [("rot_x", float), ("rot_y", float), ("dist", int)])
 

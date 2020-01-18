@@ -16,7 +16,6 @@ setup(
     install_requires=[
         "opencv-contrib-python-headless>=4.0,<4.1",
         "cached-property>=1.5",
-        "coordinates>=0.3.0",
         "pyquaternion>=0.9.2",
     ],
     entry_points={

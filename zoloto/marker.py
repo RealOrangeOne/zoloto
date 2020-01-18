@@ -43,7 +43,9 @@ class Marker:
     @cached_property
     def pixel_centre(self):
         tl, _, br, _ = self.__pixel_corners
-        return Coordinates([tl[0] + (self.__size / 2) - 1, br[1] - (self.__size / 2)])
+        return Coordinates(
+            x=tl[0] + (self.__size / 2) - 1, y=br[1] - (self.__size / 2),
+        )
 
     @cached_property
     def distance(self):
@@ -92,9 +94,7 @@ class Marker:
             "pixel_corners": self.__pixel_corners.tolist(),
         }
         try:
-            marker_dict.update(
-                {"rvec": self._rvec.tolist(), "tvec": self._tvec.tolist()}
-            )
+            marker_dict.update({"rvec": list(self._rvec), "tvec": list(self._tvec)})
         except MissingCalibrationsError:
             pass
         return marker_dict

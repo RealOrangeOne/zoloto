@@ -52,10 +52,8 @@ def test_gets_markers(filename, snapshot):
                 {
                     "id": marker.id,
                     "size": marker.size,
-                    "pixel_corners": [
-                        coords.to_list() for coords in marker.pixel_corners
-                    ],
-                    "pixel_centre": marker.pixel_centre.to_list(),
+                    "pixel_corners": [list(coords) for coords in marker.pixel_corners],
+                    "pixel_centre": list(marker.pixel_centre),
                 }
                 for marker in camera.process_frame()
             ),
@@ -82,14 +80,12 @@ def test_gets_markers_eager(filename, camera_name, snapshot):
                 {
                     "id": marker.id,
                     "size": marker.size,
-                    "pixel_corners": [
-                        coords.to_list() for coords in marker.pixel_corners
-                    ],
-                    "pixel_centre": marker.pixel_centre.to_list(),
+                    "pixel_corners": [list(coords) for coords in marker.pixel_corners],
+                    "pixel_centre": list(marker.pixel_centre),
                     "distance": marker.distance,
                     "orientation": tuple(marker.orientation),
                     "spherical": tuple(marker.spherical),
-                    "cartesian": marker.cartesian.to_list(),
+                    "cartesian": list(marker.cartesian),
                 }
                 for marker in camera.process_frame_eager()
             ),
@@ -116,14 +112,12 @@ def test_gets_markers_with_calibration(filename, camera_name, snapshot):
                 {
                     "id": marker.id,
                     "size": marker.size,
-                    "pixel_corners": [
-                        coords.to_list() for coords in marker.pixel_corners
-                    ],
-                    "pixel_centre": marker.pixel_centre.to_list(),
+                    "pixel_corners": [list(coords) for coords in marker.pixel_corners],
+                    "pixel_centre": list(marker.pixel_centre),
                     "distance": marker.distance,
                     "orientation": tuple(marker.orientation),
                     "spherical": tuple(marker.spherical),
-                    "cartesian": marker.cartesian.to_list(),
+                    "cartesian": list(marker.cartesian),
                 }
                 for marker in camera.process_frame()
             ),
