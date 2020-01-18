@@ -37,6 +37,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
+    "sphinx_rtd_theme",
 ]
 
 set_type_checking_flag = True
@@ -44,6 +45,8 @@ set_type_checking_flag = True
 templates_path = ["_templates"]
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+
+intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
 
 
 # -- Options for HTML output -------------------------------------------------
