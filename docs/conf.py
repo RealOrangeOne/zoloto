@@ -1,3 +1,5 @@
+from typing import List
+
 import zoloto
 
 project = "Zoloto"
@@ -13,10 +15,10 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     "sphinx_rtd_theme",
-    "m2r"
+    "m2r",
 ]
 
-templates_path = []
+templates_path = []  # type: List[str]
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
@@ -24,13 +26,13 @@ intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
 
 html_theme = "sphinx_rtd_theme"
 
-html_static_path = []
+html_static_path = []  # type: List[str]
 
 autodoc_default_options = {
-    "member-order": "bysource",
-    "special-members": "__init__",
+    "member-order": "alphabetical",
+    "special-members": "__init__, __iter__",
     "undoc-members": True,
-    "inherited-members": True
+    "inherited-members": True,
 }
 
 autodoc_mock_imports = ["picamera"]

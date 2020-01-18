@@ -10,16 +10,19 @@ Coordinates
 -----------
 .. autoclass:: zoloto.coords.Coordinates
     :members:
+    :no-inherited-members:
 
 ThreeDCoordinates
 -----------------
 .. autoclass:: zoloto.coords.ThreeDCoordinates
     :members:
+    :no-inherited-members:
 
 Spherical
 ---------
 .. autoclass:: zoloto.coords.Spherical
     :members:
+    :no-inherited-members:
 
 Quaternion
 ----------
