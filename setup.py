@@ -18,14 +18,9 @@ setup(
         "cached-property>=1.5",
         "pyquaternion>=0.9.2",
     ],
-    entry_points={
-        "console_scripts": [
-            "zoloto-preview=zoloto.cli.preview:main",
-            "zoloto-calibrate=zoloto.cli.calibrate:main",
-        ]
-    },
+    entry_points={"console_scripts": ["zoloto-preview=zoloto.cli.preview:main"]},
     python_requires=">=3.5",
-    extras_require={"rpi": ["picamera[array]>=1.13"]},
+    extras_require={"rpi": ["picamera[array]>=1.13"], "viewer": ["Pillow>=7.0.0"]},
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
