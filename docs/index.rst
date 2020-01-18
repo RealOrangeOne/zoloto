@@ -9,5 +9,6 @@
    marker_dict
    coordinates
    discovery
+   viewer
 
    examples
