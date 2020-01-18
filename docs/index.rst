@@ -1,5 +1,4 @@
-Welcome to Zoloto's documentation!
-==================================
+.. mdinclude:: ../README.md
 
 .. toctree::
    :maxdepth: 1

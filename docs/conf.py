@@ -13,6 +13,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     "sphinx_rtd_theme",
+    "m2r"
 ]
 
 templates_path = []

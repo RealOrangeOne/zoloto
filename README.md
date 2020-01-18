@@ -12,7 +12,7 @@ A fiducial marker system powered by OpenCV - Supports ArUco and April
 
 ## Installation
 
-```
+```text
 pip install zoloto
 ```
 
@@ -34,7 +34,7 @@ with MyCamera(Path("my-image.png")) as camera:
     print("I saved an image with {} markers in.".format(len(camera.get_visible_markers())))
 ```
 
-More examples can be found in the [`examples/`](https://github.com/RealOrangeOne/zoloto/tree/master/examples) directory.
+[More examples](./examples)
 
 ## Development setup
 
