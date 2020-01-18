@@ -5,6 +5,10 @@ Welcome to Zoloto's documentation!
    :maxdepth: 1
    :caption: Contents:
 
+   cameras/index
    markers
+   marker_dict
+   coordinates
+   discovery
 
    examples

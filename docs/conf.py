@@ -12,11 +12,8 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
-    "sphinx.ext.napoleon",
     "sphinx_rtd_theme",
 ]
-
-set_type_checking_flag = True
 
 templates_path = []
 
@@ -32,5 +29,7 @@ autodoc_default_options = {
     "member-order": "bysource",
     "special-members": "__init__",
     "undoc-members": True,
-    "exclude-members": "__weakref__",
+    "inherited-members": True
 }
+
+autodoc_mock_imports = ["picamera"]
