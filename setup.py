@@ -36,5 +36,6 @@ setup(
         "Topic :: Scientific/Engineering",
         "Topic :: Scientific/Engineering :: Image Recognition",
         "Topic :: Software Development",
+        "Typing :: Typed",
     ],
 )
