@@ -109,7 +109,7 @@ class BaseCamera(ABC):
             raise MissingCalibrationsError()
         ids, corners = self._get_ids_and_corners(frame)
 
-        def get_marker_size(id_and_corners):
+        def get_marker_size(id_and_corners: Tuple[int, ndarray]) -> int:
             return self.get_marker_size(id_and_corners[0])
 
         sorted_corners = sorted(zip(ids, corners), key=get_marker_size)

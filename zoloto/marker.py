@@ -17,7 +17,7 @@ class Marker:
         corners: List[ndarray],
         size: int,
         calibration_params: Optional[CalibrationParameters] = None,
-        precalculated_vectors: Tuple[ndarray, ndarray] = None,
+        precalculated_vectors: Optional[Tuple[ndarray, ndarray]] = None,
     ):
         self.__id = marker_id
         self.__pixel_corners = corners

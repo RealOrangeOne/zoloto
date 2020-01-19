@@ -55,7 +55,7 @@ class CameraViewer:
         self.window.mainloop()
 
     def stop(self) -> None:
-        self.window.quit()
+        self.window.quit()  # type: ignore
 
     @staticmethod
     def get_window_size(camera: BaseCamera) -> Tuple[int, int]:
