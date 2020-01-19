@@ -13,7 +13,7 @@ class TestCamera(ImageFileCamera):
 
 
 with TestCamera(Path(sys.argv[1])) as camera:
-    camera.save_frame(sys.argv[2], annotate=True)
+    camera.save_frame(Path(sys.argv[2]), annotate=True)
     print(  # noqa: T001
         "Saw {} markers in this image".format(len(camera.get_visible_markers()))
     )
