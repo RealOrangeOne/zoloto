@@ -5,12 +5,26 @@ from cv2 import Rodrigues
 from pyquaternion import Quaternion
 
 Coordinates = NamedTuple("Coordinates", [("x", float), ("y", float)])
+Coordinates.__doc__ = """
+:param float x: X coordinate
+:param float y: Y coordinate
+"""
 
 ThreeDCoordinates = NamedTuple(
     "ThreeDCoordinates", [("x", float), ("y", float), ("z", float)]
 )
+ThreeDCoordinates.__doc__ = """
+:param float x: X coordinate
+:param float y: Y coordinate
+:param float z: Z coordinate
+"""
 
 Spherical = NamedTuple("Spherical", [("rot_x", float), ("rot_y", float), ("dist", int)])
+Spherical.__doc__ = """
+:param float rot_x: Rotation around the X-axis, in radians
+:param float rot_y: Rotation around the Y-axis, in radians
+:param float dist: Distance
+"""
 
 ThreeTuple = Tuple[float, float, float]
 RotationMatrix = Tuple[ThreeTuple, ThreeTuple, ThreeTuple]
@@ -19,7 +33,7 @@ RotationMatrix = Tuple[ThreeTuple, ThreeTuple, ThreeTuple]
 class Orientation:
     """The orientation of an object in 3-D space."""
 
-    def __init__(self, e_x: float, e_y: float, e_z: float) -> None:
+    def __init__(self, e_x: float, e_y: float, e_z: float):
         """
         Construct a quaternion given the components of a rotation vector.
 
@@ -67,9 +81,12 @@ class Orientation:
 
         Returns:
             A three-tuple of floating point angles:
-            yaw:    rotation angle around the z-axis in radians, in the range `[-pi, pi]`
-            pitch:  rotation angle around the y'-axis in radians, in the range `[-pi/2, -pi/2]`
-            roll:   rotation angle around the x''-axis in radians, in the range `[-pi, pi]`
+
+                yaw:    rotation angle around the z-axis in radians, in the range `[-pi, pi]`
+
+                pitch:  rotation angle around the y'-axis in radians, in the range `[-pi/2, -pi/2]`
+
+                roll:   rotation angle around the x''-axis in radians, in the range `[-pi, pi]`
         """
         return self._quaternion.yaw_pitch_roll
 

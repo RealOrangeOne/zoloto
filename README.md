@@ -1,6 +1,7 @@
 # Zoloto
 
 [![Build Status](https://travis-ci.com/RealOrangeOne/zoloto.svg?branch=master)](https://travis-ci.com/RealOrangeOne/zoloto)
+[![Documentation Status](https://readthedocs.org/projects/zoloto/badge/?version=latest)](https://zoloto.readthedocs.io/en/latest/?badge=latest)
 ![PyPI](https://img.shields.io/pypi/v/zoloto.svg)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/zoloto.svg)
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/zoloto.svg)
@@ -9,9 +10,11 @@
 
 A fiducial marker system powered by OpenCV - Supports ArUco and April
 
+[Documentation](https://zoloto.readthedocs.io/)
+
 ## Installation
 
-```
+```text
 pip install zoloto
 ```
 
@@ -33,7 +36,7 @@ with MyCamera(Path("my-image.png")) as camera:
     print("I saved an image with {} markers in.".format(len(camera.get_visible_markers())))
 ```
 
-More examples can be found in the [`examples/`](https://github.com/RealOrangeOne/zoloto/tree/master/examples) directory.
+[More examples](./examples)
 
 ## Development setup
 
