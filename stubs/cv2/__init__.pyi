@@ -40,3 +40,6 @@ def copyMakeBorder(
     borderType: int,
     value: Optional[List[int]],
 ) -> ndarray: ...
+
+# Note that this is not the only signature of Rodrigues, but it is the only one we use.
+def Rodrigues(vector: Tuple[float, float, float]) -> Tuple[ndarray, ndarray]: ...

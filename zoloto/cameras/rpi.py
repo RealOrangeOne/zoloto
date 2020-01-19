@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Optional
 
 from numpy import ndarray
+
 import picamera
 import picamera.array
 
