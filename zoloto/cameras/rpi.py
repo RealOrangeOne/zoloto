@@ -33,9 +33,8 @@ class PiSnapshotCamera(BaseCamera):
     def capture_frame(self) -> ndarray:
         with picamera.PiCamera() as camera:
             with picamera.array.PiRGBArray(camera) as raw_capture:
-                self.camera.capture(raw_capture, format="bgr")
+                camera.capture(raw_capture, format="bgr")
                 return raw_capture.array
 
     def close(self) -> None:
         super().close()
-        self.camera.close()
