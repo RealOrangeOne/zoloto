@@ -8,7 +8,9 @@ from .base import BaseCamera
 
 
 class ImageFileCamera(BaseCamera):
-    def __init__(self, image_path: Path, *, calibration_file: Optional[Path] = None) -> None:
+    def __init__(
+        self, image_path: Path, *, calibration_file: Optional[Path] = None
+    ) -> None:
         self.image_path = image_path
         super().__init__(calibration_file=calibration_file)
 
@@ -17,7 +19,9 @@ class ImageFileCamera(BaseCamera):
 
 
 class VideoFileCamera(BaseCamera):
-    def __init__(self, video_path: Path, *, calibration_file: Optional[Path] = None) -> None:
+    def __init__(
+        self, video_path: Path, *, calibration_file: Optional[Path] = None
+    ) -> None:
         super().__init__(calibration_file=calibration_file)
         self.video_capture = self.get_video_capture(video_path)
 

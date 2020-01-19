@@ -2,7 +2,7 @@
 Type stubs for cv2.
 Note that stubs are only written for the parts that we use.
 """
-from typing import Tuple, Union
+from typing import List, Optional, Tuple, Union
 
 from numpy import ndarray
 
@@ -19,3 +19,12 @@ class VideoCapture:
     def set(self, property: int, value: int) -> None: ...
 
 def imread(path: str) -> ndarray: ...
+def copyMakeBorder(
+    src: ndarray,
+    top: int,
+    bottom: int,
+    left: int,
+    right: int,
+    borderType: int,
+    value: Optional[List[int]],
+) -> ndarray: ...
