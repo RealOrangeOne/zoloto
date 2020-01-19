@@ -10,7 +10,6 @@ pytest --verbose --cov zoloto/ --cov-report term --cov-report html tests/
 if hash black 2>/dev/null;
 then
     echo "> Running formatter..."
-
     black zoloto tests benchmarks examples setup.py docs stubs --check
 fi
 
