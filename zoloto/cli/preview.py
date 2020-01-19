@@ -8,11 +8,11 @@ from zoloto.viewer import CameraViewer
 class PreviewCamera(Camera):
     marker_dict = MarkerDict.DICT_6X6_250
 
-    def get_marker_size(self):
+    def get_marker_size(self, marker_id: int) -> int:
         return 100
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--id", type=int, default=0)
     args = parser.parse_args()
