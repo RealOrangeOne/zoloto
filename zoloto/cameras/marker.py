@@ -30,7 +30,7 @@ class MarkerCamera(BaseCamera):
     def get_marker_size(self, marker_id: int) -> int:
         return self.marker_size
 
-    def get_calibrations(self) -> CalibrationParameters:
+    def get_calibrations(self) -> Optional[CalibrationParameters]:
         return get_fake_calibration_parameters(self.marker_size)
 
     def get_resolution(self) -> Tuple[int, int]:
