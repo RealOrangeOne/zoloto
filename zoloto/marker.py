@@ -66,7 +66,9 @@ class Marker:
 
     @lru_cache(maxsize=None)
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
-        if self._is_eager():
+        # Check if the Marker is eager.
+        # We cannot call _is_eager, else mypy will think we are returning Optional
+        if self.__precalculated_vectors is not None:
             return self.__precalculated_vectors
 
         if self.__camera_calibration_params is None:
@@ -91,7 +93,7 @@ class Marker:
         marker_dict = {
             "id": self.id,
             "size": self.size,
-            "pixel_corners": self.__pixel_corners.tolist(),
+            "pixel_corners": self.__pixel_corners.tolist(),  # type: ignore
         }
         try:
             marker_dict.update({"rvec": list(self._rvec), "tvec": list(self._tvec)})
