@@ -11,4 +11,11 @@ from numpy import array, ndarray
 def DetectorParameters_create() -> aruco_DetectorParameters:
     ...
 
-def estimatePoseSingleMarkers(corners: List[ndarray], markerLength: int, cameraMatrix: Optional[array], distCoeffs: Optional[array]) -> Tuple[ndarray, ndarray, ndarray]: ...
+
+def estimatePoseSingleMarkers(
+    corners: List[ndarray],
+    markerLength: int,
+    cameraMatrix: Optional[array],
+    distCoeffs: Optional[array],
+) -> Tuple[ndarray, ndarray, ndarray]:
+    ...

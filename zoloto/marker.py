@@ -75,7 +75,10 @@ class Marker:
             raise MissingCalibrationsError()
 
         rvec, tvec, _ = aruco.estimatePoseSingleMarkers(
-            [self.__pixel_corners], self.__size, self.__camera_calibration_params.camera_matrix, self.__camera_calibration_params.distance_coefficients,
+            [self.__pixel_corners],
+            self.__size,
+            self.__camera_calibration_params.camera_matrix,
+            self.__camera_calibration_params.distance_coefficients,
         )
         return rvec[0][0], tvec[0][0]
 
@@ -102,7 +105,7 @@ class Marker:
         return marker_dict
 
     @classmethod
-    def from_dict(cls, marker_dict: Dict[str, Any]) -> 'Marker':
+    def from_dict(cls, marker_dict: Dict[str, Any]) -> "Marker":
         marker_args = [
             marker_dict["id"],
             array(marker_dict["pixel_corners"]),
