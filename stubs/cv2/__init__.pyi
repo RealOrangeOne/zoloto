@@ -4,12 +4,24 @@ Note that stubs are only written for the parts that we use.
 """
 from typing import List, Optional, Tuple, Union
 
-from numpy import ndarray
+from numpy import array, ndarray
 
 CAP_PROP_BUFFERSIZE: int
 
+FILE_STORAGE_READ: int
+FILE_STORAGE_WRITE: int
+
 class aruco_DetectorParameters:
     pass
+
+class FileNode:
+    def mat(self) -> array: ...
+
+class FileStorage:
+    def __init__(self, path: str, mode: int) -> None: ...
+    def getNode(self, nodename: str) -> FileNode: ...
+    def release(self) -> None: ...
+    def write(self, nodename: str, data: array): ...
 
 class VideoCapture:
     def __init__(self, camera_id: Union[int, str]) -> None: ...
