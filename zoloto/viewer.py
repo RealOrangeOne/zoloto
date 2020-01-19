@@ -47,8 +47,7 @@ class CameraViewer:
     def signal_handler(self, sig: signal.Signals, frame: FrameType) -> None:
         self.stop()
 
-    @staticmethod
-    def on_frame(frame) -> ndarray:
+    def on_frame(self, frame: ndarray) -> ndarray:
         return frame
 
     def start(self) -> None:

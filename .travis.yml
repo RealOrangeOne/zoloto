@@ -17,4 +17,5 @@ install:
 script:
   - ./scripts/test.sh
   - ./scripts/benchmark.sh
+  - ./scripts/docs.sh
   - ./scripts/build.sh

@@ -10,17 +10,18 @@ pytest --verbose --cov zoloto/ --cov-report term --cov-report html tests/
 if hash black 2>/dev/null;
 then
     echo "> Running formatter..."
-    black zoloto tests benchmarks examples setup.py stubs --check
+
+    black zoloto tests benchmarks examples setup.py docs stubs --check
 fi
 
 echo "> Running linter..."
-flake8 zoloto tests benchmarks examples setup.py stubs
+flake8 zoloto tests benchmarks examples setup.py docs stubs
 
 echo "> Running isort..."
-isort -rc -c zoloto tests benchmarks examples setup.py stubs
+isort -rc -c zoloto tests benchmarks examples setup.py docs stubs
 
 echo "> Running type checker..."
-mypy zoloto tests examples
+mypy zoloto tests examples docs
 mypy benchmarks
 
 echo "> Running bandit..."
