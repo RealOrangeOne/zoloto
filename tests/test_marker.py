@@ -63,10 +63,10 @@ class MarkerTestCase(TestCase):
         self.assertEqual(int(z), 991)
 
     def test_spherical_coordinates(self) -> None:
-        rot_x, rot_y, dist = self.marker.spherical  # type: ignore
-        self.assertEqual(dist, self.marker.distance)  # type: ignore
-        self.assertEqual(rot_x, approx(0.025, abs=1e-3))  # type: ignore
-        self.assertEqual(rot_y, approx(0.05, abs=1e-3))  # type: ignore
+        rot_x, rot_y, dist = self.marker.spherical
+        self.assertEqual(dist, self.marker.distance)
+        self.assertEqual(rot_x, approx(0.025, abs=1e-3))
+        self.assertEqual(rot_y, approx(0.05, abs=1e-3))
 
     def test_as_dict(self) -> None:
         marker_dict = self.marker.as_dict()

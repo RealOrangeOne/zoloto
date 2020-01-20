@@ -60,17 +60,17 @@ class Orientation:
     @property
     def yaw(self) -> float:
         """Get rotation angle around z axis in radians."""
-        return self.yaw_pitch_roll[0]  # type: ignore
+        return self.yaw_pitch_roll[0]
 
     @property
     def pitch(self) -> float:
         """Get rotation angle around y axis in radians."""
-        return self.yaw_pitch_roll[1]  # type: ignore
+        return self.yaw_pitch_roll[1]
 
     @property
     def roll(self) -> float:
         """Get rotation angle around x axis in radians."""
-        return self.yaw_pitch_roll[2]  # type: ignore
+        return self.yaw_pitch_roll[2]
 
     @cached_property
     def yaw_pitch_roll(self) -> ThreeTuple:
