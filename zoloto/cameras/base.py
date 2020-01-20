@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from itertools import groupby
 from pathlib import Path
-from typing import Any, Generator, List, Optional, Tuple
+from typing import Any, Generator, List, Optional, Tuple, TypeVar
 
 import cv2
 from numpy import ndarray
@@ -10,6 +10,8 @@ from zoloto.calibration import CalibrationParameters, parse_calibration_file
 from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import Marker
 from zoloto.marker_dict import MarkerDict
+
+T = TypeVar("T", bound="BaseCamera")
 
 
 class BaseCamera(ABC):
@@ -130,7 +132,7 @@ class BaseCamera(ABC):
     def close(self) -> None:
         pass
 
-    def __enter__(self) -> "BaseCamera":
+    def __enter__(self: T) -> T:
         return self
 
     def __exit__(self, *args: Any) -> None:
