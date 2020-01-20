@@ -10,6 +10,7 @@
    coordinates
    discovery
    calibration
+   cv2
    viewer
 
    examples
