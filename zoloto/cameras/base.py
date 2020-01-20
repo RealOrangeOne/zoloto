@@ -44,7 +44,7 @@ class BaseCamera(ABC):
         raise NotImplementedError()
 
     def save_frame(
-        self, filename: Path, *, annotate: bool = False, frame: ndarray = None
+        self, filename: Path, *, annotate: bool = False, frame: Optional[ndarray] = None
     ) -> ndarray:
         if frame is None:
             frame = self.capture_frame()

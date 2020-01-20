@@ -45,7 +45,7 @@ class Camera(BaseCamera):
         self.video_capture.release()
 
     @classmethod
-    def discover(cls, **kwargs: Any) -> Generator[BaseCamera, None, None]:
+    def discover(cls, **kwargs: Any) -> Generator[Camera, None, None]:
         for camera_id in find_camera_ids():
             yield cls(camera_id, **kwargs)
 
@@ -73,6 +73,6 @@ class SnapshotCamera(BaseCamera):
         return frame
 
     @classmethod
-    def discover(cls, **kwargs: Any) -> Generator[BaseCamera, None, None]:
+    def discover(cls, **kwargs: Any) -> Generator[SnapshotCamera, None, None]:
         for camera_id in find_camera_ids():
             yield cls(camera_id, **kwargs)
