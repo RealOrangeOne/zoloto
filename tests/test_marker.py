@@ -21,7 +21,9 @@ class MarkerTestCase(TestCase):
         class MarkerCamera(BaseMarkerCamera):
             marker_dict = MarkerDict.DICT_6X6_50
 
-        self.marker_camera = MarkerCamera(self.MARKER_ID, marker_size=self.MARKER_SIZE)
+        self.marker_camera = MarkerCamera(
+            self.MARKER_ID, marker_size=self.MARKER_SIZE
+        )  # type: BaseMarkerCamera
         self.markers = list(self.marker_camera.process_frame())
         self.marker = self.markers[0]
 
@@ -109,7 +111,7 @@ class EagerMarkerTestCase(MarkerTestCase):
         class MarkerCamera(BaseMarkerCamera):
             marker_dict = MarkerDict.DICT_6X6_50
 
-        self.marker_camera = MarkerCamera(self.MARKER_ID, marker_size=self.MARKER_SIZE)  # type: ignore
+        self.marker_camera = MarkerCamera(self.MARKER_ID, marker_size=self.MARKER_SIZE)
         self.markers = list(self.marker_camera.process_frame_eager())
         self.marker = self.markers[0]
 
@@ -128,7 +130,7 @@ class MarkerFromDictTestCase(EagerMarkerTestCase):
         class MarkerCamera(BaseMarkerCamera):
             marker_dict = MarkerDict.DICT_6X6_50
 
-        self.marker_camera = MarkerCamera(self.MARKER_ID, marker_size=self.MARKER_SIZE)  # type: ignore
+        self.marker_camera = MarkerCamera(self.MARKER_ID, marker_size=self.MARKER_SIZE)
         self.markers = list(self.marker_camera.process_frame())
         self.marker = Marker.from_dict(self.markers[0].as_dict())
 
@@ -141,7 +143,7 @@ class MarkerSansCalibrationsTestCase(MarkerTestCase):
             return None
 
     def setUp(self) -> None:
-        self.marker_camera = self.TestCamera(  # type: ignore
+        self.marker_camera = self.TestCamera(
             self.MARKER_ID, marker_size=self.MARKER_SIZE,
         )
         self.markers = list(self.marker_camera.process_frame())
@@ -185,7 +187,7 @@ class MarkerSansCalibrationsTestCase(MarkerTestCase):
 
 class MarkerSansCalibrationsFromDictTestCase(MarkerSansCalibrationsTestCase):
     def setUp(self) -> None:
-        self.marker_camera = self.TestCamera(  # type: ignore
+        self.marker_camera = self.TestCamera(
             self.MARKER_ID, marker_size=self.MARKER_SIZE,
         )
         self.markers = list(self.marker_camera.process_frame())
