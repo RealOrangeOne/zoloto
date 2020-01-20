@@ -24,8 +24,11 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
-    'cv2': ('https://docs.opencv.org/3.0-last-rst/', None),  # This is the most recent version with intersphinx support.
-    'numpy': ('https://docs.scipy.org/doc/numpy', None),
+    "cv2": (
+        "https://docs.opencv.org/3.0-last-rst/",
+        None,
+    ),  # This is the most recent version with intersphinx support.
+    "numpy": ("https://docs.scipy.org/doc/numpy", None),
 }
 
 html_theme = "sphinx_rtd_theme"
