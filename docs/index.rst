@@ -9,6 +9,7 @@
    marker_dict
    coordinates
    discovery
+   calibration
    viewer
 
    examples

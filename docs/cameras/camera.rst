@@ -11,3 +11,7 @@ Snapshot Camera
 ---------------
 .. autoclass:: zoloto.cameras.camera.SnapshotCamera
     :members:
+
+Base Camera
+---------------
+.. autoclass:: zoloto.cameras.base.BaseCamera
