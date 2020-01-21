@@ -8,3 +8,7 @@ Cameras
     camera
     rpi
     marker
+
+Base Camera
+---------------
+.. autoclass:: zoloto.cameras.base.BaseCamera

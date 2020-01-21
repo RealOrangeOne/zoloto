@@ -10,7 +10,7 @@ from zoloto.marker_dict import MarkerDict
 
 
 @given(reasonable_image_size())
-def test_captures_frame_at_correct_resolution(resolution):
+def test_captures_frame_at_correct_resolution(resolution) -> None:
     class TestCamera(MarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
 
@@ -20,7 +20,7 @@ def test_captures_frame_at_correct_resolution(resolution):
 
 
 @given(strategies.integers(0, 49))
-def test_detects_markers(marker_id):
+def test_detects_markers(marker_id) -> None:
     class TestCamera(MarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
 
@@ -30,7 +30,7 @@ def test_detects_markers(marker_id):
 
 
 @given(strategies.integers(0, 49))
-def test_detects_marker_ids(marker_id):
+def test_detects_marker_ids(marker_id) -> None:
     class TestCamera(MarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
 
@@ -38,7 +38,7 @@ def test_detects_marker_ids(marker_id):
     assert markers == [marker_id]
 
 
-def test_sees_nothing_in_blank_image():
+def test_sees_nothing_in_blank_image() -> None:
     class TestCamera(MarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
 
@@ -49,7 +49,7 @@ def test_sees_nothing_in_blank_image():
 
 
 @given(strategies.integers(0, 49))
-def test_eager_capture(marker_id):
+def test_eager_capture(marker_id) -> None:
     class TestCamera(MarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
 
@@ -59,7 +59,7 @@ def test_eager_capture(marker_id):
     assert markers[0]._is_eager()
 
 
-def test_camera_as_context_manager():
+def test_camera_as_context_manager() -> None:
     class TestCamera(MarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
 
@@ -68,7 +68,7 @@ def test_camera_as_context_manager():
         assert markers == [25]
 
 
-def test_marker_with_falsy_id():
+def test_marker_with_falsy_id() -> None:
     class TestCamera(MarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
 
@@ -78,7 +78,7 @@ def test_marker_with_falsy_id():
 
 
 @given(strategies.integers(0, 49))
-def test_saved_image(temp_image_file, marker_id):
+def test_saved_image(temp_image_file, marker_id) -> None:
     class TestCamera(MarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
 
@@ -95,7 +95,7 @@ def test_saved_image(temp_image_file, marker_id):
 
 
 @given(strategies.integers(0, 49))
-def test_saved_image_with_annotation(temp_image_file, marker_id):
+def test_saved_image_with_annotation(temp_image_file, marker_id) -> None:
     class TestCamera(MarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
 
@@ -104,7 +104,7 @@ def test_saved_image_with_annotation(temp_image_file, marker_id):
     marker_camera.save_frame(output_file, annotate=True)
 
 
-def test_process_eager_frame_without_calibrations():
+def test_process_eager_frame_without_calibrations() -> None:
     class TestCamera(MarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
 

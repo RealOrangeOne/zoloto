@@ -4,7 +4,7 @@ from zoloto.coords import Coordinates, Orientation, Spherical, ThreeDCoordinates
 from zoloto.marker import Marker
 from zoloto.marker_dict import MarkerDict
 
-__version__ = pkg_resources.require("zoloto")[0].version
+__version__ = pkg_resources.require("zoloto")[0].version  # type: str
 
 
 __all__ = [

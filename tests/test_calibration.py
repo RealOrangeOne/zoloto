@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Callable
 
 import pytest
 
@@ -11,7 +12,9 @@ from zoloto.calibration import (
 
 
 @pytest.mark.parametrize("extension", SUPPORTED_EXTENSIONS)
-def test_saving_calibrations(extension, make_temp_file):
+def test_saving_calibrations(
+    extension: str, make_temp_file: Callable[[str], Path]
+) -> None:
     original_params = get_fake_calibration_parameters(200)
     calibrations_file = Path(make_temp_file("." + extension))
     save_calibrations(original_params, calibrations_file)
@@ -20,20 +23,20 @@ def test_saving_calibrations(extension, make_temp_file):
     assert read_params[1].tolist() == original_params[1].tolist()
 
 
-def test_cant_load_invalid_extension(make_temp_file):
+def test_cant_load_invalid_extension(make_temp_file: Callable[[str], Path]) -> None:
     with pytest.raises(ValueError) as e:
         parse_calibration_file(Path(make_temp_file(".unknown")))
     assert "Unknown calibration file format" in e.value.args[0]
 
 
-def test_cant_save_invalid_extension():
+def test_cant_save_invalid_extension() -> None:
     with pytest.raises(ValueError) as e:
         save_calibrations(get_fake_calibration_parameters(200), Path("test.unknown"))
     assert "Unknown calibration file format" in e.value.args[0]
 
 
 @pytest.mark.parametrize("extension", ["xml", "json"])
-def test_loading_missing_file(extension):
+def test_loading_missing_file(extension: str) -> None:
     filename = Path("doesnt-exist." + extension)
     with pytest.raises(FileNotFoundError):
         parse_calibration_file(filename)

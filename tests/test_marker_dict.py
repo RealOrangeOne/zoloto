@@ -8,12 +8,12 @@ EXPECTED_MARKER_DICTS = {
 }
 
 
-def test_contains_all_dicts():
+def test_contains_all_dicts() -> None:
     assert {marker.name for marker in MarkerDict} == EXPECTED_MARKER_DICTS
 
 
 @pytest.mark.parametrize("marker_dict_name", EXPECTED_MARKER_DICTS)
-def test_has_correct_marker_ids(marker_dict_name):
+def test_has_correct_marker_ids(marker_dict_name: str) -> None:
     assert (
         getattr(aruco, marker_dict_name) == getattr(MarkerDict, marker_dict_name).value
     )

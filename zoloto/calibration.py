@@ -34,7 +34,7 @@ def parse_calibration_file(calibration_file: Path) -> CalibrationParameters:
     raise ValueError("Unknown calibration file format: " + file_extension)
 
 
-def save_calibrations(params: CalibrationParameters, filename: Path):
+def save_calibrations(params: CalibrationParameters, filename: Path) -> None:
     file_extension = filename.suffix
     if file_extension == ".json":
         filename.write_text(

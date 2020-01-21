@@ -4,18 +4,18 @@ import zoloto.cameras
 from zoloto.marker_dict import MarkerDict
 
 
-def test_exposes_camera():
+def test_exposes_camera() -> None:
     assert zoloto.cameras.Camera == zoloto.cameras.camera.Camera
 
 
 @pytest.mark.parametrize("camera_name", ["ImageFileCamera", "VideoFileCamera"])
-def test_exposes_file_camera(camera_name):
+def test_exposes_file_camera(camera_name) -> None:
     assert getattr(zoloto.cameras, camera_name) == getattr(
         zoloto.cameras.file, camera_name
     )
 
 
-def test_camera_requires_abstract_arguments():
+def test_camera_requires_abstract_arguments() -> None:
     class TestCamera(zoloto.cameras.Camera):
         pass
 
@@ -30,7 +30,7 @@ def test_camera_requires_abstract_arguments():
     assert "get_marker_size" in exception_message
 
 
-def test_marker_camera_requires_abstract_arguments():
+def test_marker_camera_requires_abstract_arguments() -> None:
     class TestCamera(zoloto.cameras.marker.MarkerCamera):
         pass
 
@@ -48,7 +48,7 @@ def test_marker_camera_requires_abstract_arguments():
 @pytest.mark.parametrize(
     "camera_class", [zoloto.cameras.Camera, zoloto.cameras.camera.SnapshotCamera]
 )
-def test_enumerate_all_cameras(camera_class, mocker):
+def test_enumerate_all_cameras(camera_class, mocker) -> None:
     class TestCamera(camera_class):
         marker_dict = MarkerDict.DICT_4X4_100
 
@@ -66,7 +66,7 @@ def test_enumerate_all_cameras(camera_class, mocker):
 @pytest.mark.parametrize(
     "camera_class", [zoloto.cameras.Camera, zoloto.cameras.camera.SnapshotCamera]
 )
-def test_enumerate_no_cameras(camera_class, mocker):
+def test_enumerate_no_cameras(camera_class, mocker) -> None:
     class TestCamera(camera_class):
         marker_dict = MarkerDict.DICT_4X4_100
 
@@ -79,14 +79,14 @@ def test_enumerate_no_cameras(camera_class, mocker):
     assert len(discovered_cameras) == 0
 
 
-def test_get_camera_ids(mocker):
+def test_get_camera_ids(mocker) -> None:
     VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
     VideoCapture.return_value.isOpened.return_value = True
     discovered_ids = list(zoloto.cameras.camera.find_camera_ids())
     assert discovered_ids == [0, 1, 2, 3, 4, 5, 6, 7]
 
 
-def test_get_no_camera_ids(mocker):
+def test_get_no_camera_ids(mocker) -> None:
     VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
     VideoCapture.return_value.isOpened.return_value = False
     discovered_ids = list(zoloto.cameras.camera.find_camera_ids())

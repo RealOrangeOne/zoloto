@@ -9,6 +9,8 @@
    marker_dict
    coordinates
    discovery
+   calibration
+   cv2
    viewer
 
    examples

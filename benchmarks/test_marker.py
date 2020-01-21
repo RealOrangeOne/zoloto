@@ -1,39 +1,40 @@
 from functools import partial
+from typing import Callable
 
 from zoloto.marker import Marker
 
 
-def get_uncached_marker_func(marker, func):
+def get_uncached_marker_func(marker: Marker, func: str) -> partial:
     return partial(getattr(marker.__class__, func).func, marker)
 
 
-def test_marker_distance(benchmark, marker):
+def test_marker_distance(benchmark: Callable, marker: Marker) -> None:
     benchmark(get_uncached_marker_func(marker, "distance"))
 
 
-def test_marker_pixel_corners(benchmark, marker):
+def test_marker_pixel_corners(benchmark: Callable, marker: Marker) -> None:
     benchmark(lambda: marker.pixel_corners)
 
 
-def test_marker_pixel_centre(benchmark, marker):
+def test_marker_pixel_centre(benchmark: Callable, marker: Marker) -> None:
     benchmark(get_uncached_marker_func(marker, "pixel_centre"))
 
 
-def test_marker_pose_vectors(benchmark, marker):
+def test_marker_pose_vectors(benchmark: Callable, marker: Marker) -> None:
     benchmark(marker._get_pose_vectors.__wrapped__, marker)
 
 
-def test_marker_orientation(benchmark, marker):
+def test_marker_orientation(benchmark: Callable, marker: Marker) -> None:
     benchmark(lambda: marker.orientation)
 
 
-def test_marker_cartesian(benchmark, marker):
+def test_marker_cartesian(benchmark: Callable, marker: Marker) -> None:
     benchmark(lambda: marker.cartesian)
 
 
-def test_marker_spherical(benchmark, marker):
+def test_marker_spherical(benchmark: Callable, marker: Marker) -> None:
     benchmark(lambda: marker.spherical)
 
 
-def test_marker_from_dict(benchmark, marker):
+def test_marker_from_dict(benchmark: Callable, marker: Marker) -> None:
     benchmark(Marker.from_dict, marker.as_dict())
