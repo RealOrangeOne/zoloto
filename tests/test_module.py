@@ -1,5 +1,3 @@
-from typing import Any
-
 import pytest
 
 import zoloto
@@ -21,7 +19,7 @@ def test_exposes_marker_dict() -> None:
     "coordinate_struct",
     ["Coordinates", "Orientation", "ThreeDCoordinates", "Spherical"],
 )
-def test_exposes_coordinates(coordinate_struct: Any) -> None:
+def test_exposes_coordinates(coordinate_struct: str) -> None:
     assert getattr(zoloto, coordinate_struct) == getattr(
         zoloto.coords, coordinate_struct
     )
