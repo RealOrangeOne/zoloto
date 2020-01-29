@@ -13,6 +13,7 @@ setup(
     long_description_content_type="text/markdown",
     license="BSD",
     packages=find_packages(include="zoloto*"),
+    package_data={"zoloto": ["py.typed"]},
     install_requires=[
         "opencv-contrib-python-headless>=4.0,<4.1",
         "cached-property>=1.5",
