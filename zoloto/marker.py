@@ -40,8 +40,8 @@ class BaseMarker(ABC):
 
     @cached_property
     def pixel_centre(self) -> Coordinates:
-        tl, _, br, _ = self._pixel_corners
-        return Coordinates(x=tl[0] + (self._size / 2) - 1, y=br[1] - (self._size / 2),)
+        tl, _, br, _ = self.pixel_corners
+        return Coordinates(x=tl.x + (self._size / 2) - 1, y=br.y - (self._size / 2),)
 
     @cached_property
     def distance(self) -> int:
@@ -54,11 +54,13 @@ class BaseMarker(ABC):
     @cached_property
     def spherical(self) -> Spherical:
         x, y, z = self._tvec
-        return Spherical(rot_x=arctan2(y, z), rot_y=arctan2(x, z), dist=self.distance)
+        return Spherical(
+            rot_x=float(arctan2(y, z)), rot_y=float(arctan2(x, z)), dist=self.distance
+        )
 
     @property
     def cartesian(self) -> ThreeDCoordinates:
-        return ThreeDCoordinates(*self._tvec)
+        return ThreeDCoordinates(*self._tvec.tolist())
 
     @property
     def _rvec(self) -> ndarray:
