@@ -25,7 +25,7 @@ def test_marker_pose_vectors(benchmark: Callable, marker: Marker) -> None:
 
 
 def test_marker_orientation(benchmark: Callable, marker: Marker) -> None:
-    benchmark(lambda: marker.orientation)
+    benchmark(get_uncached_marker_func(marker, "orientation"))
 
 
 def test_marker_cartesian(benchmark: Callable, marker: Marker) -> None:

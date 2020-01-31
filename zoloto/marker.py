@@ -47,7 +47,7 @@ class BaseMarker(ABC):
     def distance(self) -> int:
         return int(linalg.norm(self._tvec))
 
-    @property
+    @cached_property
     def orientation(self) -> Orientation:
         return Orientation(*self._rvec)
 
