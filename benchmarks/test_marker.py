@@ -21,7 +21,7 @@ def test_marker_pixel_centre(benchmark: Callable, marker: Marker) -> None:
 
 
 def test_marker_pose_vectors(benchmark: Callable, marker: Marker) -> None:
-    benchmark(marker._get_pose_vectors.__wrapped__, marker)
+    benchmark(marker._get_pose_vectors.__wrapped__, marker)  # type: ignore
 
 
 def test_marker_orientation(benchmark: Callable, marker: Marker) -> None:
