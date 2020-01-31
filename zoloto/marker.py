@@ -22,10 +22,6 @@ class BaseMarker(ABC):
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
         raise NotImplementedError()
 
-    @abstractmethod
-    def _is_eager(self) -> bool:
-        raise NotImplementedError()
-
     @property  # noqa: A003
     def id(self) -> int:
         return self._id
@@ -102,9 +98,6 @@ class EagerMarker(BaseMarker):
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
         return self.__precalculated_vectors
 
-    def _is_eager(self) -> bool:
-        return True
-
 
 class Marker(BaseMarker):
     def __init__(
@@ -116,9 +109,6 @@ class Marker(BaseMarker):
     ):
         super().__init__(marker_id, corners, size)
         self.__calibration_params = calibration_params
-
-    def _is_eager(self) -> bool:
-        return False
 
     @cached_method
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:

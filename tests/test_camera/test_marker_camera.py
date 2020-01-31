@@ -6,6 +6,7 @@ from tests.strategies import reasonable_image_size
 from zoloto.cameras.file import ImageFileCamera
 from zoloto.cameras.marker import MarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
+from zoloto.marker import EagerMarker
 from zoloto.marker_dict import MarkerDict
 
 
@@ -56,7 +57,7 @@ def test_eager_capture(marker_id) -> None:
     markers = list(TestCamera(marker_id, marker_size=200).process_frame_eager())
     assert len(markers) == 1
     assert markers[0].id == marker_id
-    assert markers[0]._is_eager()
+    assert isinstance(markers[0], EagerMarker)
 
 
 def test_camera_as_context_manager() -> None:

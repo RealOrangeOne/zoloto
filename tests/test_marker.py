@@ -143,9 +143,6 @@ class EagerMarkerTestCase(MarkerTestCase):
         self.markers = list(self.marker_camera.process_frame_eager())
         self.marker = self.markers[0]
 
-    def test_is_eager(self) -> None:
-        self.assertTrue(self.marker._is_eager())
-
     @patch("cv2.aruco.estimatePoseSingleMarkers")
     def test_doesnt_calculate_pose(self, pose_mock: Any) -> None:
         assert self.marker._tvec is not None
