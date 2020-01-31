@@ -30,6 +30,9 @@ class MarkerTestCase(TestCase):
         )  # type: List[BaseMarker]
         self.marker = self.markers[0]
 
+    def assertIsType(self, a: Any, b: Any) -> None:
+        self.assertEqual(type(a), b)
+
     def test_marker_size(self) -> None:
         self.assertEqual(self.marker.size, self.MARKER_SIZE)
 
@@ -93,6 +96,42 @@ class MarkerTestCase(TestCase):
     def test_many_as_dict_ujson(self) -> None:
         created_marker_dict = ujson.loads(ujson.dumps(self.markers))
         self.assertEqual(self.EXPECTED_DICT_KEYS, set(created_marker_dict[0].keys()))
+
+    def test_dict_value_types(self) -> None:
+        marker_dict = self.marker.as_dict()
+        self.assertIsType(marker_dict["id"], int)
+        self.assertIsType(marker_dict["size"], int)
+
+        pixel_corners = marker_dict["pixel_corners"]
+        self.assertIsType(pixel_corners, list)
+        self.assertIsType(pixel_corners[0], list)
+        self.assertIsType(pixel_corners[0][0], float)
+
+        if "rvec" in marker_dict:
+            self.assertIsType(marker_dict["rvec"], list)
+            self.assertIsType(marker_dict["rvec"][0], float)
+
+            self.assertIsType(marker_dict["tvec"], list)
+            self.assertIsType(marker_dict["tvec"][0], float)
+
+    def test_marker_types(self) -> None:
+        self.assertIsType(self.marker.id, int)
+        self.assertIsType(self.marker.size, int)
+        self.assertIsType(self.marker.pixel_corners[0].x, float)
+        self.assertIsType(self.marker.pixel_corners[0].y, float)
+        self.assertIsType(self.marker.pixel_centre.x, float)
+        self.assertIsType(self.marker.pixel_centre.y, float)
+
+        if "rvec" in self.EXPECTED_DICT_KEYS:
+            self.assertIsType(self.marker.distance, int)
+
+            self.assertIsType(self.marker.spherical.rot_x, float)
+            self.assertIsType(self.marker.spherical.rot_y, float)
+            self.assertIsType(self.marker.spherical.dist, int)
+
+            self.assertIsType(self.marker.cartesian.x, float)
+            self.assertIsType(self.marker.cartesian.y, float)
+            self.assertIsType(self.marker.cartesian.z, float)
 
 
 class EagerMarkerTestCase(MarkerTestCase):
