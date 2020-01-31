@@ -62,13 +62,11 @@ class BaseMarker(ABC):
 
     @property
     def _rvec(self) -> ndarray:
-        rvec, _ = self._get_pose_vectors()
-        return rvec
+        return self._get_pose_vectors()[0]
 
     @property
     def _tvec(self) -> ndarray:
-        _, tvec = self._get_pose_vectors()
-        return tvec
+        return self._get_pose_vectors()[1]
 
     def as_dict(self) -> Dict[str, Any]:
         marker_dict = {
