@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
-from functools import lru_cache
 from typing import Any, Dict, List, Optional, Tuple
 
 from cached_property import cached_property
 from cv2 import aruco
 from numpy import arctan2, linalg, ndarray
+
+from zoloto.utils import cached_method
 
 from .calibration import CalibrationParameters
 from .coords import Coordinates, Orientation, Spherical, ThreeDCoordinates
@@ -18,7 +19,6 @@ class BaseMarker(ABC):
         self._size = size
 
     @abstractmethod
-    @lru_cache(maxsize=None)
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
         raise NotImplementedError()
 
@@ -94,7 +94,6 @@ class EagerMarker(BaseMarker):
         super().__init__(marker_id, corners, size)
         self.__precalculated_vectors = precalculated_vectors
 
-    @lru_cache(maxsize=None)
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
         return self.__precalculated_vectors
 
@@ -116,7 +115,7 @@ class Marker(BaseMarker):
     def _is_eager(self) -> bool:
         return False
 
-    @lru_cache(maxsize=None)
+    @cached_method
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
         if self.__calibration_params is None:
             raise MissingCalibrationsError()
