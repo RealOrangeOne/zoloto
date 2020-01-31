@@ -2,11 +2,11 @@ import sys
 from pathlib import Path
 
 from zoloto.cameras.file import ImageFileCamera
-from zoloto.marker_dict import MarkerDict
+from zoloto.marker_type import MarkerType
 
 
 class TestCamera(ImageFileCamera):
-    marker_dict = MarkerDict.DICT_6X6_50
+    marker_type = MarkerType.DICT_6X6_50
 
     def get_marker_size(self, marker_id: int) -> int:
         return 100

@@ -9,7 +9,7 @@ from numpy import ndarray
 from zoloto.calibration import CalibrationParameters, parse_calibration_file
 from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import Marker
-from zoloto.marker_dict import MarkerDict
+from zoloto.marker_type import MarkerType
 
 T = TypeVar("T", bound="BaseCamera")
 
@@ -20,11 +20,11 @@ class BaseCamera(ABC):
         self.detector_params = self.get_detector_params(
             cv2.aruco.DetectorParameters_create()
         )
-        self.marker_dictionary = cv2.aruco.getPredefinedDictionary(self.marker_dict)
+        self.marker_dictionary = cv2.aruco.getPredefinedDictionary(self.marker_type)
 
     @property
     @abstractmethod
-    def marker_dict(cls) -> MarkerDict:  # pragma: nocover
+    def marker_type(cls) -> MarkerType:  # pragma: nocover
         raise NotImplementedError()
 
     def get_calibrations(self) -> Optional[CalibrationParameters]:

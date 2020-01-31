@@ -1,7 +1,7 @@
 import pytest
 
 import zoloto.cameras
-from zoloto.marker_dict import MarkerDict
+from zoloto.marker_type import MarkerType
 
 
 def test_exposes_camera() -> None:
@@ -26,7 +26,7 @@ def test_camera_requires_abstract_arguments() -> None:
         "Can't instantiate abstract class TestCamera with abstract methods"
         in exception_message
     )
-    assert "marker_dict" in exception_message
+    assert "marker_type" in exception_message
     assert "get_marker_size" in exception_message
 
 
@@ -41,7 +41,7 @@ def test_marker_camera_requires_abstract_arguments() -> None:
         "Can't instantiate abstract class TestCamera with abstract methods"
         in exception_message
     )
-    assert "marker_dict" in exception_message
+    assert "marker_type" in exception_message
     assert "get_marker_size" not in exception_message
 
 
@@ -50,7 +50,7 @@ def test_marker_camera_requires_abstract_arguments() -> None:
 )
 def test_enumerate_all_cameras(camera_class, mocker) -> None:
     class TestCamera(camera_class):
-        marker_dict = MarkerDict.DICT_4X4_100
+        marker_type = MarkerType.DICT_4X4_100
 
         def get_marker_size(self, marker_id):
             return 100
@@ -68,7 +68,7 @@ def test_enumerate_all_cameras(camera_class, mocker) -> None:
 )
 def test_enumerate_no_cameras(camera_class, mocker) -> None:
     class TestCamera(camera_class):
-        marker_dict = MarkerDict.DICT_4X4_100
+        marker_type = MarkerType.DICT_4X4_100
 
         def get_marker_size(self, marker_id):
             return 100
