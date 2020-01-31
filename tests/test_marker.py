@@ -9,7 +9,6 @@ from pytest import approx, raises
 from zoloto.calibration import CalibrationParameters
 from zoloto.cameras.marker import MarkerCamera as BaseMarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
-from zoloto.marker import Marker
 from zoloto.marker_dict import MarkerDict
 
 
@@ -125,16 +124,6 @@ class EagerMarkerTestCase(MarkerTestCase):
         pose_mock.assert_not_called()
 
 
-class MarkerFromDictTestCase(EagerMarkerTestCase):
-    def setUp(self) -> None:
-        class MarkerCamera(BaseMarkerCamera):
-            marker_dict = MarkerDict.DICT_6X6_50
-
-        self.marker_camera = MarkerCamera(self.MARKER_ID, marker_size=self.MARKER_SIZE)
-        self.markers = list(self.marker_camera.process_frame())
-        self.marker = Marker.from_dict(self.markers[0].as_dict())
-
-
 class MarkerSansCalibrationsTestCase(MarkerTestCase):
     class TestCamera(BaseMarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
@@ -183,15 +172,3 @@ class MarkerSansCalibrationsTestCase(MarkerTestCase):
             self.assertEqual(expected_corner, approx(corner))
         self.assertNotIn("rvec", created_marker_dict)
         self.assertNotIn("tvec", created_marker_dict)
-
-
-class MarkerSansCalibrationsFromDictTestCase(MarkerSansCalibrationsTestCase):
-    def setUp(self) -> None:
-        self.marker_camera = self.TestCamera(
-            self.MARKER_ID, marker_size=self.MARKER_SIZE,
-        )
-        self.markers = list(self.marker_camera.process_frame())
-        self.marker = Marker.from_dict(self.markers[0].as_dict())
-
-    def test_is_not_eager(self) -> None:
-        self.assertFalse(self.marker._is_eager())

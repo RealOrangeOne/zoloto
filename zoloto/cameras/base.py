@@ -8,7 +8,7 @@ from numpy import ndarray
 
 from zoloto.calibration import CalibrationParameters, parse_calibration_file
 from zoloto.exceptions import MissingCalibrationsError
-from zoloto.marker import Marker
+from zoloto.marker import EagerMarker, Marker
 from zoloto.marker_dict import MarkerDict
 
 T = TypeVar("T", bound="BaseCamera")
@@ -94,8 +94,8 @@ class BaseCamera(ABC):
         calibration_params: Optional[CalibrationParameters],
         tvec: ndarray,
         rvec: ndarray,
-    ) -> Marker:
-        return Marker(marker_id, corners, size, calibration_params, (rvec, tvec))
+    ) -> EagerMarker:
+        return EagerMarker(marker_id, corners, size, (rvec, tvec))
 
     def process_frame(self, *, frame: ndarray = None) -> Generator[Marker, None, None]:
         ids, corners = self._get_ids_and_corners(frame)
@@ -105,7 +105,7 @@ class BaseCamera(ABC):
 
     def process_frame_eager(
         self, *, frame: ndarray = None
-    ) -> Generator[Marker, None, None]:
+    ) -> Generator[EagerMarker, None, None]:
         calibration_params = self.get_calibrations()
         if not calibration_params:
             raise MissingCalibrationsError()
