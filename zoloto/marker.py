@@ -78,7 +78,9 @@ class BaseMarker(ABC):
             "pixel_corners": [list(corner) for corner in self.pixel_corners],
         }
         try:
-            marker_dict.update({"rvec": list(self._rvec), "tvec": list(self._tvec)})
+            marker_dict.update(
+                {"rvec": self._rvec.tolist(), "tvec": self._tvec.tolist()}
+            )
         except MissingCalibrationsError:
             pass
         return marker_dict
