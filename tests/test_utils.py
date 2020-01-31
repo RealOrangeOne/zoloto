@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from zoloto.utils import cached_method
+from zoloto.utils import cached_method, encode_as_json
 
 
 class CachedMethodTestCase(TestCase):
@@ -24,3 +24,7 @@ class CachedMethodTestCase(TestCase):
         self.assertEqual(self.counter, 2)
         self.increment(2)
         self.assertEqual(self.counter, 2)
+
+
+def test_encode_as_json() -> None:
+    assert encode_as_json([1, 2, 3]) == "[1,2,3]"

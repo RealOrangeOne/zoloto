@@ -5,7 +5,7 @@ from cached_property import cached_property
 from cv2 import aruco
 from numpy import arctan2, linalg, ndarray
 
-from zoloto.utils import cached_method
+from zoloto.utils import cached_method, encode_as_json
 
 from .calibration import CalibrationParameters
 from .coords import Coordinates, Orientation, Spherical, ThreeDCoordinates
@@ -36,7 +36,7 @@ class BaseMarker(ABC):
 
     @property
     def pixel_corners(self) -> List[Coordinates]:
-        return [Coordinates(*coords) for coords in self._pixel_corners]
+        return [Coordinates(x=float(x), y=float(y)) for x, y in self._pixel_corners]
 
     @cached_property
     def pixel_centre(self) -> Coordinates:
@@ -68,11 +68,14 @@ class BaseMarker(ABC):
     def _tvec(self) -> ndarray:
         return self._get_pose_vectors()[1]
 
+    def __json__(self) -> str:
+        return encode_as_json(self.as_dict())
+
     def as_dict(self) -> Dict[str, Any]:
         marker_dict = {
             "id": self.id,
             "size": self.size,
-            "pixel_corners": self._pixel_corners.tolist(),  # type: ignore
+            "pixel_corners": [list(corner) for corner in self.pixel_corners],
         }
         try:
             marker_dict.update({"rvec": list(self._rvec), "tvec": list(self._tvec)})

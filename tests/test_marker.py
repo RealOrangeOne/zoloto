@@ -16,6 +16,7 @@ from zoloto.marker_dict import MarkerDict
 class MarkerTestCase(TestCase):
     MARKER_SIZE = 200
     MARKER_ID = 25
+    EXPECTED_DICT_KEYS = {"id", "size", "pixel_corners", "rvec", "tvec"}
 
     def setUp(self) -> None:
         class MarkerCamera(BaseMarkerCamera):
@@ -75,37 +76,23 @@ class MarkerTestCase(TestCase):
     def test_as_dict(self) -> None:
         marker_dict = self.marker.as_dict()
         self.assertIsInstance(marker_dict, dict)
-        self.assertEqual(
-            {"id", "size", "pixel_corners", "rvec", "tvec"}, set(marker_dict.keys())
-        )
+        self.assertEqual(self.EXPECTED_DICT_KEYS, set(marker_dict.keys()))
         self.assertEqual(marker_dict["size"], self.MARKER_SIZE)
         self.assertEqual(marker_dict["id"], self.MARKER_ID)
 
-    def test_dict_as_json(self) -> None:
+    def test_as_dict_json(self) -> None:
         marker_dict = self.marker.as_dict()
-        created_marker_dict = json.loads(json.dumps(marker_dict))
+        created_marker_dict = json.loads(json.dumps(self.marker.as_dict()))
         self.assertEqual(marker_dict, created_marker_dict)
+        self.assertEqual(self.EXPECTED_DICT_KEYS, set(marker_dict.keys()))
 
-    def test_many_as_ujson(self) -> None:
-        created_markers_dict = ujson.loads(
-            ujson.dumps([m.as_dict() for m in self.markers])
-        )
-        self.assertEqual(len(created_markers_dict), 1)
-        self.assertEqual(
-            {marker["id"] for marker in created_markers_dict}, {self.MARKER_ID}
-        )
+    def test_as_dict_ujson(self) -> None:
+        created_marker_dict = ujson.loads(ujson.dumps(self.marker))
+        self.assertEqual(self.EXPECTED_DICT_KEYS, set(created_marker_dict.keys()))
 
-    def test_dict_as_ujson(self) -> None:
-        marker_dict = self.marker.as_dict()
-        created_marker_dict = ujson.loads(ujson.dumps(marker_dict))
-        self.assertEqual(marker_dict["id"], created_marker_dict["id"])
-        self.assertEqual(marker_dict["size"], created_marker_dict["size"])
-        for expected_corner, corner in zip(
-            marker_dict["pixel_corners"], created_marker_dict["pixel_corners"]
-        ):
-            self.assertEqual(expected_corner, approx(corner))
-        self.assertEqual(marker_dict["rvec"], approx(created_marker_dict["rvec"]))
-        self.assertEqual(marker_dict["tvec"], approx(created_marker_dict["tvec"]))
+    def test_many_as_dict_ujson(self) -> None:
+        created_marker_dict = ujson.loads(ujson.dumps(self.markers))
+        self.assertEqual(self.EXPECTED_DICT_KEYS, set(created_marker_dict[0].keys()))
 
 
 class EagerMarkerTestCase(MarkerTestCase):
@@ -128,6 +115,8 @@ class EagerMarkerTestCase(MarkerTestCase):
 
 
 class MarkerSansCalibrationsTestCase(MarkerTestCase):
+    EXPECTED_DICT_KEYS = {"id", "size", "pixel_corners"}
+
     class TestCamera(BaseMarkerCamera):
         marker_dict = MarkerDict.DICT_6X6_50
 
@@ -156,22 +145,3 @@ class MarkerSansCalibrationsTestCase(MarkerTestCase):
 
             return test_raises
         return attr
-
-    def test_as_dict(self) -> None:
-        marker_dict = self.marker.as_dict()
-        self.assertIsInstance(marker_dict, dict)
-        self.assertEqual({"id", "size", "pixel_corners"}, set(marker_dict.keys()))
-        self.assertEqual(marker_dict["size"], self.MARKER_SIZE)
-        self.assertEqual(marker_dict["id"], self.MARKER_ID)
-
-    def test_dict_as_ujson(self) -> None:
-        marker_dict = self.marker.as_dict()
-        created_marker_dict = ujson.loads(ujson.dumps(marker_dict))
-        self.assertEqual(marker_dict["id"], created_marker_dict["id"])
-        self.assertEqual(marker_dict["size"], created_marker_dict["size"])
-        for expected_corner, corner in zip(
-            marker_dict["pixel_corners"], created_marker_dict["pixel_corners"]
-        ):
-            self.assertEqual(expected_corner, approx(corner))
-        self.assertNotIn("rvec", created_marker_dict)
-        self.assertNotIn("tvec", created_marker_dict)
