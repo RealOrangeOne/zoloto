@@ -14,9 +14,9 @@ from .exceptions import MissingCalibrationsError
 
 class BaseMarker(ABC):
     def __init__(self, marker_id: int, corners: List[ndarray], size: int):
-        self._id = marker_id
+        self.__id = marker_id
         self._pixel_corners = corners
-        self._size = size
+        self.__size = size
 
     @abstractmethod
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
@@ -24,11 +24,11 @@ class BaseMarker(ABC):
 
     @property  # noqa: A003
     def id(self) -> int:
-        return self._id
+        return self.__id
 
     @property
     def size(self) -> int:
-        return self._size
+        return self.__size
 
     @property
     def pixel_corners(self) -> List[Coordinates]:
@@ -37,7 +37,7 @@ class BaseMarker(ABC):
     @cached_property
     def pixel_centre(self) -> Coordinates:
         tl, _, br, _ = self.pixel_corners
-        return Coordinates(x=tl.x + (self._size / 2) - 1, y=br.y - (self._size / 2),)
+        return Coordinates(x=tl.x + (self.size / 2) - 1, y=br.y - (self.size / 2),)
 
     @cached_property
     def distance(self) -> int:
@@ -117,7 +117,7 @@ class Marker(BaseMarker):
 
         rvec, tvec, _ = aruco.estimatePoseSingleMarkers(
             [self._pixel_corners],
-            self._size,
+            self.size,
             self.__calibration_params.camera_matrix,
             self.__calibration_params.distance_coefficients,
         )
