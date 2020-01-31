@@ -1,5 +1,5 @@
 import json
-from typing import Any, Optional
+from typing import Any, List, Optional
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -9,6 +9,7 @@ from pytest import approx, raises
 from zoloto.calibration import CalibrationParameters
 from zoloto.cameras.marker import MarkerCamera as BaseMarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
+from zoloto.marker import BaseMarker
 from zoloto.marker_dict import MarkerDict
 
 
@@ -23,7 +24,9 @@ class MarkerTestCase(TestCase):
         self.marker_camera = MarkerCamera(
             self.MARKER_ID, marker_size=self.MARKER_SIZE
         )  # type: BaseMarkerCamera
-        self.markers = list(self.marker_camera.process_frame())
+        self.markers = list(
+            self.marker_camera.process_frame()
+        )  # type: List[BaseMarker]
         self.marker = self.markers[0]
 
     def test_marker_size(self) -> None:
