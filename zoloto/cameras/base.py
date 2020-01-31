@@ -127,7 +127,7 @@ class BaseCamera(ABC):
 
     def get_visible_markers(self, *, frame: ndarray = None) -> List[int]:
         ids, _ = self._get_ids_and_corners(frame)
-        return ids
+        return [int(i) for i in ids]
 
     def close(self) -> None:
         pass

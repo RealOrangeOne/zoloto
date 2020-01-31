@@ -2,104 +2,61 @@
 # snapshottest: v1 - https://goo.gl/zC4yUc
 from __future__ import unicode_literals
 
-from snapshottest import GenericRepr, Snapshot
+from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
 snapshots["test_detects_marker_ids[2019-06-08-202719.jpg] 1"] = [
-    GenericRepr("45"),
-    GenericRepr("45"),
-    GenericRepr("52"),
-    GenericRepr("52"),
-    GenericRepr("54"),
-    GenericRepr("54"),
-    GenericRepr("60"),
-    GenericRepr("60"),
+    45,
+    45,
+    52,
+    52,
+    54,
+    54,
+    60,
+    60,
 ]
 
 snapshots["test_detects_marker_ids[2019-06-08-202759.jpg] 1"] = [
-    GenericRepr("45"),
-    GenericRepr("45"),
-    GenericRepr("52"),
-    GenericRepr("54"),
-    GenericRepr("54"),
-    GenericRepr("54"),
-    GenericRepr("60"),
-    GenericRepr("60"),
+    45,
+    45,
+    52,
+    54,
+    54,
+    54,
+    60,
+    60,
 ]
 
-snapshots["test_detects_marker_ids[2019-06-08-202825.jpg] 1"] = [
-    GenericRepr("45"),
-    GenericRepr("45"),
-    GenericRepr("52"),
-    GenericRepr("54"),
-    GenericRepr("60"),
-]
+snapshots["test_detects_marker_ids[2019-06-08-202825.jpg] 1"] = [45, 45, 52, 54, 60]
 
-snapshots["test_detects_marker_ids[2019-06-08-203003.jpg] 1"] = [
-    GenericRepr("45"),
-    GenericRepr("45"),
-    GenericRepr("52"),
-    GenericRepr("54"),
-    GenericRepr("60"),
-]
+snapshots["test_detects_marker_ids[2019-06-08-203003.jpg] 1"] = [45, 45, 52, 54, 60]
 
-snapshots["test_detects_marker_ids[2019-06-08-203035.jpg] 1"] = [
-    GenericRepr("52"),
-    GenericRepr("54"),
-    GenericRepr("54"),
-    GenericRepr("60"),
-    GenericRepr("60"),
-    GenericRepr("60"),
-]
+snapshots["test_detects_marker_ids[2019-06-08-203035.jpg] 1"] = [52, 54, 54, 60, 60, 60]
 
-snapshots["test_detects_marker_ids[2019-06-08-203112.jpg] 1"] = [
-    GenericRepr("45"),
-    GenericRepr("52"),
-    GenericRepr("54"),
-    GenericRepr("54"),
-    GenericRepr("60"),
-]
+snapshots["test_detects_marker_ids[2019-06-08-203112.jpg] 1"] = [45, 52, 54, 54, 60]
 
-snapshots["test_detects_marker_ids[2019-06-08-203132.jpg] 1"] = [
-    GenericRepr("52"),
-    GenericRepr("54"),
-    GenericRepr("54"),
-    GenericRepr("60"),
-]
+snapshots["test_detects_marker_ids[2019-06-08-203132.jpg] 1"] = [52, 54, 54, 60]
 
 snapshots["test_detects_marker_ids[2019-06-08-203401.jpg] 1"] = [
-    GenericRepr("45"),
-    GenericRepr("52"),
-    GenericRepr("52"),
-    GenericRepr("54"),
-    GenericRepr("54"),
-    GenericRepr("60"),
-    GenericRepr("60"),
+    45,
+    52,
+    52,
+    54,
+    54,
+    60,
+    60,
 ]
 
-snapshots["test_detects_marker_ids[2019-06-08-203608.jpg] 1"] = [
-    GenericRepr("45"),
-    GenericRepr("52"),
-]
+snapshots["test_detects_marker_ids[2019-06-08-203608.jpg] 1"] = [45, 52]
 
-snapshots["test_detects_marker_ids[2019-06-08-203623.jpg] 1"] = [GenericRepr("52")]
+snapshots["test_detects_marker_ids[2019-06-08-203623.jpg] 1"] = [52]
 
-snapshots["test_detects_marker_ids[2019-06-08-203643.jpg] 1"] = [GenericRepr("52")]
+snapshots["test_detects_marker_ids[2019-06-08-203643.jpg] 1"] = [52]
 
-snapshots["test_detects_marker_ids[2019-06-08-203703.jpg] 1"] = [
-    GenericRepr("45"),
-    GenericRepr("54"),
-]
+snapshots["test_detects_marker_ids[2019-06-08-203703.jpg] 1"] = [45, 54]
 
-snapshots["test_detects_marker_ids[2019-06-08-203821.jpg] 1"] = [
-    GenericRepr("45"),
-    GenericRepr("52"),
-    GenericRepr("52"),
-    GenericRepr("54"),
-    GenericRepr("54"),
-    GenericRepr("60"),
-]
+snapshots["test_detects_marker_ids[2019-06-08-203821.jpg] 1"] = [45, 52, 52, 54, 54, 60]
 
 snapshots["test_gets_markers_eager[2019-06-08-203623.jpg-C270] 1"] = [
     {
