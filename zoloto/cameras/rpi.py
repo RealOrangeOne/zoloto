@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Generator, Optional
+from typing import Optional
 
 from numpy import ndarray
 
@@ -7,9 +7,10 @@ import picamera
 import picamera.array
 
 from .base import BaseCamera
+from .mixins import IterableCameraMixin
 
 
-class PiCamera(BaseCamera):
+class PiCamera(BaseCamera, IterableCameraMixin):
     def __init__(self, *, calibration_file: Optional[Path] = None) -> None:
         super().__init__(calibration_file=calibration_file)
         self.camera = picamera.PiCamera()
@@ -22,13 +23,6 @@ class PiCamera(BaseCamera):
     def close(self) -> None:
         super().close()
         self.camera.close()
-
-    def __iter__(self) -> Generator[ndarray, None, None]:
-        while True:
-            frame = self.capture_frame()
-            if not frame.size:
-                break
-            yield frame
 
 
 class PiSnapshotCamera(BaseCamera):

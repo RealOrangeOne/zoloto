@@ -1,10 +1,11 @@
 from pathlib import Path
-from typing import Generator, Optional
+from typing import Optional
 
 from cv2 import VideoCapture, imread
 from numpy import ndarray
 
 from .base import BaseCamera
+from .mixins import IterableCameraMixin
 
 
 class ImageFileCamera(BaseCamera):
@@ -18,7 +19,7 @@ class ImageFileCamera(BaseCamera):
         return imread(str(self.image_path))
 
 
-class VideoFileCamera(BaseCamera):
+class VideoFileCamera(BaseCamera, IterableCameraMixin):
     def __init__(
         self, video_path: Path, *, calibration_file: Optional[Path] = None
     ) -> None:
@@ -35,10 +36,3 @@ class VideoFileCamera(BaseCamera):
     def close(self) -> None:
         super().close()
         self.video_capture.release()
-
-    def __iter__(self) -> Generator[ndarray, None, None]:
-        while True:
-            frame = self.capture_frame()
-            if not frame.size:
-                break
-            yield frame
