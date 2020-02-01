@@ -71,18 +71,18 @@ class MarkerTestCase(TestCase):
         self.assertEqual(rot_y, approx(0.05, abs=1e-3))
 
     def test_as_dict(self) -> None:
-        marker_type = self.marker.as_dict()
-        self.assertIsInstance(marker_type, dict)
+        marker_dict = self.marker.as_dict()
+        self.assertIsInstance(marker_dict, dict)
         self.assertEqual(
-            {"id", "size", "pixel_corners", "rvec", "tvec"}, set(marker_type.keys())
+            {"id", "size", "pixel_corners", "rvec", "tvec"}, set(marker_dict.keys())
         )
-        self.assertEqual(marker_type["size"], self.MARKER_SIZE)
-        self.assertEqual(marker_type["id"], self.MARKER_ID)
+        self.assertEqual(marker_dict["size"], self.MARKER_SIZE)
+        self.assertEqual(marker_dict["id"], self.MARKER_ID)
 
     def test_dict_as_json(self) -> None:
-        marker_type = self.marker.as_dict()
-        created_marker_type = json.loads(json.dumps(marker_type))
-        self.assertEqual(marker_type, created_marker_type)
+        marker_dict = self.marker.as_dict()
+        created_marker_dict = json.loads(json.dumps(marker_dict))
+        self.assertEqual(marker_dict, created_marker_dict)
 
     def test_many_as_ujson(self) -> None:
         created_markers_dict = ujson.loads(
@@ -94,16 +94,16 @@ class MarkerTestCase(TestCase):
         )
 
     def test_dict_as_ujson(self) -> None:
-        marker_type = self.marker.as_dict()
-        created_marker_type = ujson.loads(ujson.dumps(marker_type))
-        self.assertEqual(marker_type["id"], created_marker_type["id"])
-        self.assertEqual(marker_type["size"], created_marker_type["size"])
+        marker_dict = self.marker.as_dict()
+        created_marker_dict = ujson.loads(ujson.dumps(marker_dict))
+        self.assertEqual(marker_dict["id"], created_marker_dict["id"])
+        self.assertEqual(marker_dict["size"], created_marker_dict["size"])
         for expected_corner, corner in zip(
-            marker_type["pixel_corners"], created_marker_type["pixel_corners"]
+            marker_dict["pixel_corners"], created_marker_dict["pixel_corners"]
         ):
             self.assertEqual(expected_corner, approx(corner))
-        self.assertEqual(marker_type["rvec"], approx(created_marker_type["rvec"]))
-        self.assertEqual(marker_type["tvec"], approx(created_marker_type["tvec"]))
+        self.assertEqual(marker_dict["rvec"], approx(created_marker_dict["rvec"]))
+        self.assertEqual(marker_dict["tvec"], approx(created_marker_dict["tvec"]))
 
 
 class EagerMarkerTestCase(MarkerTestCase):
@@ -166,23 +166,23 @@ class MarkerSansCalibrationsTestCase(MarkerTestCase):
         return attr
 
     def test_as_dict(self) -> None:
-        marker_type = self.marker.as_dict()
-        self.assertIsInstance(marker_type, dict)
-        self.assertEqual({"id", "size", "pixel_corners"}, set(marker_type.keys()))
-        self.assertEqual(marker_type["size"], self.MARKER_SIZE)
-        self.assertEqual(marker_type["id"], self.MARKER_ID)
+        marker_dict = self.marker.as_dict()
+        self.assertIsInstance(marker_dict, dict)
+        self.assertEqual({"id", "size", "pixel_corners"}, set(marker_dict.keys()))
+        self.assertEqual(marker_dict["size"], self.MARKER_SIZE)
+        self.assertEqual(marker_dict["id"], self.MARKER_ID)
 
     def test_dict_as_ujson(self) -> None:
-        marker_type = self.marker.as_dict()
-        created_marker_type = ujson.loads(ujson.dumps(marker_type))
-        self.assertEqual(marker_type["id"], created_marker_type["id"])
-        self.assertEqual(marker_type["size"], created_marker_type["size"])
+        marker_dict = self.marker.as_dict()
+        created_marker_dict = ujson.loads(ujson.dumps(marker_dict))
+        self.assertEqual(marker_dict["id"], created_marker_dict["id"])
+        self.assertEqual(marker_dict["size"], created_marker_dict["size"])
         for expected_corner, corner in zip(
-            marker_type["pixel_corners"], created_marker_type["pixel_corners"]
+            marker_dict["pixel_corners"], created_marker_dict["pixel_corners"]
         ):
             self.assertEqual(expected_corner, approx(corner))
-        self.assertNotIn("rvec", created_marker_type)
-        self.assertNotIn("tvec", created_marker_type)
+        self.assertNotIn("rvec", created_marker_dict)
+        self.assertNotIn("tvec", created_marker_dict)
 
 
 class MarkerSansCalibrationsFromDictTestCase(MarkerSansCalibrationsTestCase):

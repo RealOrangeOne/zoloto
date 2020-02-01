@@ -93,25 +93,25 @@ class Marker:
         return tvec
 
     def as_dict(self) -> Dict[str, Any]:
-        marker_type = {
+        marker_dict = {
             "id": self.id,
             "size": self.size,
             "pixel_corners": self.__pixel_corners.tolist(),  # type: ignore
         }
         try:
-            marker_type.update({"rvec": list(self._rvec), "tvec": list(self._tvec)})
+            marker_dict.update({"rvec": list(self._rvec), "tvec": list(self._tvec)})
         except MissingCalibrationsError:
             pass
-        return marker_type
+        return marker_dict
 
     @classmethod
-    def from_dict(cls, marker_type: Dict[str, Any]) -> "Marker":
+    def from_dict(cls, marker_dict: Dict[str, Any]) -> "Marker":
         marker_args = [
-            marker_type["id"],
-            array(marker_type["pixel_corners"]),
-            marker_type["size"],
+            marker_dict["id"],
+            array(marker_dict["pixel_corners"]),
+            marker_dict["size"],
             None,
         ]
-        if "rvec" in marker_type and "tvec" in marker_type:
-            marker_args.append((array(marker_type["rvec"]), array(marker_type["tvec"])))
+        if "rvec" in marker_dict and "tvec" in marker_dict:
+            marker_args.append((array(marker_dict["rvec"]), array(marker_dict["tvec"])))
         return cls(*marker_args)
