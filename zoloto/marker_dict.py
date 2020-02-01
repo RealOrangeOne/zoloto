@@ -1,5 +1,4 @@
 from enum import IntEnum
-from typing import Generator
 
 from cv2 import aruco
 
@@ -26,7 +25,3 @@ class MarkerDict(IntEnum):
     DICT_APRILTAG_25H9 = aruco.DICT_APRILTAG_25H9
     DICT_APRILTAG_36H10 = aruco.DICT_APRILTAG_36H10
     DICT_APRILTAG_36H11 = aruco.DICT_APRILTAG_36H11
-
-
-def all_marker_dicts() -> Generator[MarkerDict, None, None]:
-    yield from MarkerDict._member_map_.values()  # type: ignore

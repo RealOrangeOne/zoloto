@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 from zoloto.cameras.file import VideoFileCamera
-from zoloto.marker_dict import MarkerDict, all_marker_dicts
+from zoloto.marker_dict import MarkerDict
 
 
 def process_marker_dict(current_marker_dict: MarkerDict) -> None:
@@ -24,7 +24,7 @@ def process_marker_dict(current_marker_dict: MarkerDict) -> None:
 
 
 def main() -> None:
-    for marker_dict in all_marker_dicts():
+    for marker_dict in MarkerDict:
         process_marker_dict(marker_dict)
 
 
