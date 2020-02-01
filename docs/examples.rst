@@ -14,7 +14,7 @@ Count Markers
 
 
 Identify Markers
--------------
+----------------
 
 .. literalinclude:: ../examples/identify-markers.py
 
