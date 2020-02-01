@@ -9,7 +9,7 @@ from pytest import approx
 from zoloto.calibration import CalibrationParameters
 from zoloto.cameras.marker import MarkerCamera as BaseMarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
-from zoloto.marker import BaseMarker, UncalibratedMarker
+from zoloto.marker import BaseMarker, EagerMarker, UncalibratedMarker
 from zoloto.marker_dict import MarkerDict
 
 
@@ -151,6 +151,9 @@ class EagerMarkerTestCase(MarkerTestCase):
         assert self.marker._tvec is not None
         assert self.marker._rvec is not None
         pose_mock.assert_not_called()
+
+    def test_is_eager(self) -> None:
+        self.assertIsInstance(self.marker, EagerMarker)
 
 
 class UncalibratedMarkerTestCase(MarkerTestCase):
