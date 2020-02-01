@@ -1,14 +1,14 @@
 from abc import ABC, abstractmethod
 from itertools import groupby
 from pathlib import Path
-from typing import Any, Generator, List, Optional, Tuple, TypeVar
+from typing import Any, Generator, List, Optional, Tuple, TypeVar, Union
 
 import cv2
 from numpy import ndarray
 
 from zoloto.calibration import CalibrationParameters, parse_calibration_file
 from zoloto.exceptions import MissingCalibrationsError
-from zoloto.marker import EagerMarker, Marker
+from zoloto.marker import EagerMarker, Marker, UncalibratedMarker
 from zoloto.marker_dict import MarkerDict
 
 T = TypeVar("T", bound="BaseCamera")
@@ -81,7 +81,11 @@ class BaseCamera(ABC):
         marker_id: int,
         corners: ndarray,
         calibration_params: Optional[CalibrationParameters],
-    ) -> Marker:
+    ) -> Union[UncalibratedMarker, Marker]:
+        if calibration_params is None:
+            return UncalibratedMarker(
+                marker_id, corners, self.get_marker_size(marker_id), self.marker_dict
+            )
         return Marker(
             marker_id,
             corners,
@@ -101,7 +105,9 @@ class BaseCamera(ABC):
     ) -> EagerMarker:
         return EagerMarker(marker_id, corners, size, self.marker_dict, (rvec, tvec))
 
-    def process_frame(self, *, frame: ndarray = None) -> Generator[Marker, None, None]:
+    def process_frame(
+        self, *, frame: ndarray = None
+    ) -> Generator[Union[UncalibratedMarker, Marker], None, None]:
         ids, corners = self._get_ids_and_corners(frame)
         calibration_params = self.get_calibrations()
         for corners, marker_id in zip(corners, ids):

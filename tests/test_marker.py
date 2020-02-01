@@ -4,12 +4,12 @@ from unittest import TestCase
 from unittest.mock import patch
 
 import ujson
-from pytest import approx, raises
+from pytest import approx
 
 from zoloto.calibration import CalibrationParameters
 from zoloto.cameras.marker import MarkerCamera as BaseMarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
-from zoloto.marker import BaseMarker
+from zoloto.marker import BaseMarker, UncalibratedMarker
 from zoloto.marker_dict import MarkerDict
 
 
@@ -153,7 +153,7 @@ class EagerMarkerTestCase(MarkerTestCase):
         pose_mock.assert_not_called()
 
 
-class MarkerSansCalibrationsTestCase(MarkerTestCase):
+class UncalibratedMarkerTestCase(MarkerTestCase):
     EXPECTED_DICT_KEYS = {"id", "size", "pixel_corners"}
 
     class TestCamera(BaseMarkerCamera):
@@ -169,6 +169,11 @@ class MarkerSansCalibrationsTestCase(MarkerTestCase):
         self.markers = list(self.marker_camera.process_frame())
         self.marker = self.markers[0]
 
+    def test_is_uncalibrated(self) -> None:
+        self.assertIsInstance(self.marker, UncalibratedMarker)
+        with self.assertRaises(MissingCalibrationsError):
+            self.marker._get_pose_vectors()
+
     def __getattribute__(self, name: str) -> Any:
         attr = super().__getattribute__(name)
         if name in [
@@ -179,7 +184,7 @@ class MarkerSansCalibrationsTestCase(MarkerTestCase):
         ]:
 
             def test_raises(*args: Any, **kwargs: Any) -> None:
-                with raises(MissingCalibrationsError):
+                with self.assertRaises(MissingCalibrationsError):
                     attr(*args, **kwargs)
 
             return test_raises

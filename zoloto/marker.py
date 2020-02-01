@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 from cached_property import cached_property
 from cv2 import aruco
@@ -115,16 +115,13 @@ class Marker(BaseMarker):
         corners: List[ndarray],
         size: int,
         marker_dict: MarkerDict,
-        calibration_params: Optional[CalibrationParameters],
+        calibration_params: CalibrationParameters,
     ):
         super().__init__(marker_id, corners, size, marker_dict)
         self.__calibration_params = calibration_params
 
     @cached_method
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
-        if self.__calibration_params is None:
-            raise MissingCalibrationsError()
-
         rvec, tvec, _ = aruco.estimatePoseSingleMarkers(
             [self._pixel_corners],
             self.size,
@@ -132,3 +129,8 @@ class Marker(BaseMarker):
             self.__calibration_params.distance_coefficients,
         )
         return rvec[0][0], tvec[0][0]
+
+
+class UncalibratedMarker(BaseMarker):
+    def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
+        raise MissingCalibrationsError()
