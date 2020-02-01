@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional
+from typing import Generator, Optional
 
 from numpy import ndarray
 
@@ -22,6 +22,13 @@ class PiCamera(BaseCamera):
     def close(self) -> None:
         super().close()
         self.camera.close()
+
+    def __iter__(self) -> Generator[ndarray, None, None]:
+        while True:
+            frame = self.capture_frame()
+            if not frame.size:
+                break
+            yield frame
 
 
 class PiSnapshotCamera(BaseCamera):

@@ -49,6 +49,13 @@ class Camera(BaseCamera):
         for camera_id in find_camera_ids():
             yield cls(camera_id, **kwargs)
 
+    def __iter__(self) -> Generator[ndarray, None, None]:
+        while True:
+            frame = self.capture_frame()
+            if not frame.size:
+                break
+            yield frame
+
 
 class SnapshotCamera(BaseCamera):
     """

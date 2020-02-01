@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional
+from typing import Generator, Optional
 
 from cv2 import VideoCapture, imread
 from numpy import ndarray
@@ -35,3 +35,10 @@ class VideoFileCamera(BaseCamera):
     def close(self) -> None:
         super().close()
         self.video_capture.release()
+
+    def __iter__(self) -> Generator[ndarray, None, None]:
+        while True:
+            frame = self.capture_frame()
+            if not frame.size:
+                break
+            yield frame
