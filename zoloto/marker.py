@@ -10,13 +10,17 @@ from zoloto.utils import cached_method, encode_as_json
 from .calibration import CalibrationParameters
 from .coords import Coordinates, Orientation, Spherical, ThreeDCoordinates
 from .exceptions import MissingCalibrationsError
+from .marker_dict import MarkerDict
 
 
 class BaseMarker(ABC):
-    def __init__(self, marker_id: int, corners: List[ndarray], size: int):
+    def __init__(
+        self, marker_id: int, corners: List[ndarray], size: int, marker_dict: MarkerDict
+    ):
         self.__id = marker_id
         self._pixel_corners = corners
         self.__size = size
+        self.__marker_dict = marker_dict
 
     @abstractmethod
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
@@ -29,6 +33,10 @@ class BaseMarker(ABC):
     @property
     def size(self) -> int:
         return self.__size
+
+    @property
+    def marker_dict(self) -> MarkerDict:
+        return self.__marker_dict
 
     @property
     def pixel_corners(self) -> List[Coordinates]:
@@ -90,9 +98,10 @@ class EagerMarker(BaseMarker):
         marker_id: int,
         corners: List[ndarray],
         size: int,
+        marker_dict: MarkerDict,
         precalculated_vectors: Tuple[ndarray, ndarray],
     ):
-        super().__init__(marker_id, corners, size)
+        super().__init__(marker_id, corners, size, marker_dict)
         self.__precalculated_vectors = precalculated_vectors
 
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
@@ -105,9 +114,10 @@ class Marker(BaseMarker):
         marker_id: int,
         corners: List[ndarray],
         size: int,
+        marker_dict: MarkerDict,
         calibration_params: Optional[CalibrationParameters],
     ):
-        super().__init__(marker_id, corners, size)
+        super().__init__(marker_id, corners, size, marker_dict)
         self.__calibration_params = calibration_params
 
     @cached_method

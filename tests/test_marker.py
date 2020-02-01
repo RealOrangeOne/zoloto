@@ -39,6 +39,9 @@ class MarkerTestCase(TestCase):
     def test_marker_id(self) -> None:
         self.assertEqual(self.marker.id, self.MARKER_ID)
 
+    def test_marker_dict(self) -> None:
+        self.assertEqual(self.marker.marker_dict, MarkerDict.DICT_6X6_50)
+
     def test_pixel_corners(self) -> None:
         self.assertEqual(len(self.marker.pixel_corners), 4)
         border_size = self.marker_camera.BORDER_SIZE

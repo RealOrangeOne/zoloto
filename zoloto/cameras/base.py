@@ -83,7 +83,11 @@ class BaseCamera(ABC):
         calibration_params: Optional[CalibrationParameters],
     ) -> Marker:
         return Marker(
-            marker_id, corners, self.get_marker_size(marker_id), calibration_params
+            marker_id,
+            corners,
+            self.get_marker_size(marker_id),
+            self.marker_dict,
+            calibration_params,
         )
 
     def _get_eager_marker(
@@ -95,7 +99,7 @@ class BaseCamera(ABC):
         tvec: ndarray,
         rvec: ndarray,
     ) -> EagerMarker:
-        return EagerMarker(marker_id, corners, size, (rvec, tvec))
+        return EagerMarker(marker_id, corners, size, self.marker_dict, (rvec, tvec))
 
     def process_frame(self, *, frame: ndarray = None) -> Generator[Marker, None, None]:
         ids, corners = self._get_ids_and_corners(frame)
