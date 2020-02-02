@@ -15,12 +15,7 @@ from .marker_type import MarkerType
 
 class BaseMarker(ABC):
     def __init__(
-        self,
-        *,
-        marker_id: int,
-        corners: List[ndarray],
-        size: int,
-        marker_type: MarkerType
+        self, marker_id: int, corners: List[ndarray], size: int, marker_type: MarkerType
     ):
         self.__id = marker_id
         self._pixel_corners = corners
@@ -101,15 +96,12 @@ class EagerMarker(BaseMarker):
     def __init__(
         self,
         marker_id: int,
-        *,
         corners: List[ndarray],
         size: int,
         marker_type: MarkerType,
         precalculated_vectors: Tuple[ndarray, ndarray],
     ):
-        super().__init__(
-            marker_id=marker_id, corners=corners, size=size, marker_type=marker_type
-        )
+        super().__init__(marker_id, corners, size, marker_type)
         self.__precalculated_vectors = precalculated_vectors
 
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
@@ -119,16 +111,13 @@ class EagerMarker(BaseMarker):
 class Marker(BaseMarker):
     def __init__(
         self,
-        *,
         marker_id: int,
         corners: List[ndarray],
         size: int,
         marker_type: MarkerType,
         calibration_params: CalibrationParameters,
     ):
-        super().__init__(
-            marker_id=marker_id, corners=corners, size=size, marker_type=marker_type
-        )
+        super().__init__(marker_id, corners, size, marker_type)
         self.__calibration_params = calibration_params
 
     @cached_method

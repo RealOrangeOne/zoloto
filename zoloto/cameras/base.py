@@ -84,17 +84,14 @@ class BaseCamera(ABC):
     ) -> Union[UncalibratedMarker, Marker]:
         if calibration_params is None:
             return UncalibratedMarker(
-                marker_id=marker_id,
-                corners=corners,
-                size=self.get_marker_size(marker_id),
-                marker_type=self.marker_type,
+                marker_id, corners, self.get_marker_size(marker_id), self.marker_type
             )
         return Marker(
-            marker_id=marker_id,
-            corners=corners,
-            size=self.get_marker_size(marker_id),
-            marker_type=self.marker_type,
-            calibration_params=calibration_params,
+            marker_id,
+            corners,
+            self.get_marker_size(marker_id),
+            self.marker_type,
+            calibration_params,
         )
 
     def _get_eager_marker(
@@ -106,13 +103,7 @@ class BaseCamera(ABC):
         tvec: ndarray,
         rvec: ndarray,
     ) -> EagerMarker:
-        return EagerMarker(
-            marker_id=marker_id,
-            corners=corners,
-            size=size,
-            marker_type=self.marker_type,
-            precalculated_vectors=(rvec, tvec),
-        )
+        return EagerMarker(marker_id, corners, size, self.marker_type, (rvec, tvec))
 
     def process_frame(
         self, *, frame: ndarray = None
