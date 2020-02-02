@@ -23,12 +23,12 @@ pip install zoloto
 ```python
 from pathlib import Path
 
-from zoloto import MarkerDict
+from zoloto import MarkerType
 from zoloto.cameras import ImageFileCamera
 
 
 class MyCamera(ImageFileCamera):
-    marker_dict = MarkerDict.DICT_6X6_50
+    marker_type = MarkerType.DICT_6X6_50
 
 
 with MyCamera(Path("my-image.png")) as camera:

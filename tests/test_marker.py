@@ -10,7 +10,7 @@ from zoloto.calibration import CalibrationParameters
 from zoloto.cameras.marker import MarkerCamera as BaseMarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import BaseMarker, EagerMarker, UncalibratedMarker
-from zoloto.marker_dict import MarkerDict
+from zoloto.marker_type import MarkerType
 
 
 class MarkerTestCase(TestCase):
@@ -20,7 +20,7 @@ class MarkerTestCase(TestCase):
 
     def setUp(self) -> None:
         class MarkerCamera(BaseMarkerCamera):
-            marker_dict = MarkerDict.DICT_6X6_50
+            marker_type = MarkerType.DICT_6X6_50
 
         self.marker_camera = MarkerCamera(
             self.MARKER_ID, marker_size=self.MARKER_SIZE
@@ -40,7 +40,7 @@ class MarkerTestCase(TestCase):
         self.assertEqual(self.marker.id, self.MARKER_ID)
 
     def test_marker_dict(self) -> None:
-        self.assertEqual(self.marker.marker_dict, MarkerDict.DICT_6X6_50)
+        self.assertEqual(self.marker.marker_dict, MarkerType.DICT_6X6_50)
 
     def test_pixel_corners(self) -> None:
         self.assertEqual(len(self.marker.pixel_corners), 4)
@@ -140,7 +140,7 @@ class MarkerTestCase(TestCase):
 class EagerMarkerTestCase(MarkerTestCase):
     def setUp(self) -> None:
         class MarkerCamera(BaseMarkerCamera):
-            marker_dict = MarkerDict.DICT_6X6_50
+            marker_type = MarkerType.DICT_6X6_50
 
         self.marker_camera = MarkerCamera(self.MARKER_ID, marker_size=self.MARKER_SIZE)
         self.markers = list(self.marker_camera.process_frame_eager())
@@ -160,7 +160,7 @@ class UncalibratedMarkerTestCase(MarkerTestCase):
     EXPECTED_DICT_KEYS = {"id", "size", "pixel_corners"}
 
     class TestCamera(BaseMarkerCamera):
-        marker_dict = MarkerDict.DICT_6X6_50
+        marker_type = MarkerType.DICT_6X6_50
 
         def get_calibrations(self) -> Optional[CalibrationParameters]:
             return None

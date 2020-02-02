@@ -10,7 +10,7 @@ from zoloto.utils import cached_method, encode_as_json
 from .calibration import CalibrationParameters
 from .coords import Coordinates, Orientation, Spherical, ThreeDCoordinates
 from .exceptions import MissingCalibrationsError
-from .marker_dict import MarkerDict
+from .marker_type import MarkerType
 
 
 class BaseMarker(ABC):
@@ -20,12 +20,12 @@ class BaseMarker(ABC):
         marker_id: int,
         corners: List[ndarray],
         size: int,
-        marker_dict: MarkerDict,
+        marker_type: MarkerType,
     ):
         self.__id = marker_id
         self._pixel_corners = corners
         self.__size = size
-        self.__marker_dict = marker_dict
+        self.__marker_type = marker_type
 
     @abstractmethod
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
@@ -40,8 +40,8 @@ class BaseMarker(ABC):
         return self.__size
 
     @property
-    def marker_dict(self) -> MarkerDict:
-        return self.__marker_dict
+    def marker_dict(self) -> MarkerType:
+        return self.__marker_type
 
     @property
     def pixel_corners(self) -> List[Coordinates]:
@@ -104,11 +104,11 @@ class EagerMarker(BaseMarker):
         *,
         corners: List[ndarray],
         size: int,
-        marker_dict: MarkerDict,
+        marker_type: MarkerType,
         precalculated_vectors: Tuple[ndarray, ndarray],
     ):
         super().__init__(
-            marker_id=marker_id, corners=corners, size=size, marker_dict=marker_dict
+            marker_id=marker_id, corners=corners, size=size, marker_type=marker_type
         )
         self.__precalculated_vectors = precalculated_vectors
 
@@ -123,11 +123,11 @@ class Marker(BaseMarker):
         marker_id: int,
         corners: List[ndarray],
         size: int,
-        marker_dict: MarkerDict,
+        marker_type: MarkerType,
         calibration_params: CalibrationParameters,
     ):
         super().__init__(
-            marker_id=marker_id, corners=corners, size=size, marker_dict=marker_dict
+            marker_id=marker_id, corners=corners, size=size, marker_type=marker_type
         )
         self.__calibration_params = calibration_params
 

@@ -6,7 +6,7 @@
 
    cameras/index
    markers
-   marker_dict
+   marker_type
    coordinates
    discovery
    calibration

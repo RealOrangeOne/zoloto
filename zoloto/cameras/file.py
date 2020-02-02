@@ -5,6 +5,7 @@ from cv2 import VideoCapture, imread
 from numpy import ndarray
 
 from .base import BaseCamera
+from .mixins import IterableCameraMixin
 
 
 class ImageFileCamera(BaseCamera):
@@ -18,7 +19,7 @@ class ImageFileCamera(BaseCamera):
         return imread(str(self.image_path))
 
 
-class VideoFileCamera(BaseCamera):
+class VideoFileCamera(BaseCamera, IterableCameraMixin):
     def __init__(
         self, video_path: Path, *, calibration_file: Optional[Path] = None
     ) -> None:

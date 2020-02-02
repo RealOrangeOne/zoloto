@@ -6,7 +6,7 @@ from typing import NamedTuple
 from cv2 import FILE_STORAGE_READ, FILE_STORAGE_WRITE, FileStorage, aruco
 from numpy import array
 
-from .marker_dict import MarkerDict
+from .marker_type import MarkerType
 
 CalibrationParameters = NamedTuple(
     "CalibrationParameters",
@@ -58,7 +58,7 @@ def get_fake_calibration_parameters(
     """
     HACK: Generate fake calibration parameters
     """
-    dictionary = aruco.getPredefinedDictionary(MarkerDict.DICT_6X6_1000)
+    dictionary = aruco.getPredefinedDictionary(MarkerType.DICT_6X6_1000)
     seen_corners = []
     seen_ids = []
     image_size = (size, size)

@@ -1,12 +1,12 @@
 import argparse
 
 from zoloto.cameras.camera import Camera
-from zoloto.marker_dict import MarkerDict
+from zoloto.marker_type import MarkerType
 from zoloto.viewer import CameraViewer
 
 
 class PreviewCamera(Camera):
-    marker_dict = MarkerDict.DICT_6X6_250
+    marker_type = MarkerType.DICT_6X6_250
 
     def get_marker_size(self, marker_id: int) -> int:
         return 100
