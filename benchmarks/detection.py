@@ -5,13 +5,13 @@ import pytest
 
 from tests.conftest import IMAGE_DATA, TEST_IMAGE_DIR, get_calibration
 from zoloto.cameras.file import ImageFileCamera as BaseImageFileCamera
-from zoloto.marker_dict import MarkerDict
+from zoloto.marker_type import MarkerType
 
 
 @pytest.fixture(params=IMAGE_DATA.keys())
 def image_camera(request: Any) -> BaseImageFileCamera:
     class ImageFileCamera(BaseImageFileCamera):
-        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+        marker_type = MarkerType.DICT_APRILTAG_36H11
 
         def get_marker_size(self, marker_id: int) -> int:
             return 100
@@ -50,7 +50,7 @@ def test_process_frame(
     filename: str, benchmark: Callable, temp_image_file: Callable[[str], Path]
 ) -> None:
     class TestCamera(BaseImageFileCamera):
-        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+        marker_type = MarkerType.DICT_APRILTAG_36H11
 
         def get_marker_size(self, marker_id: int) -> int:
             return 100
@@ -67,7 +67,7 @@ def test_process_frame_eager(
     temp_image_file: Callable[[str], Path],
 ) -> None:
     class TestCamera(BaseImageFileCamera):
-        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+        marker_type = MarkerType.DICT_APRILTAG_36H11
 
         def get_marker_size(self, marker_id: int) -> int:
             return 100

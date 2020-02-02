@@ -10,7 +10,7 @@ from numpy import ndarray
 
 from zoloto.calibration import CalibrationParameters, get_fake_calibration_parameters
 from zoloto.cameras.marker import MarkerCamera as BaseMarkerCamera
-from zoloto.marker_dict import MarkerDict
+from zoloto.marker_type import MarkerType
 
 TEST_DATA_DIR = Path(__file__).parent.joinpath("data")
 TEST_IMAGE_DIR = TEST_DATA_DIR.joinpath("images")
@@ -53,7 +53,7 @@ def temp_image_file(make_temp_file: Callable[[str], Path]) -> Path:
 @pytest.fixture
 def marker_camera() -> BaseMarkerCamera:
     class MarkerCamera(BaseMarkerCamera):
-        marker_dict = MarkerDict.DICT_6X6_50
+        marker_type = MarkerType.DICT_6X6_50
 
     return MarkerCamera(25, marker_size=200)
 

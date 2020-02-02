@@ -5,7 +5,7 @@ import pytest
 
 from tests.conftest import IMAGE_DATA, TEST_IMAGE_DIR, get_calibration
 from zoloto.cameras.file import ImageFileCamera as BaseImageFileCamera
-from zoloto.marker_dict import MarkerDict
+from zoloto.marker_type import MarkerType
 
 
 def test_has_data_for_all_images() -> None:
@@ -17,7 +17,7 @@ def test_has_data_for_all_images() -> None:
 @pytest.mark.parametrize("filename", IMAGE_DATA.keys())
 def test_detects_marker_ids(filename: str, snapshot: Any) -> None:
     class ImageFileCamera(BaseImageFileCamera):
-        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+        marker_type = MarkerType.DICT_APRILTAG_36H11
 
         def get_marker_size(self, marker_id: int) -> int:
             return 100
@@ -29,7 +29,7 @@ def test_detects_marker_ids(filename: str, snapshot: Any) -> None:
 @pytest.mark.parametrize("filename", IMAGE_DATA.keys())
 def test_annotates_frame(filename: str, temp_image_file: Any) -> None:
     class ImageFileCamera(BaseImageFileCamera):
-        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+        marker_type = MarkerType.DICT_APRILTAG_36H11
 
         def get_marker_size(self, marker_id: int) -> int:
             return 100
@@ -41,7 +41,7 @@ def test_annotates_frame(filename: str, temp_image_file: Any) -> None:
 @pytest.mark.parametrize("filename", IMAGE_DATA.keys())
 def test_gets_markers(filename: str, snapshot: Any) -> None:
     class TestCamera(BaseImageFileCamera):
-        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+        marker_type = MarkerType.DICT_APRILTAG_36H11
 
         def get_marker_size(self, marker_id: int) -> int:
             return 100
@@ -66,7 +66,7 @@ def test_gets_markers(filename: str, snapshot: Any) -> None:
 @pytest.mark.parametrize("filename,camera_name", IMAGE_DATA.items())
 def test_gets_markers_eager(filename: str, camera_name: str, snapshot: Any) -> None:
     class TestCamera(BaseImageFileCamera):
-        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+        marker_type = MarkerType.DICT_APRILTAG_36H11
 
         def get_marker_size(self, marker_id: int) -> int:
             return 100
@@ -100,7 +100,7 @@ def test_gets_markers_with_calibration(
     filename: str, camera_name: str, snapshot: Any
 ) -> None:
     class TestCamera(BaseImageFileCamera):
-        marker_dict = MarkerDict.DICT_APRILTAG_36H11
+        marker_type = MarkerType.DICT_APRILTAG_36H11
 
         def get_marker_size(self, marker_id: int) -> int:
             return 100

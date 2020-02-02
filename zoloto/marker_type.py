@@ -3,7 +3,7 @@ from enum import IntEnum
 from cv2 import aruco
 
 
-class MarkerDict(IntEnum):
+class MarkerType(IntEnum):
     DICT_4X4_50 = aruco.DICT_4X4_50
     DICT_4X4_100 = aruco.DICT_4X4_100
     DICT_4X4_250 = aruco.DICT_4X4_250

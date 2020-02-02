@@ -6,13 +6,13 @@ from tests.strategies import reasonable_image_size
 from zoloto.cameras.file import ImageFileCamera
 from zoloto.cameras.marker import MarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
-from zoloto.marker_dict import MarkerDict
+from zoloto.marker_type import MarkerType
 
 
 @given(reasonable_image_size())
 def test_captures_frame_at_correct_resolution(resolution) -> None:
     class TestCamera(MarkerCamera):
-        marker_dict = MarkerDict.DICT_6X6_50
+        marker_type = MarkerType.DICT_6X6_50
 
     marker_camera = TestCamera(25, marker_size=resolution)
     frame = marker_camera.capture_frame()
@@ -22,7 +22,7 @@ def test_captures_frame_at_correct_resolution(resolution) -> None:
 @given(strategies.integers(0, 49))
 def test_detects_markers(marker_id) -> None:
     class TestCamera(MarkerCamera):
-        marker_dict = MarkerDict.DICT_6X6_50
+        marker_type = MarkerType.DICT_6X6_50
 
     markers = list(TestCamera(marker_id, marker_size=200).process_frame())
     assert len(markers) == 1
@@ -32,7 +32,7 @@ def test_detects_markers(marker_id) -> None:
 @given(strategies.integers(0, 49))
 def test_detects_marker_ids(marker_id) -> None:
     class TestCamera(MarkerCamera):
-        marker_dict = MarkerDict.DICT_6X6_50
+        marker_type = MarkerType.DICT_6X6_50
 
     markers = TestCamera(marker_id, marker_size=200).get_visible_markers()
     assert markers == [marker_id]
@@ -40,7 +40,7 @@ def test_detects_marker_ids(marker_id) -> None:
 
 def test_sees_nothing_in_blank_image() -> None:
     class TestCamera(MarkerCamera):
-        marker_dict = MarkerDict.DICT_6X6_50
+        marker_type = MarkerType.DICT_6X6_50
 
     marker_camera = TestCamera(25, marker_size=200)
     empty_frame = numpy.zeros((200, 200, 3), numpy.uint8)
@@ -51,7 +51,7 @@ def test_sees_nothing_in_blank_image() -> None:
 @given(strategies.integers(0, 49))
 def test_eager_capture(marker_id) -> None:
     class TestCamera(MarkerCamera):
-        marker_dict = MarkerDict.DICT_6X6_50
+        marker_type = MarkerType.DICT_6X6_50
 
     markers = list(TestCamera(marker_id, marker_size=200).process_frame_eager())
     assert len(markers) == 1
@@ -61,7 +61,7 @@ def test_eager_capture(marker_id) -> None:
 
 def test_camera_as_context_manager() -> None:
     class TestCamera(MarkerCamera):
-        marker_dict = MarkerDict.DICT_6X6_50
+        marker_type = MarkerType.DICT_6X6_50
 
     with TestCamera(25, marker_size=200) as marker_camera:
         markers = list(marker_camera.get_visible_markers())
@@ -70,7 +70,7 @@ def test_camera_as_context_manager() -> None:
 
 def test_marker_with_falsy_id() -> None:
     class TestCamera(MarkerCamera):
-        marker_dict = MarkerDict.DICT_6X6_50
+        marker_type = MarkerType.DICT_6X6_50
 
     with TestCamera(0, marker_size=200) as marker_camera:
         markers = list(marker_camera.get_visible_markers())
@@ -80,10 +80,10 @@ def test_marker_with_falsy_id() -> None:
 @given(strategies.integers(0, 49))
 def test_saved_image(temp_image_file, marker_id) -> None:
     class TestCamera(MarkerCamera):
-        marker_dict = MarkerDict.DICT_6X6_50
+        marker_type = MarkerType.DICT_6X6_50
 
     class TestImageCamera(ImageFileCamera):
-        marker_dict = MarkerDict.DICT_6X6_50
+        marker_type = MarkerType.DICT_6X6_50
 
         def get_marker_size(self, marker_id):
             return 200
@@ -97,7 +97,7 @@ def test_saved_image(temp_image_file, marker_id) -> None:
 @given(strategies.integers(0, 49))
 def test_saved_image_with_annotation(temp_image_file, marker_id) -> None:
     class TestCamera(MarkerCamera):
-        marker_dict = MarkerDict.DICT_6X6_50
+        marker_type = MarkerType.DICT_6X6_50
 
     marker_camera = TestCamera(marker_id, marker_size=200)
     output_file = temp_image_file
@@ -106,7 +106,7 @@ def test_saved_image_with_annotation(temp_image_file, marker_id) -> None:
 
 def test_process_eager_frame_without_calibrations() -> None:
     class TestCamera(MarkerCamera):
-        marker_dict = MarkerDict.DICT_6X6_50
+        marker_type = MarkerType.DICT_6X6_50
 
         def get_calibrations(self):
             return None

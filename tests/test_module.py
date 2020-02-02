@@ -11,8 +11,8 @@ def test_exposes_marker() -> None:
     assert zoloto.Marker == zoloto.marker.Marker
 
 
-def test_exposes_marker_dict() -> None:
-    assert zoloto.MarkerDict == zoloto.marker_dict.MarkerDict
+def test_exposes_marker_type() -> None:
+    assert zoloto.MarkerType == zoloto.marker_type.MarkerType
 
 
 @pytest.mark.parametrize(
