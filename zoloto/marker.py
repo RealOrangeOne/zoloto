@@ -20,7 +20,7 @@ class BaseMarker(ABC):
         marker_id: int,
         corners: List[ndarray],
         size: int,
-        marker_type: MarkerType,
+        marker_type: MarkerType
     ):
         self.__id = marker_id
         self._pixel_corners = corners
