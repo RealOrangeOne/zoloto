@@ -3,6 +3,8 @@ from typing import Generator
 
 from numpy import ndarray
 
+from zoloto.exceptions import CameraReadError
+
 
 class IterableCameraMixin(ABC):
     @abstractmethod
@@ -15,3 +17,11 @@ class IterableCameraMixin(ABC):
             if not frame.size:
                 break
             yield frame
+
+
+class VideoCaptureMixin(ABC):
+    def capture_frame(self) -> ndarray:
+        ret, frame = self.video_capture.read()  # type: ignore
+        if not ret or frame is None:
+            raise CameraReadError(frame)
+        return frame

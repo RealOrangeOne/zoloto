@@ -5,7 +5,7 @@ from cv2 import CAP_PROP_BUFFERSIZE, VideoCapture
 from numpy import ndarray
 
 from .base import BaseCamera
-from .mixins import IterableCameraMixin
+from .mixins import IterableCameraMixin, VideoCaptureMixin
 
 
 def find_camera_ids() -> Generator[int, None, None]:
@@ -22,7 +22,7 @@ def find_camera_ids() -> Generator[int, None, None]:
             yield camera_id
 
 
-class Camera(BaseCamera, IterableCameraMixin):
+class Camera(BaseCamera, IterableCameraMixin, VideoCaptureMixin):
     def __init__(
         self, camera_id: int, *, calibration_file: Optional[Path] = None
     ) -> None:
@@ -38,8 +38,7 @@ class Camera(BaseCamera, IterableCameraMixin):
     def capture_frame(self) -> ndarray:
         # Hack: Double capture frames to fill buffer.
         self.video_capture.read()
-        _, frame = self.video_capture.read()
-        return frame
+        return super().capture_frame()
 
     def close(self) -> None:
         super().close()
@@ -51,7 +50,7 @@ class Camera(BaseCamera, IterableCameraMixin):
             yield cls(camera_id, **kwargs)
 
 
-class SnapshotCamera(BaseCamera):
+class SnapshotCamera(BaseCamera, VideoCaptureMixin):
     """
     A modified version of Camera optimised for single use.
 
@@ -68,9 +67,9 @@ class SnapshotCamera(BaseCamera):
         return VideoCapture(camera_id)
 
     def capture_frame(self) -> ndarray:
-        video_capture = self.get_video_capture(self.camera_id)
-        _, frame = video_capture.read()
-        video_capture.release()
+        self.video_capture = self.get_video_capture(self.camera_id)
+        frame = super().capture_frame()
+        self.video_capture.release()
         return frame
 
     @classmethod
