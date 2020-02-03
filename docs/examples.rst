@@ -7,6 +7,12 @@ Annotate Image
 .. literalinclude:: ../examples/annotate-image.py
 
 
+Annotate Video
+--------------
+
+.. literalinclude:: ../examples/annotate-video.py
+
+
 Count Markers
 -------------
 
