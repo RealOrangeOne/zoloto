@@ -1,4 +1,3 @@
-import numpy
 import pytest
 from hypothesis import given, strategies
 
@@ -36,16 +35,6 @@ def test_detects_marker_ids(marker_id) -> None:
 
     markers = TestCamera(marker_id, marker_size=200).get_visible_markers()
     assert markers == [marker_id]
-
-
-def test_sees_nothing_in_blank_image() -> None:
-    class TestCamera(MarkerCamera):
-        marker_type = MarkerType.DICT_6X6_50
-
-    marker_camera = TestCamera(25, marker_size=200)
-    empty_frame = numpy.zeros((200, 200, 3), numpy.uint8)
-    markers = list(marker_camera.process_frame(frame=empty_frame))
-    assert markers == []
 
 
 @given(strategies.integers(0, 49))
