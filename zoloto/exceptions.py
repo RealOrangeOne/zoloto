@@ -14,4 +14,4 @@ class MissingCalibrationsError(ZolotoException):
 class CameraReadError(ZolotoException):
     def __init__(self, frame: Optional[ndarray]):
         self.frame = frame
-        super().__init__(self)
+        super().__init__()
