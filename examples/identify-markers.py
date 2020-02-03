@@ -19,6 +19,7 @@ def process_marker_type(current_marker_type: MarkerType) -> None:
             if i % 3 == 0:
                 if camera.get_visible_markers(frame=frame):
                     found_markers = True
+                    break
 
     print(current_marker_type, found_markers)  # noqa: T001
 
