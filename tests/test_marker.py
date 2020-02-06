@@ -1,21 +1,22 @@
 import json
-from typing import Any, Optional
+from typing import Any, List, Optional
 from unittest import TestCase
 from unittest.mock import patch
 
 import ujson
-from pytest import approx, raises
+from pytest import approx
 
 from zoloto.calibration import CalibrationParameters
 from zoloto.cameras.marker import MarkerCamera as BaseMarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
-from zoloto.marker import Marker
+from zoloto.marker import BaseMarker, EagerMarker, UncalibratedMarker
 from zoloto.marker_type import MarkerType
 
 
 class MarkerTestCase(TestCase):
     MARKER_SIZE = 200
     MARKER_ID = 25
+    EXPECTED_DICT_KEYS = {"id", "size", "pixel_corners", "rvec", "tvec"}
 
     def setUp(self) -> None:
         class MarkerCamera(BaseMarkerCamera):
@@ -24,14 +25,22 @@ class MarkerTestCase(TestCase):
         self.marker_camera = MarkerCamera(
             self.MARKER_ID, marker_size=self.MARKER_SIZE
         )  # type: BaseMarkerCamera
-        self.markers = list(self.marker_camera.process_frame())
+        self.markers = list(
+            self.marker_camera.process_frame()
+        )  # type: List[BaseMarker]
         self.marker = self.markers[0]
+
+    def assertIsType(self, a: Any, b: Any) -> None:
+        self.assertEqual(type(a), b)
 
     def test_marker_size(self) -> None:
         self.assertEqual(self.marker.size, self.MARKER_SIZE)
 
     def test_marker_id(self) -> None:
         self.assertEqual(self.marker.id, self.MARKER_ID)
+
+    def test_marker_dict(self) -> None:
+        self.assertEqual(self.marker.marker_dict, MarkerType.DICT_6X6_50)
 
     def test_pixel_corners(self) -> None:
         self.assertEqual(len(self.marker.pixel_corners), 4)
@@ -73,37 +82,59 @@ class MarkerTestCase(TestCase):
     def test_as_dict(self) -> None:
         marker_dict = self.marker.as_dict()
         self.assertIsInstance(marker_dict, dict)
-        self.assertEqual(
-            {"id", "size", "pixel_corners", "rvec", "tvec"}, set(marker_dict.keys())
-        )
+        self.assertEqual(self.EXPECTED_DICT_KEYS, set(marker_dict.keys()))
         self.assertEqual(marker_dict["size"], self.MARKER_SIZE)
         self.assertEqual(marker_dict["id"], self.MARKER_ID)
 
-    def test_dict_as_json(self) -> None:
+    def test_as_dict_json(self) -> None:
         marker_dict = self.marker.as_dict()
-        created_marker_dict = json.loads(json.dumps(marker_dict))
+        created_marker_dict = json.loads(json.dumps(self.marker.as_dict()))
         self.assertEqual(marker_dict, created_marker_dict)
+        self.assertEqual(self.EXPECTED_DICT_KEYS, set(marker_dict.keys()))
 
-    def test_many_as_ujson(self) -> None:
-        created_markers_dict = ujson.loads(
-            ujson.dumps([m.as_dict() for m in self.markers])
-        )
-        self.assertEqual(len(created_markers_dict), 1)
-        self.assertEqual(
-            {marker["id"] for marker in created_markers_dict}, {self.MARKER_ID}
-        )
+    def test_as_dict_ujson(self) -> None:
+        created_marker_dict = ujson.loads(ujson.dumps(self.marker))
+        self.assertEqual(self.EXPECTED_DICT_KEYS, set(created_marker_dict.keys()))
 
-    def test_dict_as_ujson(self) -> None:
+    def test_many_as_dict_ujson(self) -> None:
+        created_marker_dict = ujson.loads(ujson.dumps(self.markers))
+        self.assertEqual(self.EXPECTED_DICT_KEYS, set(created_marker_dict[0].keys()))
+
+    def test_dict_value_types(self) -> None:
         marker_dict = self.marker.as_dict()
-        created_marker_dict = ujson.loads(ujson.dumps(marker_dict))
-        self.assertEqual(marker_dict["id"], created_marker_dict["id"])
-        self.assertEqual(marker_dict["size"], created_marker_dict["size"])
-        for expected_corner, corner in zip(
-            marker_dict["pixel_corners"], created_marker_dict["pixel_corners"]
-        ):
-            self.assertEqual(expected_corner, approx(corner))
-        self.assertEqual(marker_dict["rvec"], approx(created_marker_dict["rvec"]))
-        self.assertEqual(marker_dict["tvec"], approx(created_marker_dict["tvec"]))
+        self.assertIsType(marker_dict["id"], int)
+        self.assertIsType(marker_dict["size"], int)
+
+        pixel_corners = marker_dict["pixel_corners"]
+        self.assertIsType(pixel_corners, list)
+        self.assertIsType(pixel_corners[0], list)
+        self.assertIsType(pixel_corners[0][0], float)
+
+        if "rvec" in marker_dict:
+            self.assertIsType(marker_dict["rvec"], list)
+            self.assertIsType(marker_dict["rvec"][0], float)
+
+            self.assertIsType(marker_dict["tvec"], list)
+            self.assertIsType(marker_dict["tvec"][0], float)
+
+    def test_marker_types(self) -> None:
+        self.assertIsType(self.marker.id, int)
+        self.assertIsType(self.marker.size, int)
+        self.assertIsType(self.marker.pixel_corners[0].x, float)
+        self.assertIsType(self.marker.pixel_corners[0].y, float)
+        self.assertIsType(self.marker.pixel_centre.x, float)
+        self.assertIsType(self.marker.pixel_centre.y, float)
+
+        if "rvec" in self.EXPECTED_DICT_KEYS:
+            self.assertIsType(self.marker.distance, int)
+
+            self.assertIsType(self.marker.spherical.rot_x, float)
+            self.assertIsType(self.marker.spherical.rot_y, float)
+            self.assertIsType(self.marker.spherical.dist, int)
+
+            self.assertIsType(self.marker.cartesian.x, float)
+            self.assertIsType(self.marker.cartesian.y, float)
+            self.assertIsType(self.marker.cartesian.z, float)
 
 
 class EagerMarkerTestCase(MarkerTestCase):
@@ -115,27 +146,19 @@ class EagerMarkerTestCase(MarkerTestCase):
         self.markers = list(self.marker_camera.process_frame_eager())
         self.marker = self.markers[0]
 
-    def test_is_eager(self) -> None:
-        self.assertTrue(self.marker._is_eager())
-
     @patch("cv2.aruco.estimatePoseSingleMarkers")
     def test_doesnt_calculate_pose(self, pose_mock: Any) -> None:
         assert self.marker._tvec is not None
         assert self.marker._rvec is not None
         pose_mock.assert_not_called()
 
-
-class MarkerFromDictTestCase(EagerMarkerTestCase):
-    def setUp(self) -> None:
-        class MarkerCamera(BaseMarkerCamera):
-            marker_type = MarkerType.DICT_6X6_50
-
-        self.marker_camera = MarkerCamera(self.MARKER_ID, marker_size=self.MARKER_SIZE)
-        self.markers = list(self.marker_camera.process_frame())
-        self.marker = Marker.from_dict(self.markers[0].as_dict())
+    def test_is_eager(self) -> None:
+        self.assertIsInstance(self.marker, EagerMarker)
 
 
-class MarkerSansCalibrationsTestCase(MarkerTestCase):
+class UncalibratedMarkerTestCase(MarkerTestCase):
+    EXPECTED_DICT_KEYS = {"id", "size", "pixel_corners"}
+
     class TestCamera(BaseMarkerCamera):
         marker_type = MarkerType.DICT_6X6_50
 
@@ -149,6 +172,11 @@ class MarkerSansCalibrationsTestCase(MarkerTestCase):
         self.markers = list(self.marker_camera.process_frame())
         self.marker = self.markers[0]
 
+    def test_is_uncalibrated(self) -> None:
+        self.assertIsInstance(self.marker, UncalibratedMarker)
+        with self.assertRaises(MissingCalibrationsError):
+            self.marker._get_pose_vectors()
+
     def __getattribute__(self, name: str) -> Any:
         attr = super().__getattribute__(name)
         if name in [
@@ -159,39 +187,8 @@ class MarkerSansCalibrationsTestCase(MarkerTestCase):
         ]:
 
             def test_raises(*args: Any, **kwargs: Any) -> None:
-                with raises(MissingCalibrationsError):
+                with self.assertRaises(MissingCalibrationsError):
                     attr(*args, **kwargs)
 
             return test_raises
         return attr
-
-    def test_as_dict(self) -> None:
-        marker_dict = self.marker.as_dict()
-        self.assertIsInstance(marker_dict, dict)
-        self.assertEqual({"id", "size", "pixel_corners"}, set(marker_dict.keys()))
-        self.assertEqual(marker_dict["size"], self.MARKER_SIZE)
-        self.assertEqual(marker_dict["id"], self.MARKER_ID)
-
-    def test_dict_as_ujson(self) -> None:
-        marker_dict = self.marker.as_dict()
-        created_marker_dict = ujson.loads(ujson.dumps(marker_dict))
-        self.assertEqual(marker_dict["id"], created_marker_dict["id"])
-        self.assertEqual(marker_dict["size"], created_marker_dict["size"])
-        for expected_corner, corner in zip(
-            marker_dict["pixel_corners"], created_marker_dict["pixel_corners"]
-        ):
-            self.assertEqual(expected_corner, approx(corner))
-        self.assertNotIn("rvec", created_marker_dict)
-        self.assertNotIn("tvec", created_marker_dict)
-
-
-class MarkerSansCalibrationsFromDictTestCase(MarkerSansCalibrationsTestCase):
-    def setUp(self) -> None:
-        self.marker_camera = self.TestCamera(
-            self.MARKER_ID, marker_size=self.MARKER_SIZE,
-        )
-        self.markers = list(self.marker_camera.process_frame())
-        self.marker = Marker.from_dict(self.markers[0].as_dict())
-
-    def test_is_not_eager(self) -> None:
-        self.assertFalse(self.marker._is_eager())
