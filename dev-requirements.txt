@@ -17,7 +17,7 @@ black==19.10b0; python_version >= '3.6'
 snapshottest==0.5.1
 pytest-mock==2.0.0
 ujson==1.35
-sphinx==2.3.1
+sphinx==2.4.1
 sphinx-rtd-theme==0.4.3
 sphinx_autodoc_typehints==1.10.3
 m2r==0.2.1
