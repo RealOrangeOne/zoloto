@@ -8,7 +8,7 @@ flake8-mutable==1.2.0
 flake8-print==3.1.4
 flake8-tuple==0.4.0
 hypothesis==4.36.2
-mypy==0.720.0
+mypy==0.770
 pytest==5.3.5
 pytest-benchmark==3.2.3
 pytest-cov==2.8.1
