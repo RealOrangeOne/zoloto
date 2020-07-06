@@ -15,7 +15,7 @@ setup(
     packages=find_packages(include="zoloto*"),
     package_data={"zoloto": ["py.typed"]},
     install_requires=[
-        "opencv-contrib-python-headless>=4.0,<4.1",
+        "opencv-contrib-python-headless>=4.0,<4.4",
         "cached-property>=1.5",
         "pyquaternion>=0.9.2",
     ],
