@@ -17,14 +17,18 @@ jobs:
         python: [3.5, 3.6, 3.7]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python }}
-    - name: Install dependencies
-      run: bash ./scripts/setup.sh
-    - name: Run tests
-      run: bash ./scripts/test.sh
-    - name: Run package build
-      run: bash ./scripts/build.sh
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-${{ matrix.python }}-pip-${{ hashFiles('dev-requirements.txt') }}-${{ hashFiles('setup.py') }}
+      - name: Install dependencies
+        run: bash ./scripts/setup.sh
+      - name: Run tests
+        run: bash ./scripts/test.sh
+      - name: Run package build
+        run: bash ./scripts/build.sh
