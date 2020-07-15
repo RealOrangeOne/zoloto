@@ -50,20 +50,11 @@ def test_sees_nothing_in_blank_image() -> None:
 
 
 @given(strategies.integers(0, 49))
-<<<<<<< HEAD
 def test_eager_capture(marker_id) -> None:
     class TestCamera(MarkerCamera):
         marker_type = MarkerType.DICT_6X6_50
 
     markers = list(TestCamera(marker_id, marker_size=200).process_frame_eager())
-=======
-def test_eager_capture(marker_id):
-    markers = list(
-        MarkerCamera(
-            marker_id, marker_dict=MarkerDict.DICT_6X6_50, marker_size=200
-        ).process_frame_eager()
-    )
->>>>>>> parent of e6570da... Revert "GitHub actions"
     assert len(markers) == 1
     assert markers[0].id == marker_id
     assert isinstance(markers[0], EagerMarker)
