@@ -2,7 +2,6 @@
 
 [![Documentation Status](https://readthedocs.org/projects/zoloto/badge/?version=latest)](https://zoloto.readthedocs.io/en/latest/?badge=latest)
 ![Tests Status](https://github.com/RealOrangeOne/zoloto/workflows/Tests/badge.svg)
-![Benchmark Status](https://github.com/RealOrangeOne/zoloto/workflows/Benchmark/badge.svg)
 ![PyPI](https://img.shields.io/pypi/v/zoloto.svg)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/zoloto.svg)
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/zoloto.svg)

@@ -1,0 +1,23 @@
+name: Docs
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install dependencies
+      run: bash ./scripts/setup.sh
+    - name: Run benchmarks
+      run: bash ./scripts/docs.sh
