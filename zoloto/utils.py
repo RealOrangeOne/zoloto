@@ -2,6 +2,14 @@ import json
 from functools import wraps
 from typing import Any, Callable, TypeVar
 
+try:
+    import ujson
+
+    encode_as_json = ujson.dumps
+except ImportError:
+    encode_as_json = json.dumps  # type: ignore
+
+
 T = TypeVar("T", bound=Callable)
 
 
@@ -19,12 +27,3 @@ def cached_method(f: T) -> T:
 
     wrapper.__wrapped__ = f  # type: ignore
     return wrapper  # type: ignore
-
-
-def encode_as_json(o: Any) -> str:
-    try:
-        import ujson
-
-        return ujson.dumps(o)
-    except ImportError:
-        return json.dumps(o)
