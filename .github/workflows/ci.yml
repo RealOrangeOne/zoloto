@@ -45,7 +45,7 @@ jobs:
       - name: Build docs
         run: bash ./scripts/docs.sh
 
-  tests:
+  build:
 
     runs-on: ${{ matrix.os }}
 
