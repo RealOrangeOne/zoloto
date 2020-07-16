@@ -23,5 +23,5 @@ jobs:
           key: pip-${{ hashFiles('dev-requirements.txt') }}-${{ hashFiles('setup.py') }}
       - name: Install dependencies
         run: bash ./scripts/setup.sh
-      - name: Run benchmarks
+      - name: Build docs
         run: bash ./scripts/docs.sh
