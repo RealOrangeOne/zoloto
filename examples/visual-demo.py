@@ -14,7 +14,7 @@ class Viewer(CameraViewer):
         return frame
 
 
-camera = TestCamera(0, marker_type=MarkerType.DICT_6X6_50, marker_size=100)
+camera = Camera(0, marker_type=MarkerType.DICT_6X6_50, marker_size=100)
 
 
 Viewer(camera).start()
