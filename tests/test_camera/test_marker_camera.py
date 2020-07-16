@@ -67,18 +67,30 @@ def test_marker_with_falsy_id() -> None:
 
 @given(strategies.integers(0, 49))
 def test_saved_image(temp_image_file, marker_id) -> None:
-    class TestImageCamera(ImageFileCamera):
-        def get_marker_size(self, marker_id):
-            return 200
+    marker_camera = MarkerCamera(
+        marker_id, marker_size=200, marker_type=MarkerType.DICT_6X6_50
+    )
+    marker_camera.save_frame(temp_image_file)
+    image_file_camera = ImageFileCamera(
+        temp_image_file, marker_type=MarkerType.DICT_6X6_50, marker_size=200
+    )
+    assert image_file_camera.get_visible_markers() == [marker_id]
+
+
+@given(strategies.integers(0, 49))
+def test_marker_size(temp_image_file, marker_id) -> None:
+    class TestCamera(ImageFileCamera):
+        def get_marker_size(self, inner_marker_id: int) -> int:
+            return inner_marker_id * 10
 
     marker_camera = MarkerCamera(
         marker_id, marker_size=200, marker_type=MarkerType.DICT_6X6_50
     )
     marker_camera.save_frame(temp_image_file)
-    image_file_camera = TestImageCamera(
-        temp_image_file, marker_type=MarkerType.DICT_6X6_50
-    )
-    assert image_file_camera.get_visible_markers() == [marker_id]
+    image_file_camera = TestCamera(temp_image_file, marker_type=MarkerType.DICT_6X6_50)
+    marker = next(image_file_camera.process_frame())
+    assert marker.size == marker_id * 10
+    assert marker.id == marker_id
 
 
 @given(strategies.integers(0, 49))

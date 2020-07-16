@@ -13,9 +13,17 @@ from .mixins import IterableCameraMixin
 
 class PiCamera(BaseCamera, IterableCameraMixin):
     def __init__(
-        self, *, marker_type: MarkerType, calibration_file: Optional[Path] = None
+        self,
+        *,
+        marker_size: Optional[int] = None,
+        marker_type: MarkerType,
+        calibration_file: Optional[Path] = None
     ) -> None:
-        super().__init__(marker_type=marker_type, calibration_file=calibration_file)
+        super().__init__(
+            marker_size=marker_size,
+            marker_type=marker_type,
+            calibration_file=calibration_file,
+        )
         self.camera = picamera.PiCamera()
 
     def capture_frame(self) -> ndarray:

@@ -25,15 +25,15 @@ class MarkerCamera(BaseCamera):
         marker_type: MarkerType,
         calibration_file: Optional[Path] = None
     ) -> None:
-        super().__init__(marker_type=marker_type, calibration_file=calibration_file)
+        super().__init__(
+            marker_size=marker_size,
+            marker_type=marker_type,
+            calibration_file=calibration_file,
+        )
         self.marker_id = marker_id
-        self.marker_size = marker_size
-
-    def get_marker_size(self, marker_id: int) -> int:
-        return self.marker_size
 
     def get_calibrations(self) -> Optional[CalibrationParameters]:
-        return get_fake_calibration_parameters(self.marker_size)
+        return get_fake_calibration_parameters(self.get_marker_size(self.marker_id))
 
     def get_resolution(self) -> Tuple[int, int]:
         size = int(self.get_marker_size(self.marker_id) + self.BORDER_SIZE * 2)
@@ -41,7 +41,7 @@ class MarkerCamera(BaseCamera):
 
     def capture_frame(self) -> ndarray:
         image = cv2.aruco.drawMarker(
-            self.marker_dictionary, self.marker_id, self.marker_size
+            self.marker_dictionary, self.marker_id, self.get_marker_size(self.marker_id)
         )
         return cv2.copyMakeBorder(
             image,

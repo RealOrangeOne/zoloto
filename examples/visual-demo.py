@@ -6,11 +6,6 @@ from zoloto.marker_type import MarkerType
 from zoloto.viewer import CameraViewer
 
 
-class TestCamera(Camera):
-    def get_marker_size(self, marker_id: int) -> int:
-        return 100
-
-
 class Viewer(CameraViewer):
     def on_frame(self, frame: ndarray) -> ndarray:
         with Timer() as annotate_timer:
@@ -19,7 +14,7 @@ class Viewer(CameraViewer):
         return frame
 
 
-camera = TestCamera(0, marker_type=MarkerType.DICT_6X6_50)
+camera = TestCamera(0, marker_type=MarkerType.DICT_6X6_50, marker_size=100)
 
 
 Viewer(camera).start()

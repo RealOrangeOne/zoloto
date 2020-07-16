@@ -16,7 +16,11 @@ T = TypeVar("T", bound="BaseCamera")
 
 class BaseCamera(ABC):
     def __init__(
-        self, *, marker_type: MarkerType, calibration_file: Optional[Path] = None
+        self,
+        *,
+        marker_size: Optional[int] = None,
+        marker_type: MarkerType,
+        calibration_file: Optional[Path] = None
     ) -> None:
         self.calibration_file = calibration_file
         self.marker_type = marker_type
@@ -24,6 +28,7 @@ class BaseCamera(ABC):
             cv2.aruco.DetectorParameters_create()
         )
         self.marker_dictionary = cv2.aruco.getPredefinedDictionary(self.marker_type)
+        self._marker_size = marker_size
 
     def get_calibrations(self) -> Optional[CalibrationParameters]:
         if self.calibration_file is None:
@@ -35,9 +40,12 @@ class BaseCamera(ABC):
     ) -> cv2.aruco_DetectorParameters:
         return params
 
-    @abstractmethod
-    def get_marker_size(self, marker_id: int) -> int:  # pragma: nocover
-        raise NotImplementedError()
+    def get_marker_size(self, marker_id: int) -> int:
+        if self._marker_size is None:
+            raise ValueError(
+                "`marker_size` should be passed in to the camera constructor, or override `get_marker_size`"
+            )
+        return self._marker_size
 
     @abstractmethod
     def capture_frame(self) -> ndarray:  # pragma: nocover

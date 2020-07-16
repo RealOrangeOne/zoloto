@@ -1,6 +1,7 @@
 import pytest
 
 import zoloto.cameras
+from tests.conftest import TEST_IMAGE_DIR
 from zoloto.marker_type import MarkerType
 
 
@@ -15,15 +16,25 @@ def test_exposes_file_camera(camera_name) -> None:
     )
 
 
-def test_camera_requires_abstract_arguments() -> None:
-    class TestCamera(zoloto.cameras.Camera):
-        pass
-
-    with pytest.raises(TypeError) as e:
-        TestCamera(0, marker_type=MarkerType.DICT_4X4_100)
-    exception_message = e.value.args[0]
-    assert (
-        "Can't instantiate abstract class TestCamera with abstract methods"
-        in exception_message
+def test_camera_requires_marker_size() -> None:
+    camera = zoloto.cameras.file.ImageFileCamera(
+        TEST_IMAGE_DIR / "blank-image.png", marker_type=MarkerType.DICT_4X4_100
     )
-    assert "get_marker_size" in exception_message
+    with pytest.raises(ValueError):
+        camera.get_marker_size(0)
+
+    class TestCamera(zoloto.cameras.file.ImageFileCamera):
+        def get_marker_size(self, marker_id: int) -> int:
+            return 200
+
+    camera = TestCamera(
+        TEST_IMAGE_DIR / "blank-image.png", marker_type=MarkerType.DICT_4X4_100
+    )
+    assert camera.get_marker_size(0) == 200
+
+    camera = zoloto.cameras.file.ImageFileCamera(
+        TEST_IMAGE_DIR / "blank-image.png",
+        marker_type=MarkerType.DICT_4X4_100,
+        marker_size=200,
+    )
+    assert camera.get_marker_size(0) == 200

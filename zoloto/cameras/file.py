@@ -16,11 +16,16 @@ class ImageFileCamera(BaseCamera):
         self,
         image_path: Path,
         *,
+        marker_size: Optional[int] = None,
         marker_type: MarkerType,
         calibration_file: Optional[Path] = None
     ) -> None:
         self.image_path = image_path
-        super().__init__(marker_type=marker_type, calibration_file=calibration_file)
+        super().__init__(
+            marker_size=marker_size,
+            marker_type=marker_type,
+            calibration_file=calibration_file,
+        )
 
     def capture_frame(self) -> ndarray:
         return imread(str(self.image_path))
@@ -31,10 +36,15 @@ class VideoFileCamera(VideoCaptureMixin, BaseCamera, IterableCameraMixin):
         self,
         video_path: Path,
         *,
+        marker_size: Optional[int] = None,
         marker_type: MarkerType,
         calibration_file: Optional[Path] = None
     ) -> None:
-        super().__init__(marker_type=marker_type, calibration_file=calibration_file)
+        super().__init__(
+            marker_size=marker_size,
+            marker_type=marker_type,
+            calibration_file=calibration_file,
+        )
         self.video_capture = self.get_video_capture(video_path)
 
     def get_video_capture(self, video_path: Path) -> VideoCapture:
