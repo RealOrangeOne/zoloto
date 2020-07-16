@@ -19,6 +19,11 @@ setup(
         "cached-property>=1.5",
         "pyquaternion>=0.9.2",
     ],
+    project_urls={
+        "Changelog": "https://github.com/RealOrangeOne/zoloto/releases",
+        "Documentation": "https://zoloto.readthedocs.io/",
+        "Issues": "https://github.com/RealOrangeOne/zoloto/issues",
+    },
     entry_points={"console_scripts": ["zoloto-preview=zoloto.cli.preview:main"]},
     python_requires=">=3.5",
     extras_require={"rpi": ["picamera[array]>=1.13"], "viewer": ["Pillow>=7.0.0"]},
