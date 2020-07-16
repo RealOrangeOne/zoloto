@@ -4,10 +4,8 @@ from typing import Any, Callable, TypeVar
 
 try:
     import ujson
-
-    encode_as_json = ujson.dumps
-except ImportError:
-    encode_as_json = json.dumps  # type: ignore
+except ImportError:  # pragma: nocover
+    ujson = None  # type: ignore
 
 
 T = TypeVar("T", bound=Callable)
@@ -27,3 +25,12 @@ def cached_method(f: T) -> T:
 
     wrapper.__wrapped__ = f  # type: ignore
     return wrapper  # type: ignore
+
+
+def encode_as_json(data: Any) -> str:
+    """
+    Wrapper for json conversion which uses `ujson` if available.
+    """
+    if ujson is not None:
+        return ujson.dumps(data)
+    return json.dumps(data)
