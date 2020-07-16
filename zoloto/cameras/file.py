@@ -1,11 +1,13 @@
 from pathlib import Path
-from typing import Optional
+from typing import Generator, Optional
 
 from cv2 import VideoCapture, imread
 from numpy import ndarray
 
+from zoloto.exceptions import CameraReadError
+
 from .base import BaseCamera
-from .mixins import IterableCameraMixin
+from .mixins import IterableCameraMixin, VideoCaptureMixin
 
 
 class ImageFileCamera(BaseCamera):
@@ -19,7 +21,7 @@ class ImageFileCamera(BaseCamera):
         return imread(str(self.image_path))
 
 
-class VideoFileCamera(BaseCamera, IterableCameraMixin):
+class VideoFileCamera(VideoCaptureMixin, BaseCamera, IterableCameraMixin):
     def __init__(
         self, video_path: Path, *, calibration_file: Optional[Path] = None
     ) -> None:
@@ -29,10 +31,13 @@ class VideoFileCamera(BaseCamera, IterableCameraMixin):
     def get_video_capture(self, video_path: Path) -> VideoCapture:
         return VideoCapture(str(video_path))
 
-    def capture_frame(self) -> ndarray:
-        _, frame = self.video_capture.read()
-        return frame
-
     def close(self) -> None:
         super().close()
         self.video_capture.release()
+
+    def __iter__(self) -> Generator[ndarray, None, None]:
+        try:
+            yield from super().__iter__()
+        except CameraReadError as e:
+            if e.frame is not None:
+                raise

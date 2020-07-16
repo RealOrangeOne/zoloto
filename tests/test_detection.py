@@ -127,3 +127,15 @@ def test_gets_markers_with_calibration(
             key=operator.itemgetter("pixel_centre"),
         )
     )
+
+
+def test_sees_nothing_in_blank_image() -> None:
+    class TestCamera(BaseImageFileCamera):
+        marker_type = MarkerType.DICT_6X6_50
+
+        def get_marker_size(self, marker_id: int) -> int:
+            return 200
+
+    camera = TestCamera(TEST_IMAGE_DIR.joinpath("blank-image.png"))
+    markers = list(camera.process_frame())
+    assert markers == []
