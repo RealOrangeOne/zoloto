@@ -5,14 +5,17 @@ from numpy import ndarray
 
 import picamera
 import picamera.array
+from zoloto.marker_type import MarkerType
 
 from .base import BaseCamera
 from .mixins import IterableCameraMixin
 
 
 class PiCamera(BaseCamera, IterableCameraMixin):
-    def __init__(self, *, calibration_file: Optional[Path] = None) -> None:
-        super().__init__(calibration_file=calibration_file)
+    def __init__(
+        self, *, marker_type: MarkerType, calibration_file: Optional[Path] = None
+    ) -> None:
+        super().__init__(marker_type=marker_type, calibration_file=calibration_file)
         self.camera = picamera.PiCamera()
 
     def capture_frame(self) -> ndarray:

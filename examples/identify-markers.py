@@ -5,15 +5,15 @@ from zoloto.cameras.file import VideoFileCamera
 from zoloto.marker_type import MarkerType
 
 
-def process_marker_type(current_marker_type: MarkerType) -> None:
-    class TestCamera(VideoFileCamera):
-        marker_type = current_marker_type
+class TestCamera(VideoFileCamera):
+    def get_marker_size(self, marker_id: int) -> int:
+        return 100
 
-        def get_marker_size(self, marker_id: int) -> int:
-            return 100
+
+def process_marker_type(current_marker_type: MarkerType) -> None:
 
     found_markers = False
-    with TestCamera(Path(sys.argv[1])) as camera:
+    with TestCamera(Path(sys.argv[1]), marker_type=current_marker_type) as camera:
         for i, frame in enumerate(camera):
             print(current_marker_type, i, end="\r")  # noqa: T001
             if i % 3 == 0:

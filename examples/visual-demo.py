@@ -7,8 +7,6 @@ from zoloto.viewer import CameraViewer
 
 
 class TestCamera(Camera):
-    marker_type = MarkerType.DICT_6X6_50
-
     def get_marker_size(self, marker_id: int) -> int:
         return 100
 
@@ -21,7 +19,7 @@ class Viewer(CameraViewer):
         return frame
 
 
-camera = TestCamera(0)
+camera = TestCamera(0, marker_type=MarkerType.DICT_6X6_50)
 
 
 Viewer(camera).start()

@@ -5,6 +5,7 @@ import cv2
 from numpy import ndarray
 
 from zoloto.calibration import CalibrationParameters, get_fake_calibration_parameters
+from zoloto.marker_type import MarkerType
 
 from .base import BaseCamera
 
@@ -21,9 +22,10 @@ class MarkerCamera(BaseCamera):
         marker_id: int,
         marker_size: int,
         *,
+        marker_type: MarkerType,
         calibration_file: Optional[Path] = None
     ) -> None:
-        super().__init__(calibration_file=calibration_file)
+        super().__init__(marker_type=marker_type, calibration_file=calibration_file)
         self.marker_id = marker_id
         self.marker_size = marker_size
 

@@ -15,17 +15,15 @@ T = TypeVar("T", bound="BaseCamera")
 
 
 class BaseCamera(ABC):
-    def __init__(self, *, calibration_file: Optional[Path] = None) -> None:
+    def __init__(
+        self, *, marker_type: MarkerType, calibration_file: Optional[Path] = None
+    ) -> None:
         self.calibration_file = calibration_file
+        self.marker_type = marker_type
         self.detector_params = self.get_detector_params(
             cv2.aruco.DetectorParameters_create()
         )
         self.marker_dictionary = cv2.aruco.getPredefinedDictionary(self.marker_type)
-
-    @property
-    @abstractmethod
-    def marker_type(cls) -> MarkerType:  # pragma: nocover
-        raise NotImplementedError()
 
     def get_calibrations(self) -> Optional[CalibrationParameters]:
         if self.calibration_file is None:

@@ -5,6 +5,7 @@ from cv2 import VideoCapture, imread
 from numpy import ndarray
 
 from zoloto.exceptions import CameraReadError
+from zoloto.marker_type import MarkerType
 
 from .base import BaseCamera
 from .mixins import IterableCameraMixin, VideoCaptureMixin
@@ -12,10 +13,14 @@ from .mixins import IterableCameraMixin, VideoCaptureMixin
 
 class ImageFileCamera(BaseCamera):
     def __init__(
-        self, image_path: Path, *, calibration_file: Optional[Path] = None
+        self,
+        image_path: Path,
+        *,
+        marker_type: MarkerType,
+        calibration_file: Optional[Path] = None
     ) -> None:
         self.image_path = image_path
-        super().__init__(calibration_file=calibration_file)
+        super().__init__(marker_type=marker_type, calibration_file=calibration_file)
 
     def capture_frame(self) -> ndarray:
         return imread(str(self.image_path))
@@ -23,9 +28,13 @@ class ImageFileCamera(BaseCamera):
 
 class VideoFileCamera(VideoCaptureMixin, BaseCamera, IterableCameraMixin):
     def __init__(
-        self, video_path: Path, *, calibration_file: Optional[Path] = None
+        self,
+        video_path: Path,
+        *,
+        marker_type: MarkerType,
+        calibration_file: Optional[Path] = None
     ) -> None:
-        super().__init__(calibration_file=calibration_file)
+        super().__init__(marker_type=marker_type, calibration_file=calibration_file)
         self.video_capture = self.get_video_capture(video_path)
 
     def get_video_capture(self, video_path: Path) -> VideoCapture:

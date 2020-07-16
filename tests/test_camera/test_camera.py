@@ -9,14 +9,12 @@ from zoloto.marker_type import MarkerType
 )
 def test_enumerate_all_cameras(camera_class, mocker) -> None:
     class TestCamera(camera_class):
-        marker_type = MarkerType.DICT_4X4_100
-
         def get_marker_size(self, marker_id):
             return 100
 
     VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
     VideoCapture.return_value.isOpened.return_value = True
-    discovered_cameras = list(TestCamera.discover())
+    discovered_cameras = list(TestCamera.discover(marker_type=MarkerType.DICT_4X4_100))
     assert len(discovered_cameras) == 8
     for camera in discovered_cameras:
         assert isinstance(camera, TestCamera)
@@ -27,14 +25,12 @@ def test_enumerate_all_cameras(camera_class, mocker) -> None:
 )
 def test_enumerate_no_cameras(camera_class, mocker) -> None:
     class TestCamera(camera_class):
-        marker_type = MarkerType.DICT_4X4_100
-
         def get_marker_size(self, marker_id):
             return 100
 
     VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
     VideoCapture.return_value.isOpened.return_value = False
-    discovered_cameras = list(TestCamera.discover())
+    discovered_cameras = list(TestCamera.discover(marker_type=MarkerType.DICT_4X4_100))
     assert len(discovered_cameras) == 0
 
 
