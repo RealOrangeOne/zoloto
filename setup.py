@@ -21,7 +21,7 @@ setup(
     ],
     project_urls={
         "Changelog": "https://github.com/RealOrangeOne/zoloto/releases",
-        "Documentation": "https://zoloto.readthedocs.io/",
+        "Documentation": "https://zoloto.readthedocs.io/en/stable/",
         "Issues": "https://github.com/RealOrangeOne/zoloto/issues",
     },
     entry_points={"console_scripts": ["zoloto-preview=zoloto.cli.preview:main"]},

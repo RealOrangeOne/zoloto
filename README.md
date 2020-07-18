@@ -1,6 +1,6 @@
 # Zoloto
 
-[![Documentation Status](https://readthedocs.org/projects/zoloto/badge/?version=latest)](https://zoloto.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/zoloto/badge/?version=stable)](https://zoloto.readthedocs.io/en/stable/?badge=stable)
 ![Tests Status](https://github.com/RealOrangeOne/zoloto/workflows/Tests/badge.svg)
 ![PyPI](https://img.shields.io/pypi/v/zoloto.svg)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/zoloto.svg)
