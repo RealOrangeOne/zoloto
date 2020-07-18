@@ -22,7 +22,7 @@ def find_camera_ids() -> Generator[int, None, None]:
             yield camera_id
 
 
-class Camera(BaseCamera, IterableCameraMixin, VideoCaptureMixin):
+class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera):
     def __init__(
         self, camera_id: int, *, calibration_file: Optional[Path] = None
     ) -> None:
@@ -50,7 +50,7 @@ class Camera(BaseCamera, IterableCameraMixin, VideoCaptureMixin):
             yield cls(camera_id, **kwargs)
 
 
-class SnapshotCamera(BaseCamera, VideoCaptureMixin):
+class SnapshotCamera(VideoCaptureMixin, BaseCamera):
     """
     A modified version of Camera optimised for single use.
 
