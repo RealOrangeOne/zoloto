@@ -21,7 +21,7 @@ class ImageFileCamera(BaseCamera):
         return imread(str(self.image_path))
 
 
-class VideoFileCamera(VideoCaptureMixin, BaseCamera, IterableCameraMixin):
+class VideoFileCamera(VideoCaptureMixin, IterableCameraMixin, BaseCamera):
     def __init__(
         self, video_path: Path, *, calibration_file: Optional[Path] = None
     ) -> None:
