@@ -10,6 +10,7 @@ from zoloto.calibration import CalibrationParameters, parse_calibration_file
 from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import EagerMarker, Marker, UncalibratedMarker
 from zoloto.marker_type import MarkerType
+from zoloto.utils import cached_method
 
 T = TypeVar("T", bound="BaseCamera")
 
@@ -17,9 +18,6 @@ T = TypeVar("T", bound="BaseCamera")
 class BaseCamera(ABC):
     def __init__(self, *, calibration_file: Optional[Path] = None) -> None:
         self.calibration_file = calibration_file
-        self.detector_params = self.get_detector_params(
-            cv2.aruco.DetectorParameters_create()
-        )
         self.marker_dictionary = cv2.aruco.getPredefinedDictionary(self.marker_type)
 
     @property
@@ -32,10 +30,9 @@ class BaseCamera(ABC):
             return None
         return parse_calibration_file(self.calibration_file)
 
-    def get_detector_params(
-        self, params: cv2.aruco_DetectorParameters
-    ) -> cv2.aruco_DetectorParameters:
-        return params
+    @cached_method
+    def get_detector_params(self) -> cv2.aruco_DetectorParameters:
+        return cv2.aruco.DetectorParameters_create()
 
     @abstractmethod
     def get_marker_size(self, marker_id: int) -> int:  # pragma: nocover
@@ -62,7 +59,7 @@ class BaseCamera(ABC):
 
     def _get_raw_ids_and_corners(self, frame: ndarray) -> Tuple[ndarray, List[ndarray]]:
         corners, ids, _ = cv2.aruco.detectMarkers(
-            frame, self.marker_dictionary, parameters=self.detector_params
+            frame, self.marker_dictionary, parameters=self.get_detector_params()
         )
         return ids, corners
 
