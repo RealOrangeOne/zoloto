@@ -25,7 +25,7 @@ setup(
         "Issues": "https://github.com/RealOrangeOne/zoloto/issues",
     },
     entry_points={"console_scripts": ["zoloto-preview=zoloto.cli.preview:main"]},
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     extras_require={"rpi": ["picamera[array]>=1.13"], "viewer": ["Pillow>=7.0.0"]},
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -35,7 +35,6 @@ setup(
         "Intended Audience :: Science/Research",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: Implementation :: CPython",
