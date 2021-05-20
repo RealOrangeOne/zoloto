@@ -95,13 +95,7 @@ class BaseCamera(ABC):
         )
 
     def _get_eager_marker(
-        self,
-        marker_id: int,
-        corners: ndarray,
-        size: int,
-        calibration_params: Optional[CalibrationParameters],
-        tvec: ndarray,
-        rvec: ndarray,
+        self, marker_id: int, corners: ndarray, size: int, tvec: ndarray, rvec: ndarray,
     ) -> EagerMarker:
         return EagerMarker(marker_id, corners, size, self.marker_type, (rvec, tvec))
 
@@ -132,7 +126,7 @@ class BaseCamera(ABC):
             )
             for marker_id, corners, tvec, rvec in zip(ids, corners, tvecs, rvecs):
                 yield self._get_eager_marker(
-                    int(marker_id), corners, size, calibration_params, tvec[0], rvec[0]
+                    int(marker_id), corners, size, tvec[0], rvec[0]
                 )
 
     def get_visible_markers(self, *, frame: ndarray = None) -> List[int]:
