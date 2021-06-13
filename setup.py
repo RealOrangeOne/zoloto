@@ -14,7 +14,7 @@ setup(
     license="BSD",
     packages=find_packages(include="zoloto*"),
     package_data={"zoloto": ["py.typed"]},
-    install_requires=["cached-property>=1.5", "pyquaternion>=0.9.2",],
+    install_requires=["cached-property>=1.5", "pyquaternion>=0.9.2"],
     project_urls={
         "Changelog": "https://github.com/RealOrangeOne/zoloto/releases",
         "Documentation": "https://zoloto.readthedocs.io/en/stable/",
@@ -24,7 +24,6 @@ setup(
     python_requires=">=3.6",
     extras_require={
         "rpi": ["picamera[array]>=1.13"],
-        "viewer": ["Pillow>=7.0.0"],
         "opencv": ["opencv-contrib-python>=4.0"],
     },
     classifiers=[

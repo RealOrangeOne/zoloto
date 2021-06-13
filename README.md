@@ -30,6 +30,8 @@ pip install zoloto[opencv]
 
 Note that this version lacks hardware acceleration. See [the README](https://github.com/opencv/opencv-python#readme) for more details.
 
+For storage-constrained environments, there's also `opencv-contrib-python-headless`, which should be installed manually.
+
 ## Examples
 
 ```python

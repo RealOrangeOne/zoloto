@@ -7,7 +7,7 @@ from numpy import ndarray
 from zoloto.exceptions import CameraReadError
 
 from .base import BaseCamera
-from .mixins import IterableCameraMixin, VideoCaptureMixin
+from .mixins import IterableCameraMixin, VideoCaptureMixin, ViewableCameraMixin
 
 
 class ImageFileCamera(BaseCamera):
@@ -21,7 +21,9 @@ class ImageFileCamera(BaseCamera):
         return imread(str(self.image_path))
 
 
-class VideoFileCamera(VideoCaptureMixin, IterableCameraMixin, BaseCamera):
+class VideoFileCamera(
+    VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraMixin
+):
     def __init__(
         self, video_path: Path, *, calibration_file: Optional[Path] = None
     ) -> None:

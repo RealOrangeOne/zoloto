@@ -7,10 +7,10 @@ import picamera
 import picamera.array
 
 from .base import BaseCamera
-from .mixins import IterableCameraMixin
+from .mixins import IterableCameraMixin, ViewableCameraMixin
 
 
-class PiCamera(IterableCameraMixin, BaseCamera):
+class PiCamera(IterableCameraMixin, BaseCamera, ViewableCameraMixin):
     def __init__(self, *, calibration_file: Optional[Path] = None) -> None:
         super().__init__(calibration_file=calibration_file)
         self.camera = picamera.PiCamera()
