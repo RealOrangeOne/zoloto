@@ -1,4 +1,3 @@
-import json
 import os
 from pathlib import Path
 from tempfile import mkstemp
@@ -12,18 +11,8 @@ from zoloto.calibration import CalibrationParameters, get_fake_calibration_param
 from zoloto.cameras.marker import MarkerCamera as BaseMarkerCamera
 from zoloto.marker_type import MarkerType
 
-TEST_DATA_DIR = Path(__file__).parent.joinpath("data")
-TEST_IMAGE_DIR = TEST_DATA_DIR.joinpath("images")
-CALIBRATIONS_DIR = TEST_DATA_DIR.joinpath("calibrations")
-
-IMAGE_DATA = json.loads(TEST_IMAGE_DIR.joinpath("images.json").read_text())
-
 hypothesis_settings.register_profile("main", deadline=None)
 hypothesis_settings.load_profile("main")
-
-
-def get_calibration(camera: str) -> Path:
-    return CALIBRATIONS_DIR.joinpath(camera + ".xml")
 
 
 @pytest.fixture
