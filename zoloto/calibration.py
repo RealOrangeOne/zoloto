@@ -4,13 +4,13 @@ from pathlib import Path
 from typing import NamedTuple
 
 from cv2 import FILE_STORAGE_READ, FILE_STORAGE_WRITE, FileStorage, aruco
-from numpy import array
+from numpy import array, ndarray
 
 from .marker_type import MarkerType
 
 CalibrationParameters = NamedTuple(
     "CalibrationParameters",
-    [("camera_matrix", array), ("distance_coefficients", array)],
+    [("camera_matrix", ndarray), ("distance_coefficients", ndarray)],
 )
 
 SUPPORTED_EXTENSIONS = ["xml", "json"]
