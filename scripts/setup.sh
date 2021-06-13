@@ -6,5 +6,5 @@ python -m venv env
 
 export PATH=env/bin:${PATH}
 
-pip install -e ".[viewer]"
+pip install -e ".[viewer,opencv]"
 pip install -r dev-requirements.txt

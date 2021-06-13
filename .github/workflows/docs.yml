@@ -23,7 +23,5 @@ jobs:
           key: pip-${{ hashFiles('dev-requirements.txt') }}-${{ hashFiles('setup.py') }}
       - name: Install dependencies
         run: bash ./scripts/setup.sh
-      - name: Install OpenCV
-        run: sudo apt update && sudo apt install -y python3-opencv
       - name: Build docs
         run: bash ./scripts/docs.sh

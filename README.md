@@ -52,7 +52,7 @@ with MyCamera(Path("my-image.png")) as camera:
 
 ## Development setup
 
-`./scripts/setup.sh` will create a virtual environment, and install all the required development dependencies into it. You will additionally need to install [OpenCV](#opencv).
+`./scripts/setup.sh` will create a virtual environment, and install all the required development dependencies into it. Note that this will install a version of OpenCV for you, rather than using the one on your system.
 
 There are some additional useful scripts to assist:
 
