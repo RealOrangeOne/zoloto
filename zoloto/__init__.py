@@ -12,7 +12,6 @@ __all__ = [
     "Orientation",
     "Spherical",
     "ThreeDCoordinates",
-    "MissingGUIComponents",
     "Marker",
     "MarkerType",
 ]
