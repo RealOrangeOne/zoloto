@@ -18,6 +18,18 @@ A fiducial marker system powered by OpenCV - Supports ArUco and April
 pip install zoloto
 ```
 
+### OpenCV
+
+OpenCV should be installed manually, ideally through your system package manager. This makes it easier to customize your OpenCV installation for your system, or use the optimal settings for your OS / hardware. Note that you may need to install `opencv-contrib` as well as `opencv`.
+
+If you'd rather have one installed automatically, install the extra `opencv`:
+
+```text
+pip install zoloto[opencv]
+```
+
+Note that this version lacks hardware acceleration. See [the README](https://github.com/opencv/opencv-python#readme) for more details.
+
 ## Examples
 
 ```python
@@ -40,7 +52,7 @@ with MyCamera(Path("my-image.png")) as camera:
 
 ## Development setup
 
-`./scripts/setup.sh` will create a virtual environment, and install all the required development dependencies into it.
+`./scripts/setup.sh` will create a virtual environment, and install all the required development dependencies into it. You will additionally need to install [OpenCV](#opencv).
 
 There are some additional useful scripts to assist:
 
