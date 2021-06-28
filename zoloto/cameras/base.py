@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from itertools import groupby
 from pathlib import Path
-from typing import Any, Generator, List, Optional, Tuple, TypeVar, Union
+from typing import Any, Generator, List, Optional, Tuple, TypeVar, Union, cast
 
 import cv2
 from numpy import ndarray
@@ -64,7 +64,7 @@ class BaseCamera(ABC):
         return ids, corners
 
     def _get_ids_and_corners(
-        self, frame: ndarray = None
+        self, frame: Optional[ndarray] = None
     ) -> Tuple[List[int], List[ndarray]]:
         if frame is None:
             frame = self.capture_frame()
@@ -76,7 +76,7 @@ class BaseCamera(ABC):
     def _get_marker(
         self,
         marker_id: int,
-        corners: ndarray,
+        corners: List[ndarray],
         calibration_params: Optional[CalibrationParameters],
     ) -> Union[UncalibratedMarker, Marker]:
         if calibration_params is None:
@@ -92,20 +92,27 @@ class BaseCamera(ABC):
         )
 
     def _get_eager_marker(
-        self, marker_id: int, corners: ndarray, size: int, tvec: ndarray, rvec: ndarray,
+        self,
+        marker_id: int,
+        corners: List[ndarray],
+        size: int,
+        tvec: ndarray,
+        rvec: ndarray,
     ) -> EagerMarker:
         return EagerMarker(marker_id, corners, size, self.marker_type, (rvec, tvec))
 
     def process_frame(
-        self, *, frame: ndarray = None
+        self, *, frame: Optional[ndarray] = None
     ) -> Generator[Union[UncalibratedMarker, Marker], None, None]:
         ids, corners = self._get_ids_and_corners(frame)
         calibration_params = self.get_calibrations()
-        for corners, marker_id in zip(corners, ids):
-            yield self._get_marker(int(marker_id), corners, calibration_params)
+        for marker_corners, marker_id in zip(corners, ids):
+            yield self._get_marker(
+                int(marker_id), cast(list, marker_corners), calibration_params
+            )
 
     def process_frame_eager(
-        self, *, frame: ndarray = None
+        self, *, frame: Optional[ndarray] = None
     ) -> Generator[EagerMarker, None, None]:
         calibration_params = self.get_calibrations()
         if not calibration_params:
@@ -117,16 +124,18 @@ class BaseCamera(ABC):
 
         sorted_corners = sorted(zip(ids, corners), key=get_marker_size)
         for size, ids_and_corners in groupby(sorted_corners, get_marker_size):
-            ids, corners = zip(*ids_and_corners)
+            size_ids, size_corners = zip(*ids_and_corners)
             rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(
-                corners, size, *calibration_params
+                size_corners, size, *calibration_params
             )
-            for marker_id, corners, tvec, rvec in zip(ids, corners, tvecs, rvecs):
+            for marker_id, marker_corners, tvec, rvec in zip(
+                size_ids, size_corners, tvecs, rvecs
+            ):
                 yield self._get_eager_marker(
-                    int(marker_id), corners, size, tvec[0], rvec[0]
+                    int(marker_id), marker_corners, size, tvec[0], rvec[0]
                 )
 
-    def get_visible_markers(self, *, frame: ndarray = None) -> List[int]:
+    def get_visible_markers(self, *, frame: Optional[ndarray] = None) -> List[int]:
         ids, _ = self._get_ids_and_corners(frame)
         return [int(i) for i in ids]
 

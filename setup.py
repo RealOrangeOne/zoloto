@@ -14,7 +14,11 @@ setup(
     license="BSD",
     packages=find_packages(include="zoloto*"),
     package_data={"zoloto": ["py.typed"]},
-    install_requires=["cached-property>=1.5", "pyquaternion>=0.9.2"],
+    install_requires=[
+        "cached-property>=1.5",
+        "pyquaternion>=0.9.2",
+        "numpy<1.21",  # Requires py3.8 for correct typing https://numpy.org/devdocs/reference/typing.html
+    ],
     project_urls={
         "Changelog": "https://github.com/RealOrangeOne/zoloto/releases",
         "Documentation": "https://zoloto.readthedocs.io/en/stable/",
