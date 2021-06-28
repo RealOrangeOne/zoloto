@@ -18,6 +18,7 @@ setup(
         "opencv-contrib-python-headless>=4.0,<4.1",
         "cached-property>=1.5",
         "pyquaternion>=0.9.2",
+        "numpy<1.21",  # Requires py3.8 for correct typing https://numpy.org/devdocs/reference/typing.html
     ],
     project_urls={
         "Changelog": "https://github.com/RealOrangeOne/zoloto/releases",

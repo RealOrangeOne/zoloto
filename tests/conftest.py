@@ -6,10 +6,10 @@ from typing import Any, Callable
 
 import pytest
 from hypothesis import settings as hypothesis_settings
-from numpy import ndarray
 
 from zoloto.calibration import CalibrationParameters, get_fake_calibration_parameters
 from zoloto.cameras.marker import MarkerCamera as BaseMarkerCamera
+from zoloto.marker import BaseMarker
 from zoloto.marker_type import MarkerType
 
 TEST_DATA_DIR = Path(__file__).parent.joinpath("data")
@@ -59,7 +59,7 @@ def marker_camera() -> BaseMarkerCamera:
 
 
 @pytest.fixture
-def marker(marker_camera: BaseMarkerCamera) -> ndarray:
+def marker(marker_camera: BaseMarkerCamera) -> BaseMarker:
     return next(marker_camera.process_frame())
 
 
