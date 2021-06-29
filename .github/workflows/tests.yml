@@ -27,7 +27,7 @@ jobs:
           path: ~/.cache/pip
           key: ${{ runner.os }}-${{ matrix.python }}-pip-${{ hashFiles('dev-requirements.txt') }}-${{ hashFiles('setup.py') }}
       - name: Install dependencies
-        run: bash ./scripts/setup.sh
+        run: bash ./scripts/setup.sh opencv
       - name: Run tests
         run: bash ./scripts/test.sh
       - name: Run package build
