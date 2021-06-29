@@ -28,7 +28,7 @@ setup(
     python_requires=">=3.6",
     extras_require={
         "rpi": ["picamera[array]>=1.13"],
-        "opencv": ["opencv-contrib-python>=4.0"],
+        "opencv": ["opencv-contrib-python>=4.0,<4.1"],
     },
     classifiers=[
         "Development Status :: 4 - Beta",
