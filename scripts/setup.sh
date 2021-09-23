@@ -2,7 +2,7 @@
 
 set -e
 
-python -m venv env
+python3 -m venv env
 
 export PATH=env/bin:${PATH}
 

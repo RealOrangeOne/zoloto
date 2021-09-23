@@ -6,4 +6,4 @@ export PATH=env/bin:${PATH}
 
 bash ./scripts/docs.sh
 
-python -m http.server --directory docs/_build
+python3 -m http.server --directory docs/_build
