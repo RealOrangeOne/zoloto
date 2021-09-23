@@ -2,9 +2,15 @@
 
 set -e
 
-python -m venv env
+python3 -m venv env
 
 export PATH=env/bin:${PATH}
 
-pip install -e ".[viewer]"
+if [ "$1" = "opencv" ]
+then
+    pip install -e ".[opencv]"
+else
+    pip install -e "."
+fi
+
 pip install -r dev-requirements.txt

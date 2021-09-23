@@ -5,7 +5,7 @@ from cv2 import CAP_PROP_BUFFERSIZE, VideoCapture
 from numpy import ndarray
 
 from .base import BaseCamera
-from .mixins import IterableCameraMixin, VideoCaptureMixin
+from .mixins import IterableCameraMixin, VideoCaptureMixin, ViewableCameraMixin
 
 
 def find_camera_ids() -> Generator[int, None, None]:
@@ -22,7 +22,7 @@ def find_camera_ids() -> Generator[int, None, None]:
             yield camera_id
 
 
-class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera):
+class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraMixin):
     def __init__(
         self, camera_id: int, *, calibration_file: Optional[Path] = None
     ) -> None:

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Generator
 
+from cv2 import imshow, waitKey
 from numpy import ndarray
 
 from zoloto.exceptions import CameraReadError
@@ -25,3 +26,25 @@ class VideoCaptureMixin(ABC):
         if not ret or frame is None:
             raise CameraReadError(frame)
         return frame
+
+
+class ViewableCameraMixin(ABC):
+    @abstractmethod
+    def __iter__(self) -> Generator[ndarray, None, None]:  # pragma: nocover
+        raise NotImplementedError()
+
+    @abstractmethod
+    def _annotate_frame(self, frame: ndarray) -> None:  # pragma: nocover
+        raise NotImplementedError()
+
+    def show(self, annotate: bool = False) -> None:
+        for _ in self.iter_show(annotate):
+            pass
+
+    def iter_show(self, annotate: bool = False) -> Generator[ndarray, None, None]:
+        for frame in self:
+            if annotate:
+                self._annotate_frame(frame)
+            imshow("camera", frame)
+            waitKey(1)
+            yield frame

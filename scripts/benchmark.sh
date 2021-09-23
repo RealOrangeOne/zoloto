@@ -9,4 +9,3 @@ run_benchmark() {
 }
 
 run_benchmark benchmarks/
-run_benchmark benchmarks/detection.py --benchmark-name=long
