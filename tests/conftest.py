@@ -1,4 +1,3 @@
-import json
 import os
 from pathlib import Path
 from tempfile import mkstemp
@@ -6,24 +5,14 @@ from typing import Any, Callable
 
 import pytest
 from hypothesis import settings as hypothesis_settings
-from numpy import ndarray
 
 from zoloto.calibration import CalibrationParameters, get_fake_calibration_parameters
 from zoloto.cameras.marker import MarkerCamera
+from zoloto.marker import BaseMarker
 from zoloto.marker_type import MarkerType
-
-TEST_DATA_DIR = Path(__file__).parent.joinpath("data")
-TEST_IMAGE_DIR = TEST_DATA_DIR.joinpath("images")
-CALIBRATIONS_DIR = TEST_DATA_DIR.joinpath("calibrations")
-
-IMAGE_DATA = json.loads(TEST_IMAGE_DIR.joinpath("images.json").read_text())
 
 hypothesis_settings.register_profile("main", deadline=None)
 hypothesis_settings.load_profile("main")
-
-
-def get_calibration(camera: str) -> Path:
-    return CALIBRATIONS_DIR.joinpath(camera + ".xml")
 
 
 @pytest.fixture
@@ -56,7 +45,7 @@ def marker_camera() -> MarkerCamera:
 
 
 @pytest.fixture
-def marker(marker_camera: MarkerCamera) -> ndarray:
+def marker(marker_camera: MarkerCamera) -> BaseMarker:
     return next(marker_camera.process_frame())
 
 

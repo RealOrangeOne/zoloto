@@ -5,7 +5,7 @@ with open("README.md") as f:
 
 setup(
     name="zoloto",
-    version="0.5.2",
+    version="0.6.1",
     url="https://github.com/RealOrangeOne/zoloto",
     author="Jake Howard",
     description="A fiducial marker system powered by OpenCV - Supports ArUco and April",
@@ -15,18 +15,21 @@ setup(
     packages=find_packages(include="zoloto*"),
     package_data={"zoloto": ["py.typed"]},
     install_requires=[
-        "opencv-contrib-python-headless>=4.0,<4.1",
         "cached-property>=1.5",
         "pyquaternion>=0.9.2",
+        "numpy<1.21",  # Requires py3.8 for correct typing https://numpy.org/devdocs/reference/typing.html
     ],
     project_urls={
         "Changelog": "https://github.com/RealOrangeOne/zoloto/releases",
-        "Documentation": "https://zoloto.readthedocs.io/",
+        "Documentation": "https://zoloto.readthedocs.io/en/stable/",
         "Issues": "https://github.com/RealOrangeOne/zoloto/issues",
     },
     entry_points={"console_scripts": ["zoloto-preview=zoloto.cli.preview:main"]},
-    python_requires=">=3.5",
-    extras_require={"rpi": ["picamera[array]>=1.13"], "viewer": ["Pillow>=7.0.0"]},
+    python_requires=">=3.6",
+    extras_require={
+        "rpi": ["picamera[array]>=1.13"],
+        "opencv": ["opencv-contrib-python>=4.0,<4.1"],
+    },
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -35,7 +38,6 @@ setup(
         "Intended Audience :: Science/Research",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: Implementation :: CPython",

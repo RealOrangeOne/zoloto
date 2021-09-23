@@ -8,10 +8,10 @@ import picamera.array
 from zoloto.marker_type import MarkerType
 
 from .base import BaseCamera
-from .mixins import IterableCameraMixin
+from .mixins import IterableCameraMixin, ViewableCameraMixin
 
 
-class PiCamera(BaseCamera, IterableCameraMixin):
+class PiCamera(IterableCameraMixin, BaseCamera, ViewableCameraMixin):
     def __init__(
         self,
         *,

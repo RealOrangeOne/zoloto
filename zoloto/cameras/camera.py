@@ -7,7 +7,7 @@ from numpy import ndarray
 from zoloto.marker_type import MarkerType
 
 from .base import BaseCamera
-from .mixins import IterableCameraMixin, VideoCaptureMixin
+from .mixins import IterableCameraMixin, VideoCaptureMixin, ViewableCameraMixin
 
 
 def find_camera_ids() -> Generator[int, None, None]:
@@ -24,7 +24,7 @@ def find_camera_ids() -> Generator[int, None, None]:
             yield camera_id
 
 
-class Camera(BaseCamera, IterableCameraMixin, VideoCaptureMixin):
+class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraMixin):
     def __init__(
         self,
         camera_id: int,
@@ -61,7 +61,7 @@ class Camera(BaseCamera, IterableCameraMixin, VideoCaptureMixin):
             yield cls(camera_id, **kwargs)
 
 
-class SnapshotCamera(BaseCamera, VideoCaptureMixin):
+class SnapshotCamera(VideoCaptureMixin, BaseCamera):
     """
     A modified version of Camera optimised for single use.
 

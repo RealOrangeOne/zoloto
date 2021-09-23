@@ -22,6 +22,6 @@ jobs:
           path: ~/.cache/pip
           key: pip-${{ hashFiles('dev-requirements.txt') }}-${{ hashFiles('setup.py') }}
       - name: Install dependencies
-        run: bash ./scripts/setup.sh
+        run: bash ./scripts/setup.sh opencv
       - name: Build docs
         run: bash ./scripts/docs.sh

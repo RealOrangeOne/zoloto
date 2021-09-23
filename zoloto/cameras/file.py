@@ -8,7 +8,7 @@ from zoloto.exceptions import CameraReadError
 from zoloto.marker_type import MarkerType
 
 from .base import BaseCamera
-from .mixins import IterableCameraMixin, VideoCaptureMixin
+from .mixins import IterableCameraMixin, VideoCaptureMixin, ViewableCameraMixin
 
 
 class ImageFileCamera(BaseCamera):
@@ -31,7 +31,9 @@ class ImageFileCamera(BaseCamera):
         return imread(str(self.image_path))
 
 
-class VideoFileCamera(VideoCaptureMixin, BaseCamera, IterableCameraMixin):
+class VideoFileCamera(
+    VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraMixin
+):
     def __init__(
         self,
         video_path: Path,

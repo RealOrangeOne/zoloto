@@ -6,7 +6,10 @@ export PATH=env/bin:${PATH}
 
 set -x
 
+pip install wheel
+
 rm -rf zoloto.egg-info build/ dist/
 
-python setup.py clean
-python setup.py sdist
+python3 setup.py clean
+
+python3 setup.py sdist bdist_wheel

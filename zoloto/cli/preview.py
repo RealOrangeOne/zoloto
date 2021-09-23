@@ -2,7 +2,6 @@ import argparse
 
 from zoloto.cameras.camera import Camera
 from zoloto.marker_type import MarkerType
-from zoloto.viewer import CameraViewer
 
 
 class PreviewCamera(Camera):
@@ -15,7 +14,7 @@ def main() -> None:
     parser.add_argument("--id", type=int, default=0)
     args = parser.parse_args()
     with PreviewCamera(args.id, marker_type=MarkerType.DICT_6X6_250) as camera:
-        CameraViewer(camera, annotate=True).start()
+        camera.show()
 
 
 if __name__ == "__main__":
