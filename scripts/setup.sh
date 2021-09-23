@@ -8,9 +8,9 @@ export PATH=env/bin:${PATH}
 
 if [ "$1" = "opencv" ]
 then
-    pip install -e ".[viewer,opencv]"
+    pip install -e ".[opencv]"
 else
-    pip install -e ".[viewer]"
+    pip install -e "."
 fi
 
 pip install -r dev-requirements.txt
