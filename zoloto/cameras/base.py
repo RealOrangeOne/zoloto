@@ -10,33 +10,38 @@ from zoloto.calibration import CalibrationParameters, parse_calibration_file
 from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import EagerMarker, Marker, UncalibratedMarker
 from zoloto.marker_type import MarkerType
-from zoloto.utils import cached_method
 
 T = TypeVar("T", bound="BaseCamera")
 
 
 class BaseCamera(ABC):
-    def __init__(self, *, calibration_file: Optional[Path] = None) -> None:
+    def __init__(
+        self,
+        *,
+        marker_size: Optional[int] = None,
+        marker_type: MarkerType,
+        calibration_file: Optional[Path] = None
+    ) -> None:
         self.calibration_file = calibration_file
+        self.marker_type = marker_type
         self.marker_dictionary = cv2.aruco.getPredefinedDictionary(self.marker_type)
-
-    @property
-    @abstractmethod
-    def marker_type(cls) -> MarkerType:  # pragma: nocover
-        raise NotImplementedError()
+        self._marker_size = marker_size
+        self.detector_params = self.get_detector_params()
 
     def get_calibrations(self) -> Optional[CalibrationParameters]:
         if self.calibration_file is None:
             return None
         return parse_calibration_file(self.calibration_file)
 
-    @cached_method
     def get_detector_params(self) -> cv2.aruco_DetectorParameters:
         return cv2.aruco.DetectorParameters_create()
 
-    @abstractmethod
-    def get_marker_size(self, marker_id: int) -> int:  # pragma: nocover
-        raise NotImplementedError()
+    def get_marker_size(self, marker_id: int) -> int:
+        if self._marker_size is None:
+            raise ValueError(
+                "`marker_size` should be passed in to the camera constructor, or override `get_marker_size`"
+            )
+        return self._marker_size
 
     @abstractmethod
     def capture_frame(self) -> ndarray:  # pragma: nocover
@@ -59,7 +64,7 @@ class BaseCamera(ABC):
 
     def _get_raw_ids_and_corners(self, frame: ndarray) -> Tuple[ndarray, List[ndarray]]:
         corners, ids, _ = cv2.aruco.detectMarkers(
-            frame, self.marker_dictionary, parameters=self.get_detector_params()
+            frame, self.marker_dictionary, parameters=self.detector_params
         )
         return ids, corners
 

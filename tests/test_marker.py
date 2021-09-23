@@ -6,7 +6,7 @@ from unittest.mock import patch
 import ujson
 
 from zoloto.calibration import CalibrationParameters
-from zoloto.cameras.marker import MarkerCamera as BaseMarkerCamera
+from zoloto.cameras.marker import MarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import BaseMarker, EagerMarker, UncalibratedMarker
 from zoloto.marker_type import MarkerType
@@ -18,12 +18,11 @@ class MarkerTestCase(TestCase):
     EXPECTED_DICT_KEYS = {"id", "size", "pixel_corners", "rvec", "tvec"}
 
     def setUp(self) -> None:
-        class MarkerCamera(BaseMarkerCamera):
-            marker_type = MarkerType.DICT_6X6_50
-
         self.marker_camera = MarkerCamera(
-            self.MARKER_ID, marker_size=self.MARKER_SIZE
-        )  # type: BaseMarkerCamera
+            self.MARKER_ID,
+            marker_size=self.MARKER_SIZE,
+            marker_type=MarkerType.DICT_6X6_50,
+        )
         self.markers = list(
             self.marker_camera.process_frame()
         )  # type: List[BaseMarker]
@@ -140,10 +139,11 @@ class MarkerTestCase(TestCase):
 
 class EagerMarkerTestCase(MarkerTestCase):
     def setUp(self) -> None:
-        class MarkerCamera(BaseMarkerCamera):
-            marker_type = MarkerType.DICT_6X6_50
-
-        self.marker_camera = MarkerCamera(self.MARKER_ID, marker_size=self.MARKER_SIZE)
+        self.marker_camera = MarkerCamera(
+            self.MARKER_ID,
+            marker_size=self.MARKER_SIZE,
+            marker_type=MarkerType.DICT_6X6_50,
+        )
         self.markers = list(self.marker_camera.process_frame_eager())
         self.marker = self.markers[0]
 
@@ -160,15 +160,15 @@ class EagerMarkerTestCase(MarkerTestCase):
 class UncalibratedMarkerTestCase(MarkerTestCase):
     EXPECTED_DICT_KEYS = {"id", "size", "pixel_corners"}
 
-    class TestCamera(BaseMarkerCamera):
-        marker_type = MarkerType.DICT_6X6_50
-
+    class TestCamera(MarkerCamera):
         def get_calibrations(self) -> Optional[CalibrationParameters]:
             return None
 
     def setUp(self) -> None:
         self.marker_camera = self.TestCamera(
-            self.MARKER_ID, marker_size=self.MARKER_SIZE,
+            self.MARKER_ID,
+            marker_size=self.MARKER_SIZE,
+            marker_type=MarkerType.DICT_6X6_50,
         )
         self.markers = list(self.marker_camera.process_frame())
         self.marker = self.markers[0]

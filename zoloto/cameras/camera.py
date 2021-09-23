@@ -4,6 +4,8 @@ from typing import Any, Generator, Optional
 from cv2 import CAP_PROP_BUFFERSIZE, VideoCapture
 from numpy import ndarray
 
+from zoloto.marker_type import MarkerType
+
 from .base import BaseCamera
 from .mixins import IterableCameraMixin, VideoCaptureMixin, ViewableCameraMixin
 
@@ -24,9 +26,18 @@ def find_camera_ids() -> Generator[int, None, None]:
 
 class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraMixin):
     def __init__(
-        self, camera_id: int, *, calibration_file: Optional[Path] = None
+        self,
+        camera_id: int,
+        *,
+        marker_size: Optional[int] = None,
+        marker_type: MarkerType,
+        calibration_file: Optional[Path] = None
     ) -> None:
-        super().__init__(calibration_file=calibration_file)
+        super().__init__(
+            marker_size=marker_size,
+            marker_type=marker_type,
+            calibration_file=calibration_file,
+        )
         self.camera_id = camera_id
         self.video_capture = self.get_video_capture(self.camera_id)
 
@@ -58,9 +69,18 @@ class SnapshotCamera(VideoCaptureMixin, BaseCamera):
     """
 
     def __init__(
-        self, camera_id: int, *, calibration_file: Optional[Path] = None
+        self,
+        camera_id: int,
+        *,
+        marker_size: Optional[int] = None,
+        marker_type: MarkerType,
+        calibration_file: Optional[Path] = None
     ) -> None:
-        super().__init__(calibration_file=calibration_file)
+        super().__init__(
+            marker_size=marker_size,
+            marker_type=marker_type,
+            calibration_file=calibration_file,
+        )
         self.camera_id = camera_id
 
     def get_video_capture(self, camera_id: int) -> VideoCapture:

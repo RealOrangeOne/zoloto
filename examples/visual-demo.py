@@ -3,15 +3,8 @@ from chrono import Timer
 from zoloto.cameras.camera import Camera
 from zoloto.marker_type import MarkerType
 
+camera = Camera(0, marker_type=MarkerType.DICT_6X6_50, marker_size=100)
 
-class TestCamera(Camera):
-    marker_type = MarkerType.DICT_6X6_50
-
-    def get_marker_size(self, marker_id: int) -> int:
-        return 100
-
-
-camera = TestCamera(0)
 
 for frame in camera.iter_show():
     with Timer() as annotate_timer:

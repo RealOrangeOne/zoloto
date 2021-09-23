@@ -41,11 +41,7 @@ from zoloto import MarkerType
 from zoloto.cameras import ImageFileCamera
 
 
-class MyCamera(ImageFileCamera):
-    marker_type = MarkerType.DICT_6X6_50
-
-
-with MyCamera(Path("my-image.png")) as camera:
+with ImageFileCamera(Path("my-image.png"), marker_type=MarkerType.DICT_6X6_50) as camera:
     camera.save_frame("my-annotated-image.png", annotate=True)
     print("I saved an image with {} markers in.".format(len(camera.get_visible_markers())))
 ```
