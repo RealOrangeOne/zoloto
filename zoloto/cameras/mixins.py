@@ -38,13 +38,8 @@ class ViewableCameraMixin(ABC):
         raise NotImplementedError()
 
     def show(self, annotate: bool = False) -> None:
-        for _ in self.iter_show(annotate):
-            pass
-
-    def iter_show(self, annotate: bool = False) -> Generator[ndarray, None, None]:
         for frame in self:
             if annotate:
                 self._annotate_frame(frame)
             imshow("camera", frame)
             waitKey(1)
-            yield frame
