@@ -1,23 +1,24 @@
+import cv2
 import pytest
-from cv2 import aruco
 
-from zoloto.marker_type import MarkerType
-
-EXPECTED_MARKER_TYPES = {
-    k.upper() for k in aruco.__dict__.keys() if k.startswith("DICT_")
-}
+from zoloto.cameras.marker import MarkerCamera
+from zoloto.marker_type import MAX_ALL_ALLOWED_ID, MarkerType
 
 
-@pytest.mark.parametrize("marker_type_name", EXPECTED_MARKER_TYPES)
-def test_has_all_marker_dicts(marker_type_name: str) -> None:
-    MarkerType(getattr(aruco, marker_type_name))
+@pytest.mark.parametrize("marker_type", MarkerType)
+def test_marker_type_max_id_allowed(marker_type: MarkerType) -> None:
+    camera = MarkerCamera(marker_type.max_id, marker_size=100, marker_type=marker_type)
+    assert camera.get_visible_markers() == [marker_type.max_id]
 
 
-@pytest.mark.parametrize("marker_type_name", EXPECTED_MARKER_TYPES)
-def test_correct_marker_dict(marker_type_name: str) -> None:
-    marker_type_zoloto = marker_type_name.lstrip("DICT_")
-    if not marker_type_zoloto.startswith(("APRILTAG", "ARUCO")):
-        marker_type_zoloto = "ARUCO_" + marker_type_zoloto
+@pytest.mark.parametrize("marker_type", MarkerType)
+def test_marker_type_max_id_disallowed(marker_type: MarkerType) -> None:
+    camera = MarkerCamera(marker_type.max_id, marker_size=100, marker_type=marker_type)
+    camera.marker_id = marker_type.max_id + 1  # There's an assertion in the constructor
+    with pytest.raises(cv2.error):
+        camera.get_visible_markers()
 
-    marker_type = MarkerType[marker_type_zoloto]
-    assert marker_type.value == getattr(aruco, marker_type_name)
+
+def test_max_all_allowed_id() -> None:
+    for marker_type in MarkerType:
+        assert marker_type.max_id >= MAX_ALL_ALLOWED_ID

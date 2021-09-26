@@ -9,19 +9,19 @@ from zoloto.calibration import CalibrationParameters
 from zoloto.cameras.marker import MarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import BaseMarker, EagerMarker, UncalibratedMarker
-from zoloto.marker_type import MarkerType
+from zoloto.marker_type import MAX_ALL_ALLOWED_ID, MarkerType
 
 
 class MarkerTestCase(TestCase):
     MARKER_SIZE = 200
-    MARKER_ID = 25
+    MARKER_ID = MAX_ALL_ALLOWED_ID
     EXPECTED_DICT_KEYS = {"id", "size", "pixel_corners", "rvec", "tvec"}
 
     def setUp(self) -> None:
         self.marker_camera = MarkerCamera(
             self.MARKER_ID,
             marker_size=self.MARKER_SIZE,
-            marker_type=MarkerType.ARUCO_6X6_50,
+            marker_type=MarkerType.ARUCO_6X6,
         )
         self.markers = list(
             self.marker_camera.process_frame()
@@ -38,7 +38,7 @@ class MarkerTestCase(TestCase):
         self.assertEqual(self.marker.id, self.MARKER_ID)
 
     def test_marker_dict(self) -> None:
-        self.assertEqual(self.marker.marker_dict, MarkerType.ARUCO_6X6_50)
+        self.assertEqual(self.marker.marker_dict, MarkerType.ARUCO_6X6)
 
     def test_pixel_corners(self) -> None:
         self.assertEqual(len(self.marker.pixel_corners), 4)
@@ -142,7 +142,7 @@ class EagerMarkerTestCase(MarkerTestCase):
         self.marker_camera = MarkerCamera(
             self.MARKER_ID,
             marker_size=self.MARKER_SIZE,
-            marker_type=MarkerType.ARUCO_6X6_50,
+            marker_type=MarkerType.ARUCO_6X6,
         )
         self.markers = list(self.marker_camera.process_frame_eager())
         self.marker = self.markers[0]
@@ -168,7 +168,7 @@ class UncalibratedMarkerTestCase(MarkerTestCase):
         self.marker_camera = self.TestCamera(
             self.MARKER_ID,
             marker_size=self.MARKER_SIZE,
-            marker_type=MarkerType.ARUCO_6X6_50,
+            marker_type=MarkerType.ARUCO_6X6,
         )
         self.markers = list(self.marker_camera.process_frame())
         self.marker = self.markers[0]

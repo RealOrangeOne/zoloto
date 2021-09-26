@@ -41,7 +41,7 @@ def temp_image_file(make_temp_file: Callable[[str], Path]) -> Path:
 
 @pytest.fixture
 def marker_camera() -> MarkerCamera:
-    return MarkerCamera(25, marker_size=200, marker_type=MarkerType.ARUCO_6X6_50)
+    return MarkerCamera(25, marker_size=200, marker_type=MarkerType.ARUCO_6X6)
 
 
 @pytest.fixture
