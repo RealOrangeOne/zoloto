@@ -1,6 +1,6 @@
 from enum import IntEnum
 
-from cv2 import aruco
+from cv2 import aruco, aruco_Dictionary
 
 
 class MarkerType(IntEnum):
@@ -15,18 +15,36 @@ class MarkerType(IntEnum):
     APRILTAG_36H11 = aruco.DICT_APRILTAG_36H11
 
     @property
-    def dictionary_size(self) -> int:
+    def dictionary(self) -> aruco_Dictionary:
+        return aruco.getPredefinedDictionary(self.value)
+
+    @property
+    def marker_count(self) -> int:
         """
         The total number of markers available
         """
-        return len(aruco.getPredefinedDictionary(self.value).bytesList)
+        return len(self.dictionary.bytesList)
 
     @property
     def max_id(self) -> int:
         """
         The highest id available
         """
-        return self.dictionary_size - 1
+        return self.marker_count - 1
+
+    @property
+    def min_marker_size(self) -> int:
+        """
+        Minimum size of a marker in pixels
+        """
+        return self.marker_bits + 2
+
+    @property
+    def marker_bits(self) -> int:
+        """
+        Number of bits along 1 size of a marker
+        """
+        return self.dictionary.markerSize
 
 
 # Non-overlapping marker types

@@ -33,6 +33,13 @@ class MarkerCamera(BaseCamera):
                 )
             )
 
+        if marker_size < marker_type.min_marker_size:
+            raise ValueError(
+                "marker must be at least {} pixels wide".format(
+                    marker_type.min_marker_size
+                )
+            )
+
         super().__init__(
             marker_size=marker_size,
             marker_type=marker_type,

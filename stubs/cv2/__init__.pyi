@@ -30,6 +30,10 @@ class VideoCapture:
     def release(self) -> None: ...
     def set(self, property: int, value: int) -> None: ...
 
+class aruco_Dictionary:
+    bytesList: ndarray
+    markerSize: int
+
 def imread(path: str) -> ndarray: ...
 def copyMakeBorder(
     src: ndarray,

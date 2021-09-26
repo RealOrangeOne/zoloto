@@ -116,5 +116,26 @@ def test_process_eager_frame_without_calibrations(marker_type) -> None:
 def test_requires_in_range_marker_id(marker_type) -> None:
     MarkerCamera(marker_type.max_id, marker_size=200, marker_type=marker_type)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError) as e:
         MarkerCamera(marker_type.max_id + 1, marker_size=200, marker_type=marker_type)
+
+    assert "must be less than the maximum allowed" in e.value.args[0]
+
+
+@pytest.mark.parametrize("marker_type", MarkerType)
+def test_minimum_marker_size(marker_type) -> None:
+    camera = MarkerCamera(
+        marker_type.max_id,
+        marker_size=marker_type.min_marker_size,
+        marker_type=marker_type,
+    )
+
+    assert camera.get_visible_markers() == [marker_type.max_id]
+
+    with pytest.raises(ValueError) as e:
+        MarkerCamera(
+            marker_type.max_id,
+            marker_size=marker_type.min_marker_size - 1,
+            marker_type=marker_type,
+        )
+    assert "marker must be at least" in e.value.args[0]
