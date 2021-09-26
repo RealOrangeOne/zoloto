@@ -9,12 +9,12 @@ from zoloto.calibration import CalibrationParameters
 from zoloto.cameras.marker import MarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import BaseMarker, EagerMarker, UncalibratedMarker
-from zoloto.marker_type import MarkerType
+from zoloto.marker_type import MAX_ALL_ALLOWED_ID, MarkerType
 
 
 class MarkerTestCase(TestCase):
     MARKER_SIZE = 200
-    MARKER_ID = 25
+    MARKER_ID = MAX_ALL_ALLOWED_ID
     EXPECTED_DICT_KEYS = {"id", "size", "pixel_corners", "rvec", "tvec"}
 
     def setUp(self) -> None:

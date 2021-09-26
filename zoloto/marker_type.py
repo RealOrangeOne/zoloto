@@ -46,3 +46,5 @@ MARKER_TYPES = frozenset(
 
 
 MARKER_TYPE_NAMES = frozenset(m.name for m in MARKER_TYPES)
+
+MAX_ALL_ALLOWED_ID = min(m.max_id for m in MarkerType)
