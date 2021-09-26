@@ -28,7 +28,7 @@ setup(
     python_requires=">=3.6",
     extras_require={
         "rpi": ["picamera[array]>=1.13"],
-        "opencv": ["opencv-contrib-python>=4.0,<4.1"],
+        "opencv": ["opencv-contrib-python>=4.0,<4.6"],
     },
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -40,6 +40,8 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: Implementation :: CPython",
         "Topic :: Scientific/Engineering",
         "Topic :: Scientific/Engineering :: Image Recognition",
