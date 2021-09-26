@@ -1,7 +1,7 @@
 import argparse
 
 from zoloto.cameras.camera import Camera
-from zoloto.marker_type import ALL_MARKER_TYPES, MarkerType
+from zoloto.marker_type import MARKER_TYPE_NAMES, MarkerType
 
 
 def main(args: argparse.Namespace) -> None:
@@ -20,7 +20,7 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
         "--type",
         type=str,
         default=MarkerType.ARUCO_6X6_250.name,
-        choices=ALL_MARKER_TYPES,
+        choices=sorted(MARKER_TYPE_NAMES),
         help="Marker dictionary",
     )
     parser.set_defaults(func=main)

@@ -46,7 +46,9 @@ with ImageFileCamera(Path("my-image.png"), marker_type=MarkerType.ARUCO_6X6_50) 
     print("I saved an image with {} markers in.".format(len(camera.get_visible_markers())))
 ```
 
-[More examples](./examples)
+[More examples](./zoloto/cli/)
+
+Zoloto ships with a CLI (aptly named `zoloto`), which contains some helpful utils for working with Zoloto and fiducial markers.
 
 ## Development setup
 

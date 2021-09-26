@@ -11,5 +11,3 @@
    discovery
    calibration
    cv2
-
-   examples

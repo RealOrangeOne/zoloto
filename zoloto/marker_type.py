@@ -27,4 +27,20 @@ class MarkerType(IntEnum):
     APRILTAG_36H11 = aruco.DICT_APRILTAG_36H11
 
 
-ALL_MARKER_TYPES = frozenset(m.name for m in MarkerType)
+# Non-overlapping marker types
+MARKER_TYPES = frozenset(
+    {
+        MarkerType.ARUCO_4X4_1000,
+        MarkerType.ARUCO_5X5_1000,
+        MarkerType.ARUCO_6X6_1000,
+        MarkerType.ARUCO_7X7_1000,
+        MarkerType.ARUCO_ORIGINAL,
+        MarkerType.APRILTAG_16H5,
+        MarkerType.APRILTAG_25H9,
+        MarkerType.APRILTAG_36H10,
+        MarkerType.APRILTAG_36H11,
+    }
+)
+
+
+MARKER_TYPE_NAMES = frozenset(m.name for m in MARKER_TYPES)
