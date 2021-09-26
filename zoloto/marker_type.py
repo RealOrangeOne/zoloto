@@ -33,14 +33,14 @@ class MarkerType(IntEnum):
         return self.marker_count - 1
 
     @property
-    def min_marker_size(self) -> int:
+    def min_marker_image_size(self) -> int:
         """
         Minimum size of a marker in pixels
         """
-        return self.marker_bits + 2
+        return self.marker_size + 2
 
     @property
-    def marker_bits(self) -> int:
+    def marker_size(self) -> int:
         """
         Number of bits along 1 size of a marker
         """

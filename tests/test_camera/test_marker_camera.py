@@ -126,7 +126,7 @@ def test_requires_in_range_marker_id(marker_type) -> None:
 def test_minimum_marker_size(marker_type) -> None:
     camera = MarkerCamera(
         marker_type.max_id,
-        marker_size=marker_type.min_marker_size,
+        marker_size=marker_type.min_marker_image_size,
         marker_type=marker_type,
     )
 
@@ -135,7 +135,7 @@ def test_minimum_marker_size(marker_type) -> None:
     with pytest.raises(ValueError) as e:
         MarkerCamera(
             marker_type.max_id,
-            marker_size=marker_type.min_marker_size - 1,
+            marker_size=marker_type.min_marker_image_size - 1,
             marker_type=marker_type,
         )
     assert "marker must be at least" in e.value.args[0]
