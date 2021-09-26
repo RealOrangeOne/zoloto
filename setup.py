@@ -24,7 +24,7 @@ setup(
         "Documentation": "https://zoloto.readthedocs.io/en/stable/",
         "Issues": "https://github.com/RealOrangeOne/zoloto/issues",
     },
-    entry_points={"console_scripts": ["zoloto-preview=zoloto.cli.preview:main"]},
+    entry_points={"console_scripts": ["zoloto=zoloto.cli:main"]},
     python_requires=">=3.6",
     extras_require={
         "rpi": ["picamera[array]>=1.13"],

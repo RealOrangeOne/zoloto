@@ -4,19 +4,23 @@ from zoloto.cameras.camera import Camera
 from zoloto.marker_type import ALL_MARKER_TYPES, MarkerType
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--id", type=int, default=0)
+def main(args: argparse.Namespace) -> None:
+    with Camera(args.id, marker_type=MarkerType[args.type], marker_size=100) as camera:
+        camera.show(annotate=True)
+
+
+def add_subparser(subparsers: argparse._SubParsersAction) -> None:
+    parser = subparsers.add_parser(
+        "preview", description="Preview webcam feed with annotated markers"
+    )
+    parser.add_argument(
+        "--id", type=int, default=0, help="Camera ID to use (default: %(default)s)"
+    )
     parser.add_argument(
         "--type",
         type=str,
         default=MarkerType.ARUCO_6X6_250.name,
         choices=ALL_MARKER_TYPES,
+        help="Marker dictionary",
     )
-    args = parser.parse_args()
-    with Camera(args.id, marker_type=MarkerType[args.type], marker_size=100) as camera:
-        camera.show(annotate=True)
-
-
-if __name__ == "__main__":
-    main()
+    parser.set_defaults(func=main)
