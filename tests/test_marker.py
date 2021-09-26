@@ -21,7 +21,7 @@ class MarkerTestCase(TestCase):
         self.marker_camera = MarkerCamera(
             self.MARKER_ID,
             marker_size=self.MARKER_SIZE,
-            marker_type=MarkerType.DICT_6X6_50,
+            marker_type=MarkerType.ARUCO_6X6_50,
         )
         self.markers = list(
             self.marker_camera.process_frame()
@@ -38,7 +38,7 @@ class MarkerTestCase(TestCase):
         self.assertEqual(self.marker.id, self.MARKER_ID)
 
     def test_marker_dict(self) -> None:
-        self.assertEqual(self.marker.marker_dict, MarkerType.DICT_6X6_50)
+        self.assertEqual(self.marker.marker_dict, MarkerType.ARUCO_6X6_50)
 
     def test_pixel_corners(self) -> None:
         self.assertEqual(len(self.marker.pixel_corners), 4)
@@ -142,7 +142,7 @@ class EagerMarkerTestCase(MarkerTestCase):
         self.marker_camera = MarkerCamera(
             self.MARKER_ID,
             marker_size=self.MARKER_SIZE,
-            marker_type=MarkerType.DICT_6X6_50,
+            marker_type=MarkerType.ARUCO_6X6_50,
         )
         self.markers = list(self.marker_camera.process_frame_eager())
         self.marker = self.markers[0]
@@ -168,7 +168,7 @@ class UncalibratedMarkerTestCase(MarkerTestCase):
         self.marker_camera = self.TestCamera(
             self.MARKER_ID,
             marker_size=self.MARKER_SIZE,
-            marker_type=MarkerType.DICT_6X6_50,
+            marker_type=MarkerType.ARUCO_6X6_50,
         )
         self.markers = list(self.marker_camera.process_frame())
         self.marker = self.markers[0]

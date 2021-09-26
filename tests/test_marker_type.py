@@ -4,16 +4,20 @@ from cv2 import aruco
 from zoloto.marker_type import MarkerType
 
 EXPECTED_MARKER_TYPES = {
-    k.upper() for k, v in aruco.__dict__.items() if k.startswith("DICT_")
+    k.upper() for k in aruco.__dict__.keys() if k.startswith("DICT_")
 }
 
 
-def test_contains_all_dicts() -> None:
-    assert {marker.name for marker in MarkerType} == EXPECTED_MARKER_TYPES
+@pytest.mark.parametrize("marker_type_name", EXPECTED_MARKER_TYPES)
+def test_has_all_marker_dicts(marker_type_name: str) -> None:
+    MarkerType(getattr(aruco, marker_type_name))
 
 
 @pytest.mark.parametrize("marker_type_name", EXPECTED_MARKER_TYPES)
-def test_has_correct_marker_ids(marker_type_name: str) -> None:
-    assert (
-        getattr(aruco, marker_type_name) == getattr(MarkerType, marker_type_name).value
-    )
+def test_correct_marker_dict(marker_type_name: str) -> None:
+    marker_type_zoloto = marker_type_name.lstrip("DICT_")
+    if not marker_type_zoloto.startswith(("APRILTAG", "ARUCO")):
+        marker_type_zoloto = "ARUCO_" + marker_type_zoloto
+
+    marker_type = MarkerType[marker_type_zoloto]
+    assert marker_type.value == getattr(aruco, marker_type_name)

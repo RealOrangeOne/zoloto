@@ -1,17 +1,19 @@
 import pytest
+from hypothesis import given
 
 import zoloto.cameras
-from zoloto.marker_type import MarkerType
+from tests.strategies import marker_types
 
 
 @pytest.mark.parametrize(
     "camera_class", [zoloto.cameras.Camera, zoloto.cameras.camera.SnapshotCamera]
 )
-def test_enumerate_all_cameras(camera_class, mocker) -> None:
+@given(marker_types())
+def test_enumerate_all_cameras(camera_class, mocker, marker_type) -> None:
     VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
     VideoCapture.return_value.isOpened.return_value = True
     discovered_cameras = list(
-        camera_class.discover(marker_type=MarkerType.DICT_4X4_100, marker_size=100)
+        camera_class.discover(marker_type=marker_type, marker_size=100)
     )
     assert len(discovered_cameras) == 8
     for camera in discovered_cameras:
@@ -21,11 +23,12 @@ def test_enumerate_all_cameras(camera_class, mocker) -> None:
 @pytest.mark.parametrize(
     "camera_class", [zoloto.cameras.Camera, zoloto.cameras.camera.SnapshotCamera]
 )
-def test_enumerate_no_cameras(camera_class, mocker) -> None:
+@given(marker_types())
+def test_enumerate_no_cameras(camera_class, mocker, marker_type) -> None:
     VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
     VideoCapture.return_value.isOpened.return_value = False
     discovered_cameras = list(
-        camera_class.discover(marker_type=MarkerType.DICT_4X4_100, marker_size=100)
+        camera_class.discover(marker_type=marker_type, marker_size=100)
     )
     assert len(discovered_cameras) == 0
 

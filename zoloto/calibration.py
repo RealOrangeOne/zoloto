@@ -58,7 +58,7 @@ def get_fake_calibration_parameters(
     """
     HACK: Generate fake calibration parameters
     """
-    dictionary = aruco.getPredefinedDictionary(MarkerType.DICT_6X6_1000)
+    dictionary = aruco.getPredefinedDictionary(MarkerType.ARUCO_6X6_1000)
     seen_corners = []
     seen_ids = []
     image_size = (size, size)

@@ -5,7 +5,7 @@ from zoloto.cameras.file import ImageFileCamera
 from zoloto.marker_type import MarkerType
 
 with ImageFileCamera(
-    Path(sys.argv[1]), marker_type=MarkerType.DICT_6X6_50, marker_size=100
+    Path(sys.argv[1]), marker_type=MarkerType.ARUCO_6X6_50, marker_size=100
 ) as camera:
     camera.save_frame(Path(sys.argv[2]), annotate=True)
     print(  # noqa: T001
