@@ -14,6 +14,20 @@ class MarkerType(IntEnum):
     APRILTAG_36H10 = aruco.DICT_APRILTAG_36H10
     APRILTAG_36H11 = aruco.DICT_APRILTAG_36H11
 
+    @property
+    def dictionary_size(self) -> int:
+        """
+        The total number of markers available
+        """
+        return len(aruco.getPredefinedDictionary(self.value).bytesList)
+
+    @property
+    def max_id(self) -> int:
+        """
+        The highest id available
+        """
+        return self.dictionary_size - 1
+
 
 # Non-overlapping marker types
 MARKER_TYPES = frozenset(
