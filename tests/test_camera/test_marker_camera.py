@@ -110,3 +110,11 @@ def test_process_eager_frame_without_calibrations(marker_type) -> None:
     )
     with pytest.raises(MissingCalibrationsError):
         list(marker_camera.process_frame_eager())
+
+
+@pytest.mark.parametrize("marker_type", MarkerType)
+def test_requires_in_range_marker_id(marker_type) -> None:
+    MarkerCamera(marker_type.max_id, marker_size=200, marker_type=marker_type)
+
+    with pytest.raises(ValueError):
+        MarkerCamera(marker_type.max_id + 1, marker_size=200, marker_type=marker_type)

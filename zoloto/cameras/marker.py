@@ -25,6 +25,14 @@ class MarkerCamera(BaseCamera):
         marker_type: MarkerType,
         calibration_file: Optional[Path] = None
     ) -> None:
+
+        if marker_id > marker_type.max_id:
+            raise ValueError(
+                "marker id {} must be less than the maximum allowed by {}: {}".format(
+                    marker_id, marker_type.name, marker_type.max_id
+                )
+            )
+
         super().__init__(
             marker_size=marker_size,
             marker_type=marker_type,

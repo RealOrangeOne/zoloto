@@ -13,9 +13,8 @@ def test_marker_type_max_id_allowed(marker_type: MarkerType) -> None:
 
 @pytest.mark.parametrize("marker_type", MarkerType)
 def test_marker_type_max_id_disallowed(marker_type: MarkerType) -> None:
-    camera = MarkerCamera(
-        marker_type.max_id + 1, marker_size=100, marker_type=marker_type
-    )
+    camera = MarkerCamera(marker_type.max_id, marker_size=100, marker_type=marker_type)
+    camera.marker_id = marker_type.max_id + 1  # There's an assertion in the constructor
     with pytest.raises(cv2.error):
         camera.get_visible_markers()
 
