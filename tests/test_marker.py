@@ -3,8 +3,6 @@ from typing import Any, List, Optional
 from unittest import TestCase
 from unittest.mock import patch
 
-import ujson
-
 from zoloto.calibration import CalibrationParameters
 from zoloto.cameras.marker import MarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
@@ -91,14 +89,6 @@ class MarkerTestCase(TestCase):
         created_marker_dict = json.loads(json.dumps(self.marker.as_dict()))
         self.assertEqual(marker_dict, created_marker_dict)
         self.assertEqual(self.EXPECTED_DICT_KEYS, set(marker_dict.keys()))
-
-    def test_as_dict_ujson(self) -> None:
-        created_marker_dict = ujson.loads(ujson.dumps(self.marker))
-        self.assertEqual(self.EXPECTED_DICT_KEYS, set(created_marker_dict.keys()))
-
-    def test_many_as_dict_ujson(self) -> None:
-        created_marker_dict = ujson.loads(ujson.dumps(self.markers))
-        self.assertEqual(self.EXPECTED_DICT_KEYS, set(created_marker_dict[0].keys()))
 
     def test_dict_value_types(self) -> None:
         marker_dict = self.marker.as_dict()

@@ -5,7 +5,7 @@ from cached_property import cached_property
 from cv2 import aruco
 from numpy import arctan2, linalg, ndarray
 
-from zoloto.utils import cached_method, encode_as_json
+from zoloto.utils import cached_method
 
 from .calibration import CalibrationParameters
 from .coords import Coordinates, Orientation, Spherical, ThreeDCoordinates
@@ -73,9 +73,6 @@ class BaseMarker(ABC):
     @property
     def _tvec(self) -> ndarray:
         return self._get_pose_vectors()[1]
-
-    def __json__(self) -> str:
-        return encode_as_json(self.as_dict())
 
     def as_dict(self) -> Dict[str, Any]:
         marker_dict = {
