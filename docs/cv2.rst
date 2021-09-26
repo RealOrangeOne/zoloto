@@ -12,3 +12,8 @@ VideoCapture
 ------------
 .. autoclass:: cv2.VideoCapture
     :members:
+
+Marker Dictionary
+-----------------
+.. autoclass:: cv2.aruco_Dictionary
+    :members:
