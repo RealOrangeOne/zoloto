@@ -1,15 +1,23 @@
+from typing import Type
+
 import pytest
 from hypothesis import given
+from pytest_mock.plugin import MockerFixture
 
 import zoloto.cameras
 from tests.strategies import marker_types
+from zoloto.marker_type import MarkerType
 
 
 @pytest.mark.parametrize(
     "camera_class", [zoloto.cameras.Camera, zoloto.cameras.camera.SnapshotCamera]
 )
 @given(marker_types())
-def test_enumerate_all_cameras(camera_class, mocker, marker_type) -> None:
+def test_enumerate_all_cameras(
+    camera_class: Type[zoloto.cameras.Camera],
+    mocker: MockerFixture,
+    marker_type: MarkerType,
+) -> None:
     VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
     VideoCapture.return_value.isOpened.return_value = True
     discovered_cameras = list(
@@ -24,7 +32,11 @@ def test_enumerate_all_cameras(camera_class, mocker, marker_type) -> None:
     "camera_class", [zoloto.cameras.Camera, zoloto.cameras.camera.SnapshotCamera]
 )
 @given(marker_types())
-def test_enumerate_no_cameras(camera_class, mocker, marker_type) -> None:
+def test_enumerate_no_cameras(
+    camera_class: Type[zoloto.cameras.Camera],
+    mocker: MockerFixture,
+    marker_type: MarkerType,
+) -> None:
     VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
     VideoCapture.return_value.isOpened.return_value = False
     discovered_cameras = list(
@@ -33,14 +45,14 @@ def test_enumerate_no_cameras(camera_class, mocker, marker_type) -> None:
     assert len(discovered_cameras) == 0
 
 
-def test_get_camera_ids(mocker) -> None:
+def test_get_camera_ids(mocker: MockerFixture) -> None:
     VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
     VideoCapture.return_value.isOpened.return_value = True
     discovered_ids = list(zoloto.cameras.camera.find_camera_ids())
     assert discovered_ids == [0, 1, 2, 3, 4, 5, 6, 7]
 
 
-def test_get_no_camera_ids(mocker) -> None:
+def test_get_no_camera_ids(mocker: MockerFixture) -> None:
     VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
     VideoCapture.return_value.isOpened.return_value = False
     discovered_ids = list(zoloto.cameras.camera.find_camera_ids())
