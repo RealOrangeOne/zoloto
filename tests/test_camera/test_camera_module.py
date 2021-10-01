@@ -35,6 +35,8 @@ def test_camera_requires_marker_size(marker_type: MarkerType) -> None:
     assert camera.get_marker_size(0) == 200
 
     camera = zoloto.cameras.file.ImageFileCamera(
-        Path("test.png"), marker_type=marker_type, marker_size=200,
+        Path("test.png"),
+        marker_type=marker_type,
+        marker_size=200,
     )
     assert camera.get_marker_size(0) == 200

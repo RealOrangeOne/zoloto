@@ -62,7 +62,7 @@ class BaseCamera(ABC):
         if corners:
             cv2.aruco.drawDetectedMarkers(frame, corners, ids)
 
-    def _get_raw_ids_and_corners(self, frame: ndarray) -> Tuple[ndarray, List[ndarray]]:
+    def _get_raw_ids_and_corners(self, frame: ndarray) -> Tuple[ndarray, ndarray]:
         corners, ids, _ = cv2.aruco.detectMarkers(
             frame, self.marker_dictionary, parameters=self.detector_params
         )

@@ -45,7 +45,10 @@ class BaseMarker(ABC):
     @cached_property
     def pixel_centre(self) -> Coordinates:
         tl, _, br, _ = self.pixel_corners
-        return Coordinates(x=tl.x + (self.size / 2) - 1, y=br.y - (self.size / 2),)
+        return Coordinates(
+            x=tl.x + (self.size / 2) - 1,
+            y=br.y - (self.size / 2),
+        )
 
     @cached_property
     def distance(self) -> int:
