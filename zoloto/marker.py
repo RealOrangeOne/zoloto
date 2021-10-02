@@ -26,7 +26,7 @@ class BaseMarker(ABC):
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
         raise NotImplementedError()
 
-    @property
+    @property  # noqa: A003
     def id(self) -> int:  # noqa: A003
         return self.__id
 
