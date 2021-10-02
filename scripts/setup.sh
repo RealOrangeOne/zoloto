@@ -8,11 +8,11 @@ export PATH=env/bin:${PATH}
 
 pip install wheel
 
+pip install -e "."
+
 if [ "$1" = "opencv" ]
 then
-    pip install -e ".[opencv]"
-else
-    pip install -e "."
+    pip install -e ".[opencv]" --prefer-binary
 fi
 
 pip install -r dev-requirements.txt
