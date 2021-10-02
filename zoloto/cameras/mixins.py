@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Generator
+from typing import Iterator
 
 from cv2 import imshow, waitKey
 from numpy import ndarray
@@ -12,7 +12,7 @@ class IterableCameraMixin(ABC):
     def capture_frame(self) -> ndarray:  # pragma: nocover
         raise NotImplementedError()
 
-    def __iter__(self) -> Generator[ndarray, None, None]:
+    def __iter__(self) -> Iterator[ndarray]:
         while True:
             frame = self.capture_frame()
             if not frame.size:
@@ -30,7 +30,7 @@ class VideoCaptureMixin(ABC):
 
 class ViewableCameraMixin(ABC):
     @abstractmethod
-    def __iter__(self) -> Generator[ndarray, None, None]:  # pragma: nocover
+    def __iter__(self) -> Iterator[ndarray]:  # pragma: nocover
         raise NotImplementedError()
 
     @abstractmethod

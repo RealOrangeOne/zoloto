@@ -3,6 +3,7 @@ Markers
 
 .. autoclass:: zoloto.marker.Marker
     :members:
+    :no-undoc-members:
 
 .. autoclass:: zoloto.marker.EagerMarker
     :no-inherited-members:

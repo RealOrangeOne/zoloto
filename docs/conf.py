@@ -14,8 +14,9 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
+    "sphinx.ext.napoleon",
     "sphinx_rtd_theme",
-    "m2r",
+    "m2r2",
 ]
 
 templates_path = []  # type: List[str]
@@ -24,11 +25,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
-    "cv2": (
-        "https://docs.opencv.org/3.0-last-rst/",
-        None,
-    ),  # This is the most recent version with intersphinx support.
-    "numpy": ("https://docs.scipy.org/doc/numpy", None),
+    "numpy": ("https://numpy.org/doc/stable", None),
 }
 
 html_theme = "sphinx_rtd_theme"
