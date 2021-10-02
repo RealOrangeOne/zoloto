@@ -6,6 +6,8 @@ python3 -m venv env
 
 export PATH=env/bin:${PATH}
 
+pip install wheel
+
 if [ "$1" = "opencv" ]
 then
     pip install -e ".[opencv]"
