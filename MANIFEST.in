@@ -1,0 +1,6 @@
+include LICENSE
+include MANIFEST.in
+graft docs
+graft scripts
+global-exclude __pycache__
+global-exclude *.py[co]
