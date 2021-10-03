@@ -11,6 +11,8 @@ CAP_PROP_BUFFERSIZE: int
 FILE_STORAGE_READ: int
 FILE_STORAGE_WRITE: int
 
+BORDER_CONSTANT: int
+
 class aruco_DetectorParameters:
     pass
 
@@ -45,7 +47,10 @@ def copyMakeBorder(
     value: Optional[List[int]],
 ) -> ndarray: ...
 def imshow(winname: str, mat: ndarray) -> None: ...
+def imwrite(filename: str, mat: ndarray) -> None: ...
 def waitKey(delay: int) -> int: ...
 
 # Note that this is not the only signature of Rodrigues, but it is the only one we use.
 def Rodrigues(vector: Tuple[float, float, float]) -> Tuple[ndarray, ndarray]: ...
+
+class error(Exception): ...

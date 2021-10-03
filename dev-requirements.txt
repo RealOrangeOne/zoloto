@@ -8,16 +8,15 @@ flake8-mutable>=1<2
 flake8-print>=3<4
 flake8-tuple>=0.4<1
 hypothesis==4.36.2
-mypy==0.720.0
+mypy==0.910
 pytest==5.3.5
 pytest-benchmark>=3<4
 pytest-cov>=2<3
 isort==4.3.21
-black==19.10b0; python_version >= '3.6'
+black==21.9b0
 snapshottest>=0.5<1
 pytest-mock>=3<4
-ujson>=3<4
-sphinx==2.4.3
-sphinx-rtd-theme==0.4.3
-sphinx_autodoc_typehints==1.10.3
-m2r==0.2.1
+sphinx==4.2.0
+sphinx-rtd-theme==1.0.0
+sphinx_autodoc_typehints==1.12.0
+m2r2==0.3.1

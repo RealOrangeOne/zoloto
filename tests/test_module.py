@@ -1,4 +1,5 @@
 import pytest
+from setuptools.config import read_configuration
 
 import zoloto
 
@@ -23,3 +24,8 @@ def test_exposes_coordinates(coordinate_struct: str) -> None:
     assert getattr(zoloto, coordinate_struct) == getattr(
         zoloto.coords, coordinate_struct
     )
+
+
+def test_matching_version() -> None:
+    config = read_configuration("setup.cfg")
+    assert config["metadata"]["version"] == zoloto.__version__

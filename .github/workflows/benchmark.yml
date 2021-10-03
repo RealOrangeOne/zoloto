@@ -3,7 +3,7 @@ name: Benchmark
 on:
   push:
     branches:
-      - "*"
+      - master
   pull_request:
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
-          python-version: 3.7
+          python-version: 3.9
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pip

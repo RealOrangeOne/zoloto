@@ -16,6 +16,9 @@ class MarkerType(IntEnum):
 
     @property
     def dictionary(self) -> aruco_Dictionary:
+        """
+        The underlying OpenCV marker dictionary
+        """
         return aruco.getPredefinedDictionary(self.value)
 
     @property

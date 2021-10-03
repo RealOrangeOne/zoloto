@@ -78,15 +78,6 @@ class Orientation:
         Get the equivalent yaw-pitch-roll angles.
 
         Specifically intrinsic Tait-Bryan angles following the z-y'-x'' convention.
-
-        Returns:
-            A three-tuple of floating point angles:
-
-                yaw:    rotation angle around the z-axis in radians, in the range `[-pi, pi]`
-
-                pitch:  rotation angle around the y'-axis in radians, in the range `[-pi/2, -pi/2]`
-
-                roll:   rotation angle around the x''-axis in radians, in the range `[-pi, pi]`
         """
         return self._quaternion.yaw_pitch_roll
 
