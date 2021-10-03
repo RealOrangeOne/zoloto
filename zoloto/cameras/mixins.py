@@ -38,8 +38,11 @@ class ViewableCameraMixin(ABC):
         raise NotImplementedError()
 
     def show(self, annotate: bool = False) -> None:
+        quit_key = ord("q")
+
         for frame in self:
             if annotate:
                 self._annotate_frame(frame)
             imshow("camera", frame)
-            waitKey(1)
+            if waitKey(1) & 0xFF == quit_key:
+                break

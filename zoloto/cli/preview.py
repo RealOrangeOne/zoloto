@@ -6,6 +6,7 @@ from zoloto.marker_type import MARKER_TYPE_NAMES, MarkerType
 
 def main(args: argparse.Namespace) -> None:
     with Camera(args.id, marker_type=MarkerType[args.type], marker_size=100) as camera:
+        print("Starting preview... Press 'q' to exit.")  # noqa: T001
         camera.show(annotate=True)
 
 
