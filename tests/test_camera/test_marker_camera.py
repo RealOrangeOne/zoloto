@@ -149,3 +149,19 @@ def test_minimum_marker_size(marker_type: MarkerType) -> None:
             marker_type=marker_type,
         )
     assert "marker must be at least" in e.value.args[0]
+
+
+def test_no_markers(temp_image_file: Path) -> None:
+    marker_camera = MarkerCamera(
+        MAX_ALL_ALLOWED_ID,
+        marker_size=100,
+        marker_type=MarkerType.ARUCO_4X4,
+    )
+    marker_camera.save_frame(temp_image_file)
+
+    image_file_camera = ImageFileCamera(
+        temp_image_file, marker_type=MarkerType.ARUCO_5X5, marker_size=100
+    )
+
+    assert marker_camera.marker_type != image_file_camera.marker_type
+    assert image_file_camera.get_visible_markers() == []
