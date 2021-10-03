@@ -8,10 +8,11 @@ from numpy import array, ndarray
 
 from .marker_type import MarkerType
 
-CalibrationParameters = NamedTuple(
-    "CalibrationParameters",
-    [("camera_matrix", ndarray), ("distance_coefficients", ndarray)],
-)
+
+class CalibrationParameters(NamedTuple):
+    camera_matrix: ndarray
+    distance_coefficients: ndarray
+
 
 SUPPORTED_EXTENSIONS = ["xml", "json"]
 

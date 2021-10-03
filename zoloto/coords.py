@@ -4,27 +4,40 @@ from cached_property import cached_property
 from cv2 import Rodrigues
 from pyquaternion import Quaternion
 
-Coordinates = NamedTuple("Coordinates", [("x", float), ("y", float)])
-Coordinates.__doc__ = """
-:param float x: X coordinate
-:param float y: Y coordinate
-"""
 
-ThreeDCoordinates = NamedTuple(
-    "ThreeDCoordinates", [("x", float), ("y", float), ("z", float)]
-)
-ThreeDCoordinates.__doc__ = """
-:param float x: X coordinate
-:param float y: Y coordinate
-:param float z: Z coordinate
-"""
+class Coordinates(NamedTuple):
+    """
+    :param float x: X coordinate
+    :param float y: Y coordinate
+    """
 
-Spherical = NamedTuple("Spherical", [("rot_x", float), ("rot_y", float), ("dist", int)])
-Spherical.__doc__ = """
-:param float rot_x: Rotation around the X-axis, in radians
-:param float rot_y: Rotation around the Y-axis, in radians
-:param float dist: Distance
-"""
+    x: float
+    y: float
+
+
+class ThreeDCoordinates(NamedTuple):
+    """
+    :param float x: X coordinate
+    :param float y: Y coordinate
+    :param float z: Z coordinate
+    """
+
+    x: float
+    y: float
+    z: float
+
+
+class Spherical(NamedTuple):
+    """
+    :param float rot_x: Rotation around the X-axis, in radians
+    :param float rot_y: Rotation around the Y-axis, in radians
+    :param float dist: Distance
+    """
+
+    rot_x: float
+    rot_y: float
+    dist: int
+
 
 ThreeTuple = Tuple[float, float, float]
 RotationMatrix = Tuple[ThreeTuple, ThreeTuple, ThreeTuple]
