@@ -7,10 +7,10 @@ __all__ = ["preview", "annotate_image", "count_markers"]
 
 
 def get_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(prog="zoloto")
     parser.add_argument(
         "--version",
-        help="Show version of the tools.",
+        help="Show zoloto version",
         action="version",
         version=__version__,
     )
