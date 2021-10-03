@@ -8,7 +8,7 @@ import zoloto
 def call_cli(args: List[str]) -> subprocess.CompletedProcess:
     return subprocess.run(
         [sys.executable, "-m", "zoloto"] + args,
-        text=True,
+        universal_newlines=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
