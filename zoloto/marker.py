@@ -23,7 +23,7 @@ class BaseMarker(ABC):
         self.__marker_type = marker_type
 
     @abstractmethod
-    def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
+    def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:  # pragma: nocover
         raise NotImplementedError()
 
     @property  # noqa: A003
