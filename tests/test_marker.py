@@ -35,8 +35,8 @@ class MarkerTestCase(TestCase):
     def test_marker_id(self) -> None:
         self.assertEqual(self.marker.id, self.MARKER_ID)
 
-    def test_marker_dict(self) -> None:
-        self.assertEqual(self.marker.marker_dict, MarkerType.ARUCO_6X6)
+    def test_marker_type(self) -> None:
+        self.assertEqual(self.marker.marker_type, MarkerType.ARUCO_6X6)
 
     def test_pixel_corners(self) -> None:
         self.assertEqual(len(self.marker.pixel_corners), 4)

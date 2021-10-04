@@ -35,7 +35,7 @@ class BaseMarker(ABC):
         return self.__size
 
     @property
-    def marker_dict(self) -> MarkerType:
+    def marker_type(self) -> MarkerType:
         return self.__marker_type
 
     @property
