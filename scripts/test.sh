@@ -5,7 +5,7 @@ set -e
 export PATH=env/bin:${PATH}
 
 echo "> Running tests..."
-pytest --verbose --cov zoloto/ --cov-report term --cov-report html tests/
+pytest -s --verbose --cov zoloto/ --cov-report term --cov-report html tests/
 
 if hash black 2>/dev/null;
 then

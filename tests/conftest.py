@@ -14,6 +14,13 @@ from zoloto.marker_type import MarkerType
 hypothesis_settings.register_profile("main", deadline=None)
 hypothesis_settings.load_profile("main")
 
+FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures"
+
+
+@pytest.fixture
+def fixtures_dir() -> Path:
+    return FIXTURES_DIR
+
 
 @pytest.fixture
 def make_temp_file(request: Any) -> Callable[[str], Path]:
