@@ -15,7 +15,7 @@ class MarkerCamera(BaseCamera):
     A camera which always returns a single, full-screen marker
     """
 
-    BORDER_SIZE = 40
+    MIN_BORDER_SIZE = 3
 
     def __init__(
         self,
@@ -23,7 +23,8 @@ class MarkerCamera(BaseCamera):
         marker_size: int,
         *,
         marker_type: MarkerType,
-        calibration_file: Optional[Path] = None
+        calibration_file: Optional[Path] = None,
+        border_size: int = 40
     ) -> None:
 
         if marker_id > marker_type.max_id:
@@ -40,18 +41,24 @@ class MarkerCamera(BaseCamera):
                 )
             )
 
+        if border_size < self.MIN_BORDER_SIZE:
+            raise ValueError(
+                "Border size must be at least {}".format(self.MIN_BORDER_SIZE)
+            )
+
         super().__init__(
             marker_size=marker_size,
             marker_type=marker_type,
             calibration_file=calibration_file,
         )
         self.marker_id = marker_id
+        self.border_size = border_size
 
     def get_calibrations(self) -> Optional[CalibrationParameters]:
         return get_fake_calibration_parameters()
 
     def get_resolution(self) -> Tuple[int, int]:
-        size = int(self.get_marker_size(self.marker_id) + self.BORDER_SIZE * 2)
+        size = int(self.get_marker_size(self.marker_id) + self.border_size * 2)
         return size, size
 
     def capture_frame(self) -> ndarray:
@@ -60,10 +67,10 @@ class MarkerCamera(BaseCamera):
         )
         return cv2.copyMakeBorder(
             image,
-            self.BORDER_SIZE,
-            self.BORDER_SIZE,
-            self.BORDER_SIZE,
-            self.BORDER_SIZE,
+            self.border_size,
+            self.border_size,
+            self.border_size,
+            self.border_size,
             cv2.BORDER_CONSTANT,
             value=[255, 0, 0],
         )

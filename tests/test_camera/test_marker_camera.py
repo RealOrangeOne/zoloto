@@ -165,3 +165,18 @@ def test_no_markers(temp_image_file: Path) -> None:
 
     assert marker_camera.marker_type != image_file_camera.marker_type
     assert image_file_camera.get_visible_markers() == []
+
+
+@pytest.mark.parametrize("marker_type", MarkerType)
+def test_detect_at_minimum_size(marker_type: MarkerType) -> None:
+    marker_camera = MarkerCamera(
+        0,
+        marker_size=marker_type.min_marker_image_size,
+        marker_type=marker_type,
+        border_size=MarkerCamera.MIN_BORDER_SIZE,
+    )
+    frame = marker_camera.capture_frame()
+    assert frame.shape == marker_camera.get_resolution()
+
+    marker = next(marker_camera.process_frame(frame=frame))
+    assert marker.id == 0

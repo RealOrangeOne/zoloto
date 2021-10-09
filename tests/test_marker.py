@@ -40,7 +40,7 @@ class MarkerTestCase(TestCase):
 
     def test_pixel_corners(self) -> None:
         self.assertEqual(len(self.marker.pixel_corners), 4)
-        border_size = self.marker_camera.BORDER_SIZE
+        border_size = self.marker_camera.border_size
         tl, tr, br, bl = self.marker.pixel_corners
         self.assertEqual(tl, (border_size, border_size))
         self.assertEqual(tr, (self.MARKER_SIZE + border_size - 1, border_size))
