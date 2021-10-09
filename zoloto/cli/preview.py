@@ -20,7 +20,6 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
     parser.add_argument(
         "--type",
         type=str,
-        default=MarkerType.ARUCO_6X6.name,
         choices=sorted(MARKER_TYPE_NAMES),
         help="Marker dictionary",
     )
