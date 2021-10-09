@@ -10,4 +10,5 @@
    coordinates
    discovery
    calibration
+   cli/index
    cv2
