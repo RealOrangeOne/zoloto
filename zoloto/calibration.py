@@ -53,19 +53,18 @@ def save_calibrations(params: CalibrationParameters, filename: Path) -> None:
 
 
 @lru_cache()
-def get_fake_calibration_parameters(
-    size: int, iterations: int = 15
-) -> CalibrationParameters:
+def get_fake_calibration_parameters() -> CalibrationParameters:
     """
     HACK: Generate fake calibration parameters
     """
+
     dictionary = aruco.getPredefinedDictionary(MarkerType.ARUCO_6X6)
     seen_corners = []
     seen_ids = []
-    image_size = (size, size)
+    image_size = (200, 200)
     board = aruco.CharucoBoard_create(6, 6, 0.025, 0.0125, dictionary)
     image = board.draw(image_size)
-    for _ in range(iterations):
+    for _ in range(15):
         corners, ids, _ = aruco.detectMarkers(image, dictionary)
         _, corners, ids = aruco.interpolateCornersCharuco(corners, ids, image, board)
         seen_corners.append(corners)

@@ -15,7 +15,7 @@ from zoloto.calibration import (
 def test_saving_calibrations(
     extension: str, make_temp_file: Callable[[str], Path]
 ) -> None:
-    original_params = get_fake_calibration_parameters(200)
+    original_params = get_fake_calibration_parameters()
     calibrations_file = Path(make_temp_file("." + extension))
     save_calibrations(original_params, calibrations_file)
     read_params = parse_calibration_file(calibrations_file)
@@ -31,7 +31,7 @@ def test_cant_load_invalid_extension(make_temp_file: Callable[[str], Path]) -> N
 
 def test_cant_save_invalid_extension() -> None:
     with pytest.raises(ValueError) as e:
-        save_calibrations(get_fake_calibration_parameters(200), Path("test.unknown"))
+        save_calibrations(get_fake_calibration_parameters(), Path("test.unknown"))
     assert "Unknown calibration file format" in e.value.args[0]
 
 

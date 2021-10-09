@@ -48,7 +48,7 @@ class MarkerCamera(BaseCamera):
         self.marker_id = marker_id
 
     def get_calibrations(self) -> Optional[CalibrationParameters]:
-        return get_fake_calibration_parameters(self.get_marker_size(self.marker_id))
+        return get_fake_calibration_parameters()
 
     def get_resolution(self) -> Tuple[int, int]:
         size = int(self.get_marker_size(self.marker_id) + self.BORDER_SIZE * 2)

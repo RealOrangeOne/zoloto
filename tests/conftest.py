@@ -58,4 +58,4 @@ def marker(marker_camera: MarkerCamera) -> BaseMarker:
 
 @pytest.fixture
 def fake_calibration_params() -> CalibrationParameters:
-    return get_fake_calibration_parameters(200)
+    return get_fake_calibration_parameters()
