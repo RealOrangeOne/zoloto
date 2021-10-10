@@ -5,3 +5,4 @@ Zoloto ships with a CLI (aptly named ``zoloto``), which contains some helpful ut
 
 .. toctree::
     save-markers
+    marker-pdfs

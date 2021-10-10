@@ -9,6 +9,7 @@ __all__ = [
     "count_markers",
     "save_markers",
     "marker_details",
+    "marker_pdfs",
 ]
 
 
