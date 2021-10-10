@@ -25,7 +25,7 @@ A4 = (mm_to_pixels(210), mm_to_pixels(297))
 
 
 def main(args: argparse.Namespace) -> None:
-    from PIL import Image, ImageOps
+    from PIL import Image, ImageOps, ImageDraw
 
     marker_type = MarkerType[args.type]
     output_dir: Path = args.path.resolve()
@@ -51,6 +51,12 @@ def main(args: argparse.Namespace) -> None:
                 resized_image, border=BORDER_SIZE, fill="grey"
             )
             img_size = bordered_image.size[0]
+
+            ImageDraw.Draw(bordered_image).text(
+                (25, img_size - 25),
+                "{} {}".format(marker_type.name, marker_id),
+                anchor="lt",
+            )
 
             # Put marker onto A4 page
             a4_img = Image.new("RGB", A4, (255, 255, 255))
