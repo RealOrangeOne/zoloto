@@ -50,22 +50,6 @@ class MarkerType(IntEnum):
         return self.dictionary.markerSize
 
 
-# Non-overlapping marker types
-MARKER_TYPES = frozenset(
-    {
-        MarkerType.ARUCO_4X4,
-        MarkerType.ARUCO_5X5,
-        MarkerType.ARUCO_6X6,
-        MarkerType.ARUCO_7X7,
-        MarkerType.ARUCO_ORIGINAL,
-        MarkerType.APRILTAG_16H5,
-        MarkerType.APRILTAG_25H9,
-        MarkerType.APRILTAG_36H10,
-        MarkerType.APRILTAG_36H11,
-    }
-)
-
-
-MARKER_TYPE_NAMES = frozenset(m.name for m in MARKER_TYPES)
+MARKER_TYPE_NAMES = frozenset(m.name for m in MarkerType)
 
 MAX_ALL_ALLOWED_ID = min(m.max_id for m in MarkerType)

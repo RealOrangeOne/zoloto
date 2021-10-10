@@ -2,11 +2,11 @@ import argparse
 from pathlib import Path
 
 from zoloto.cameras.file import ImageFileCamera
-from zoloto.marker_type import MARKER_TYPES
+from zoloto.marker_type import MarkerType
 
 
 def main(args: argparse.Namespace) -> None:
-    for marker_type in MARKER_TYPES:
+    for marker_type in MarkerType:
         with ImageFileCamera(
             Path(args.file), marker_type=marker_type, marker_size=100
         ) as camera:
