@@ -3,7 +3,13 @@ import importlib
 
 from zoloto import __version__
 
-__all__ = ["preview", "annotate_image", "count_markers", "save_markers"]
+__all__ = [
+    "preview",
+    "annotate_image",
+    "count_markers",
+    "save_markers",
+    "marker_details",
+]
 
 
 def get_parser() -> argparse.ArgumentParser:
