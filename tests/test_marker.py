@@ -126,6 +126,15 @@ class MarkerTestCase(TestCase):
             self.assertIsType(self.marker.cartesian.y, float)
             self.assertIsType(self.marker.cartesian.z, float)
 
+    def test_repr(self) -> None:
+        self.assertIn(str(self.MARKER_ID), repr(self.marker))
+        self.assertIn(str(self.MARKER_SIZE), repr(self.marker))
+        self.assertIn("ARUCO_6X6", repr(self.marker))
+
+        # Eager markers also show their distance
+        if isinstance(self.marker, EagerMarker):
+            self.assertIn(str(self.marker.distance), repr(self.marker))
+
 
 class EagerMarkerTestCase(MarkerTestCase):
     def setUp(self) -> None:

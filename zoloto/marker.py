@@ -22,6 +22,9 @@ class BaseMarker(ABC):
         self.__size = size
         self.__marker_type = marker_type
 
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__} id={self.id} size={self.size} type={self.marker_type.name}>"
+
     @abstractmethod
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:  # pragma: nocover
         raise NotImplementedError()
@@ -103,6 +106,9 @@ class EagerMarker(BaseMarker):
     ):
         super().__init__(marker_id, corners, size, marker_type)
         self.__precalculated_vectors = precalculated_vectors
+
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__} id={self.id} size={self.size} type={self.marker_type.name} distance={self.distance}>"
 
     def _get_pose_vectors(self) -> Tuple[ndarray, ndarray]:
         return self.__precalculated_vectors
