@@ -31,7 +31,7 @@ class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraM
         *,
         marker_size: Optional[int] = None,
         marker_type: MarkerType,
-        calibration_file: Optional[Path] = None
+        calibration_file: Optional[Path] = None,
     ) -> None:
         super().__init__(
             marker_size=marker_size,
@@ -40,6 +40,9 @@ class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraM
         )
         self.camera_id = camera_id
         self.video_capture = self.get_video_capture(self.camera_id)
+
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__}: {self.camera_id}>"
 
     def get_video_capture(self, camera_id: int) -> VideoCapture:
         cap = VideoCapture(camera_id)
@@ -74,7 +77,7 @@ class SnapshotCamera(VideoCaptureMixin, BaseCamera):
         *,
         marker_size: Optional[int] = None,
         marker_type: MarkerType,
-        calibration_file: Optional[Path] = None
+        calibration_file: Optional[Path] = None,
     ) -> None:
         super().__init__(
             marker_size=marker_size,
@@ -82,6 +85,9 @@ class SnapshotCamera(VideoCaptureMixin, BaseCamera):
             calibration_file=calibration_file,
         )
         self.camera_id = camera_id
+
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__}: {self.camera_id}>"
 
     def get_video_capture(self, camera_id: int) -> VideoCapture:
         return VideoCapture(camera_id)

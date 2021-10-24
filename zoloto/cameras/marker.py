@@ -24,7 +24,7 @@ class MarkerCamera(BaseCamera):
         *,
         marker_type: MarkerType,
         calibration_file: Optional[Path] = None,
-        border_size: int = 40
+        border_size: int = 40,
     ) -> None:
 
         if marker_id > marker_type.max_id:
@@ -53,6 +53,9 @@ class MarkerCamera(BaseCamera):
         )
         self.marker_id = marker_id
         self.border_size = border_size
+
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__} id={self.marker_id} size={self._marker_size} type={self.marker_type.name}>"
 
     def get_calibrations(self) -> Optional[CalibrationParameters]:
         return get_fake_calibration_parameters()

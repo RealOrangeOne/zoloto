@@ -18,7 +18,7 @@ class ImageFileCamera(BaseCamera):
         *,
         marker_size: Optional[int] = None,
         marker_type: MarkerType,
-        calibration_file: Optional[Path] = None
+        calibration_file: Optional[Path] = None,
     ) -> None:
         self.image_path = image_path
         super().__init__(
@@ -26,6 +26,9 @@ class ImageFileCamera(BaseCamera):
             marker_type=marker_type,
             calibration_file=calibration_file,
         )
+
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__}: {self.image_path}>"
 
     def capture_frame(self) -> ndarray:
         return imread(str(self.image_path))
@@ -40,17 +43,18 @@ class VideoFileCamera(
         *,
         marker_size: Optional[int] = None,
         marker_type: MarkerType,
-        calibration_file: Optional[Path] = None
+        calibration_file: Optional[Path] = None,
     ) -> None:
         super().__init__(
             marker_size=marker_size,
             marker_type=marker_type,
             calibration_file=calibration_file,
         )
-        self.video_capture = self.get_video_capture(video_path)
+        self.video_path = video_path
+        self.video_capture = VideoCapture(str(self.video_path))
 
-    def get_video_capture(self, video_path: Path) -> VideoCapture:
-        return VideoCapture(str(video_path))
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__}: {self.video_path}>"
 
     def close(self) -> None:
         super().close()

@@ -180,3 +180,7 @@ def test_detect_at_minimum_size(marker_type: MarkerType) -> None:
 
     marker = next(marker_camera.process_frame(frame=frame))
     assert marker.id == 0
+
+
+def test_repr(marker_camera: MarkerCamera) -> None:
+    assert str(marker_camera.marker_id) in repr(marker_camera)
