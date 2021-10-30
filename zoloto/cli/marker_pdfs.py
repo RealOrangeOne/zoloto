@@ -54,7 +54,9 @@ def main(args: argparse.Namespace) -> None:
 
             ImageDraw.Draw(bordered_image).text(
                 (25, img_size - 25),
-                "{} {}".format(marker_type.name, marker_id),
+                args.description_format.format(
+                    marker_type=marker_type.name, marker_id=marker_id
+                ),
                 anchor="lt",
             )
 
@@ -92,5 +94,11 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
         "size",
         type=float,
         help="Size of marker (mm)",
+    )
+    parser.add_argument(
+        "--description-format",
+        type=str,
+        help="Text format for the description on the marker images. `marker_id` and `marker_type` are available for string format replacement. (default: %(default)s)",
+        default="{marker_type} {marker_id}",
     )
     parser.set_defaults(func=main)

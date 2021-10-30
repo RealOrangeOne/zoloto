@@ -34,7 +34,9 @@ def main(args: argparse.Namespace) -> None:
 
                 ImageDraw.Draw(bordered_image).text(
                     (25, img_size - 25),
-                    "{} {}".format(marker_type.name, marker_id),
+                    args.description_format.format(
+                        marker_type=marker_type.name, marker_id=marker_id
+                    ),
                     anchor="lt",
                 )
                 bordered_image.save(output_dir / "{}.png".format(marker_id))
@@ -60,5 +62,11 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
         "--raw",
         help="Remove the additional annotations around the marker, such that it's just the pure marker",
         action="store_true",
+    )
+    parser.add_argument(
+        "--description-format",
+        type=str,
+        help="Text format for the description on the marker images. `marker_id` and `marker_type` are available for string format replacement. (default: %(default)s)",
+        default="{marker_type} {marker_id}",
     )
     parser.set_defaults(func=main)
