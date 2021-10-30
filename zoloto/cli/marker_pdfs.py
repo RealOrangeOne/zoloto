@@ -3,6 +3,7 @@ from pathlib import Path
 
 from zoloto.cameras.marker import MarkerCamera
 from zoloto.marker_type import MARKER_TYPE_NAMES, MarkerType
+from zoloto.utils import parse_ranges
 
 DPI = 72
 BORDER_SIZE = 2
@@ -34,7 +35,11 @@ def main(args: argparse.Namespace) -> None:
     if args.size + BORDER_SIZE * 2 > 210:
         print("Warning: Marker size is too large to fit on A4")  # noqa:T001
 
-    for marker_id in range(marker_type.max_id):
+    marker_ids = (
+        parse_ranges(args.range) if args.range != "ALL" else range(marker_type.max_id)
+    )
+
+    for marker_id in sorted(marker_ids):
         with MarkerCamera(
             marker_id,
             marker_type=marker_type,
@@ -100,5 +105,10 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
         type=str,
         help="Text format for the description on the marker images. `marker_id` and `marker_type` are available for string format replacement. (default: %(default)s)",
         default="{marker_type} {marker_id}",
+    )
+    parser.add_argument(
+        "--range",
+        help="Marker ids to output (inclusive)",
+        default="ALL",
     )
     parser.set_defaults(func=main)
