@@ -6,6 +6,8 @@ from zoloto.marker_type import MARKER_TYPE_NAMES, MarkerType
 
 
 def main(args: argparse.Namespace) -> None:
+    from PIL import Image, ImageOps, ImageDraw
+
     marker_type = MarkerType[args.type]
     output_dir: Path = args.path.resolve()
     output_dir.mkdir(exist_ok=True, parents=True)
@@ -18,7 +20,24 @@ def main(args: argparse.Namespace) -> None:
         ) as camera:
             camera.border_size = 1  # HACK: There's validation in the constructor
             print("Saving", marker_id)  # noqa:T001
-            camera.save_frame(output_dir / "{}.png".format(marker_id))
+
+            if args.raw:
+                camera.save_frame(output_dir / "{}.png".format(marker_id))
+            else:
+                image = Image.fromarray(camera.capture_frame())
+
+                # Resize the image to the required size
+                resized_image = image.resize((500, 500), resample=0)
+
+                bordered_image = ImageOps.expand(resized_image, border=2, fill="grey")
+                img_size = bordered_image.size[0]
+
+                ImageDraw.Draw(bordered_image).text(
+                    (25, img_size - 25),
+                    "{} {}".format(marker_type.name, marker_id),
+                    anchor="lt",
+                )
+                bordered_image.save(output_dir / "{}.png".format(marker_id))
 
 
 def add_subparser(subparsers: argparse._SubParsersAction) -> None:
@@ -36,5 +55,10 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
         "path",
         type=Path,
         help="Output directory",
+    )
+    parser.add_argument(
+        "--raw",
+        help="Remove the additional annotations around the marker, such that it's just the pure marker",
+        action="store_true",
     )
     parser.set_defaults(func=main)
