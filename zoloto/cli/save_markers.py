@@ -7,7 +7,7 @@ from zoloto.utils import parse_ranges
 
 
 def main(args: argparse.Namespace) -> None:
-    from PIL import Image, ImageOps, ImageDraw
+    from PIL import Image, ImageDraw
 
     marker_type = MarkerType[args.type]
     output_dir: Path = args.path.resolve()
@@ -34,17 +34,16 @@ def main(args: argparse.Namespace) -> None:
                 # Resize the image to the required size
                 resized_image = image.resize((500, 500), resample=0)
 
-                bordered_image = ImageOps.expand(resized_image, border=2, fill="grey")
-                img_size = bordered_image.size[0]
+                img_size = resized_image.size[0]
 
-                ImageDraw.Draw(bordered_image).text(
+                ImageDraw.Draw(resized_image).text(
                     (25, img_size - 25),
                     args.description_format.format(
                         marker_type=marker_type.name, marker_id=marker_id
                     ),
                     anchor="lt",
                 )
-                bordered_image.save(output_dir / "{}.png".format(marker_id))
+                resized_image.save(output_dir / "{}.png".format(marker_id))
 
 
 def add_subparser(subparsers: argparse._SubParsersAction) -> None:
