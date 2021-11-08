@@ -7,6 +7,10 @@ from typing import List, Optional, Tuple, Union
 from numpy import ndarray
 
 CAP_PROP_BUFFERSIZE: int
+CAP_PROP_FPS: int
+CAP_PROP_FRAME_WIDTH: int
+CAP_PROP_FRAME_HEIGHT: int
+CAP_PROP_FRAME_COUNT: int
 
 FILE_STORAGE_READ: int
 FILE_STORAGE_WRITE: int
@@ -31,6 +35,21 @@ class VideoCapture:
     def read(self) -> Tuple[bool, ndarray]: ...
     def release(self) -> None: ...
     def set(self, property: int, value: int) -> None: ...
+    def get(self, property: int) -> float: ...
+
+class VideoWriter_fourcc:
+    def __init__(self, c1: str, c2: str, c3: str, c4: str): ...
+
+class VideoWriter:
+    def __init__(
+        self,
+        filename: str,
+        fourcc: VideoWriter_fourcc,
+        fps: float,
+        frameSize: List[int],
+    ): ...
+    def write(self, frame: ndarray) -> None: ...
+    def release(self) -> None: ...
 
 class aruco_Dictionary:
     bytesList: ndarray

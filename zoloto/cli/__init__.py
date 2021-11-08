@@ -6,6 +6,7 @@ from zoloto import __version__
 __all__ = [
     "preview",
     "annotate_image",
+    "annotate_video",
     "count_markers",
     "save_markers",
     "marker_details",
