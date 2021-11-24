@@ -6,6 +6,7 @@ from pytest_mock.plugin import MockerFixture
 
 import zoloto.cameras
 from tests.strategies import marker_types
+from zoloto.exceptions import CameraOpenError
 from zoloto.marker_type import MarkerType
 
 
@@ -57,3 +58,20 @@ def test_get_no_camera_ids(mocker: MockerFixture) -> None:
     VideoCapture.return_value.isOpened.return_value = False
     discovered_ids = list(zoloto.cameras.camera.find_camera_ids())
     assert len(discovered_ids) == 0
+
+
+def test_cannot_create_unopened_camera(mocker: MockerFixture) -> None:
+    VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
+    VideoCapture.return_value.isOpened.return_value = False
+    with pytest.raises(CameraOpenError):
+        zoloto.cameras.Camera(0, marker_type=MarkerType.APRILTAG_36H11)
+
+
+def test_cannot_create_unopened_snapshotcamera(mocker: MockerFixture) -> None:
+    VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
+    VideoCapture.return_value.isOpened.return_value = False
+    camera = zoloto.cameras.camera.SnapshotCamera(
+        0, marker_type=MarkerType.APRILTAG_36H11
+    )
+    with pytest.raises(CameraOpenError):
+        camera.capture_frame()
