@@ -15,3 +15,7 @@ class CameraReadError(ZolotoException):
     def __init__(self, frame: Optional[ndarray]):
         self.frame = frame
         super().__init__()
+
+
+class CameraOpenError(ZolotoException):
+    pass

@@ -20,9 +20,15 @@ def test_exposes_file_camera(camera_name: str) -> None:
 
 
 @given(marker_types())
-def test_camera_requires_marker_size(marker_type: MarkerType) -> None:
+def test_camera_requires_marker_size(
+    marker_camera: zoloto.cameras.marker.MarkerCamera,
+    temp_image_file: Path,
+    marker_type: MarkerType,
+) -> None:
+    marker_camera.save_frame(temp_image_file)
+
     camera = zoloto.cameras.file.ImageFileCamera(
-        Path("test.png"), marker_type=marker_type
+        temp_image_file, marker_type=marker_type
     )
     with pytest.raises(ValueError):
         camera.get_marker_size(0)
@@ -31,11 +37,11 @@ def test_camera_requires_marker_size(marker_type: MarkerType) -> None:
         def get_marker_size(self, marker_id: int) -> int:
             return 200
 
-    camera = TestCamera(Path("test.png"), marker_type=marker_type)
+    camera = TestCamera(temp_image_file, marker_type=marker_type)
     assert camera.get_marker_size(0) == 200
 
     camera = zoloto.cameras.file.ImageFileCamera(
-        Path("test.png"),
+        temp_image_file,
         marker_type=marker_type,
         marker_size=200,
     )
