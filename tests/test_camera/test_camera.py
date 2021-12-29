@@ -1,3 +1,5 @@
+from itertools import cycle
+from pathlib import Path
 from typing import Type
 
 import pytest
@@ -7,6 +9,7 @@ from pytest_mock.plugin import MockerFixture
 
 import zoloto.cameras
 from tests.strategies import marker_types
+from zoloto.calibration import parse_calibration_file
 from zoloto.marker_type import MarkerType
 
 
@@ -71,15 +74,6 @@ def test_validates_set_resolution(mocker: MockerFixture) -> None:
 def test_set_resolution(mocker: MockerFixture) -> None:
     VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
     VideoCapture.return_value.get.side_effect = [1920, 1080]
-    camera = zoloto.cameras.Camera(0, marker_type=MarkerType.ARUCO_6X6)
-    camera.set_resolution((1920, 1080))
-    VideoCapture.return_value.set.assert_any_call(CAP_PROP_FRAME_WIDTH, 1920)
-    VideoCapture.return_value.set.assert_any_call(CAP_PROP_FRAME_HEIGHT, 1080)
-
-
-def test_set_resolution_during_construction(mocker: MockerFixture) -> None:
-    VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
-    VideoCapture.return_value.get.side_effect = [1920, 1080]
     zoloto.cameras.Camera(0, marker_type=MarkerType.ARUCO_6X6, resolution=(1920, 1080))
     VideoCapture.return_value.set.assert_any_call(CAP_PROP_FRAME_WIDTH, 1920)
     VideoCapture.return_value.set.assert_any_call(CAP_PROP_FRAME_HEIGHT, 1080)
@@ -99,7 +93,36 @@ def test_get_resolution_snapshot() -> None:
     assert camera.get_resolution() == (1920, 1080)
 
 
-def test_set_resolution_snapshot() -> None:
+def test_get_unspecified_resolution_snapshot() -> None:
     camera = zoloto.cameras.camera.SnapshotCamera(0, marker_type=MarkerType.ARUCO_6X6)
-    camera.set_resolution((1920, 1080))
-    assert camera.get_resolution() == (1920, 1080)
+    with pytest.raises(ValueError):
+        camera.get_resolution()
+
+
+def test_different_resolution_to_calibration(
+    mocker: MockerFixture, fixtures_dir: Path
+) -> None:
+    VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
+    VideoCapture.return_value.get.side_effect = [1920, 1080]
+    calibration_file = fixtures_dir / "example-calibreation-params.xml"
+    calibrations = parse_calibration_file(calibration_file)
+    assert calibrations.resolution == (1280, 720)
+    with pytest.raises(ValueError):
+        zoloto.cameras.Camera(
+            0, marker_type=MarkerType.ARUCO_6X6, calibration_file=calibration_file
+        )
+
+
+def test_different_resolution_to_calibration_for_snapshot_camera(
+    mocker: MockerFixture, fixtures_dir: Path
+) -> None:
+    VideoCapture = mocker.patch("zoloto.cameras.camera.VideoCapture")
+    VideoCapture.return_value.get.side_effect = cycle([1920, 1080])
+    calibration_file = fixtures_dir / "example-calibreation-params.xml"
+    calibrations = parse_calibration_file(calibration_file)
+    assert calibrations.resolution == (1280, 720)
+    camera = zoloto.cameras.camera.SnapshotCamera(
+        0, marker_type=MarkerType.ARUCO_6X6, calibration_file=calibration_file
+    )
+    with pytest.raises(ValueError):
+        camera.get_video_capture(camera.camera_id)

@@ -2,6 +2,8 @@ from typing import Tuple
 
 from cv2 import CAP_PROP_FRAME_HEIGHT, CAP_PROP_FRAME_WIDTH, VideoCapture
 
+from zoloto.calibration import CalibrationParameters
+
 
 def get_video_capture_resolution(video_capture: VideoCapture) -> Tuple[int, int]:
     return (
@@ -21,4 +23,13 @@ def set_video_capture_resolution(
     if set_resolution != resolution:
         raise ValueError(
             f"{resolution} is not a valid resolution for this camera. {set_resolution} is, however."
+        )
+
+
+def validate_calibrated_video_capture_resolution(
+    video_capture: VideoCapture, calibration_params: CalibrationParameters
+) -> None:
+    if get_video_capture_resolution(video_capture) != calibration_params.resolution:
+        raise ValueError(
+            "The resolution of the camera differs from the calibrated resolution. This will result in invalid pose and distance measurements."
         )

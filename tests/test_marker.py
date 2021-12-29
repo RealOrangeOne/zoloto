@@ -1,9 +1,8 @@
 import json
-from typing import Any, List, Optional
+from typing import Any, List
 from unittest import TestCase
 from unittest.mock import patch
 
-from zoloto.calibration import CalibrationParameters
 from zoloto.cameras.marker import MarkerCamera
 from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import BaseMarker, EagerMarker, UncalibratedMarker
@@ -159,16 +158,13 @@ class EagerMarkerTestCase(MarkerTestCase):
 class UncalibratedMarkerTestCase(MarkerTestCase):
     EXPECTED_DICT_KEYS = {"id", "size", "pixel_corners"}
 
-    class TestCamera(MarkerCamera):
-        def get_calibrations(self) -> Optional[CalibrationParameters]:
-            return None
-
     def setUp(self) -> None:
-        self.marker_camera = self.TestCamera(
+        self.marker_camera = MarkerCamera(
             self.MARKER_ID,
             marker_size=self.MARKER_SIZE,
             marker_type=MarkerType.ARUCO_6X6,
         )
+        self.marker_camera.calibration_params = None
         self.markers = list(self.marker_camera.process_frame())
         self.marker = self.markers[0]
 

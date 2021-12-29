@@ -8,7 +8,11 @@ from zoloto.marker_type import MarkerType
 
 from .base import BaseCamera
 from .mixins import IterableCameraMixin, VideoCaptureMixin, ViewableCameraMixin
-from .utils import get_video_capture_resolution, set_video_capture_resolution
+from .utils import (
+    get_video_capture_resolution,
+    set_video_capture_resolution,
+    validate_calibrated_video_capture_resolution,
+)
 
 
 def find_camera_ids() -> Generator[int, None, None]:
@@ -45,6 +49,11 @@ class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraM
 
         if resolution is not None:
             self.set_resolution(resolution)
+
+        if self.calibration_params is not None:
+            validate_calibrated_video_capture_resolution(
+                self.video_capture, self.calibration_params
+            )
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}: {self.camera_id}>"
@@ -106,13 +115,21 @@ class SnapshotCamera(VideoCaptureMixin, BaseCamera):
         video_capture = VideoCapture(camera_id)
         if self._resolution is not None:
             set_video_capture_resolution(video_capture, self._resolution)
+        else:
+            self._resolution = get_video_capture_resolution(video_capture)
+
+        if self.calibration_params is not None:
+            validate_calibrated_video_capture_resolution(
+                video_capture, self.calibration_params
+            )
         return video_capture
 
-    def get_resolution(self) -> Optional[Tuple[int, int]]:
+    def get_resolution(self) -> Tuple[int, int]:
+        if self._resolution is None:
+            raise ValueError(
+                "Cannot find resolution of camera until at least 1 frame has been captured."
+            )
         return self._resolution
-
-    def set_resolution(self, resolution: Tuple[int, int]) -> None:
-        self._resolution = resolution
 
     def capture_frame(self) -> ndarray:
         self.video_capture = self.get_video_capture(self.camera_id)

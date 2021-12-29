@@ -14,7 +14,6 @@ class CalibrationParameters(NamedTuple):
     resolution: Tuple[int, int]
 
 
-@lru_cache()
 def parse_calibration_file(calibration_file: Path) -> CalibrationParameters:
     if not calibration_file.exists():
         raise FileNotFoundError(calibration_file)

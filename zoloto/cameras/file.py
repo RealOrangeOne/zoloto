@@ -9,7 +9,10 @@ from zoloto.marker_type import MarkerType
 
 from .base import BaseCamera
 from .mixins import IterableCameraMixin, VideoCaptureMixin, ViewableCameraMixin
-from .utils import get_video_capture_resolution
+from .utils import (
+    get_video_capture_resolution,
+    validate_calibrated_video_capture_resolution,
+)
 
 
 class ImageFileCamera(BaseCamera):
@@ -53,6 +56,11 @@ class VideoFileCamera(
         )
         self.video_path = video_path
         self.video_capture = VideoCapture(str(self.video_path))
+
+        if self.calibration_params is not None:
+            validate_calibrated_video_capture_resolution(
+                self.video_capture, self.calibration_params
+            )
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}: {self.video_path}>"
