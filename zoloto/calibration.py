@@ -1,10 +1,9 @@
-import json
 from functools import lru_cache
 from pathlib import Path
 from typing import NamedTuple
 
 from cv2 import FILE_STORAGE_READ, FILE_STORAGE_WRITE, FileStorage, aruco
-from numpy import array, ndarray
+from numpy import ndarray
 
 from .marker_type import MarkerType
 
@@ -14,42 +13,24 @@ class CalibrationParameters(NamedTuple):
     distance_coefficients: ndarray
 
 
-SUPPORTED_EXTENSIONS = ["xml", "json"]
-
-
 @lru_cache()
 def parse_calibration_file(calibration_file: Path) -> CalibrationParameters:
     if not calibration_file.exists():
         raise FileNotFoundError(calibration_file)
-    file_extension = calibration_file.suffix
-    if file_extension == ".json":
-        mtx, dist = json.loads(calibration_file.read_text())
-        return CalibrationParameters(array(mtx), array(dist))
-    elif file_extension == ".xml":
-        storage = FileStorage(str(calibration_file), FILE_STORAGE_READ)
-        params = CalibrationParameters(
-            storage.getNode("cameraMatrix").mat(), storage.getNode("dist_coeffs").mat()
-        )
-        storage.release()
-        return params
-    raise ValueError("Unknown calibration file format: " + file_extension)
+    storage = FileStorage(str(calibration_file), FILE_STORAGE_READ)
+    params = CalibrationParameters(
+        storage.getNode("cameraMatrix").mat(),
+        storage.getNode("dist_coeffs").mat(),
+    )
+    storage.release()
+    return params
 
 
 def save_calibrations(params: CalibrationParameters, filename: Path) -> None:
-    file_extension = filename.suffix
-    if file_extension == ".json":
-        filename.write_text(
-            json.dumps(
-                [params.camera_matrix.tolist(), params.distance_coefficients.tolist()]
-            )
-        )
-    elif file_extension == ".xml":
-        storage = FileStorage(str(filename), FILE_STORAGE_WRITE)
-        storage.write("cameraMatrix", params.camera_matrix)
-        storage.write("dist_coeffs", params.distance_coefficients)
-        storage.release()
-    else:
-        raise ValueError("Unknown calibration file format: " + file_extension)
+    storage = FileStorage(str(filename), FILE_STORAGE_WRITE)
+    storage.write("cameraMatrix", params.camera_matrix)
+    storage.write("dist_coeffs", params.distance_coefficients)
+    storage.release()
 
 
 @lru_cache()
