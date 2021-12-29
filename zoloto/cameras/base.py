@@ -131,7 +131,10 @@ class BaseCamera(ABC):
         for size, ids_and_corners in groupby(sorted_corners, get_marker_size):
             size_ids, size_corners = zip(*ids_and_corners)
             rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(
-                size_corners, size, *calibration_params
+                size_corners,
+                size,
+                calibration_params.camera_matrix,
+                calibration_params.distance_coefficients,
             )
             for marker_id, marker_corners, tvec, rvec in zip(
                 size_ids, size_corners, tvecs, rvecs

@@ -1,8 +1,8 @@
 from functools import lru_cache
 from pathlib import Path
-from typing import NamedTuple
+from typing import NamedTuple, Tuple
 
-from cv2 import FILE_STORAGE_READ, FILE_STORAGE_WRITE, FileStorage, aruco
+from cv2 import FILE_STORAGE_READ, FileStorage, aruco
 from numpy import ndarray
 
 from .marker_type import MarkerType
@@ -11,6 +11,7 @@ from .marker_type import MarkerType
 class CalibrationParameters(NamedTuple):
     camera_matrix: ndarray
     distance_coefficients: ndarray
+    resolution: Tuple[int, int]
 
 
 @lru_cache()
@@ -18,19 +19,17 @@ def parse_calibration_file(calibration_file: Path) -> CalibrationParameters:
     if not calibration_file.exists():
         raise FileNotFoundError(calibration_file)
     storage = FileStorage(str(calibration_file), FILE_STORAGE_READ)
+    resolution_node = storage.getNode("cameraResolution")
     params = CalibrationParameters(
         storage.getNode("cameraMatrix").mat(),
         storage.getNode("dist_coeffs").mat(),
+        (
+            int(resolution_node.at(0).real()),
+            int(resolution_node.at(1).real()),
+        ),
     )
     storage.release()
     return params
-
-
-def save_calibrations(params: CalibrationParameters, filename: Path) -> None:
-    storage = FileStorage(str(filename), FILE_STORAGE_WRITE)
-    storage.write("cameraMatrix", params.camera_matrix)
-    storage.write("dist_coeffs", params.distance_coefficients)
-    storage.release()
 
 
 @lru_cache()
@@ -53,4 +52,4 @@ def get_fake_calibration_parameters() -> CalibrationParameters:
     ret, mtx, dist, _, _ = aruco.calibrateCameraCharuco(
         seen_corners, seen_ids, board, image_size, None, None
     )
-    return CalibrationParameters(mtx, dist)
+    return CalibrationParameters(mtx, dist, (1280, 720))
