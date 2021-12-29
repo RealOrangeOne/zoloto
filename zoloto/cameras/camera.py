@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, Generator, Optional
+from typing import Any, Generator, Optional, Tuple
 
 from cv2 import CAP_PROP_BUFFERSIZE, VideoCapture
 from numpy import ndarray
@@ -8,6 +8,7 @@ from zoloto.marker_type import MarkerType
 
 from .base import BaseCamera
 from .mixins import IterableCameraMixin, VideoCaptureMixin, ViewableCameraMixin
+from .utils import get_video_capture_resolution, set_video_capture_resolution
 
 
 def find_camera_ids() -> Generator[int, None, None]:
@@ -32,6 +33,7 @@ class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraM
         marker_size: Optional[int] = None,
         marker_type: MarkerType,
         calibration_file: Optional[Path] = None,
+        resolution: Optional[Tuple[int, int]] = None,
     ) -> None:
         super().__init__(
             marker_size=marker_size,
@@ -41,6 +43,9 @@ class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraM
         self.camera_id = camera_id
         self.video_capture = self.get_video_capture(self.camera_id)
 
+        if resolution is not None:
+            self.set_resolution(resolution)
+
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}: {self.camera_id}>"
 
@@ -48,6 +53,12 @@ class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraM
         cap = VideoCapture(camera_id)
         cap.set(CAP_PROP_BUFFERSIZE, 1)
         return cap
+
+    def set_resolution(self, resolution: Tuple[int, int]) -> None:
+        set_video_capture_resolution(self.video_capture, resolution)
+
+    def get_resolution(self) -> Tuple[int, int]:
+        return get_video_capture_resolution(self.video_capture)
 
     def capture_frame(self) -> ndarray:
         # Hack: Double capture frames to fill buffer.
@@ -78,6 +89,7 @@ class SnapshotCamera(VideoCaptureMixin, BaseCamera):
         marker_size: Optional[int] = None,
         marker_type: MarkerType,
         calibration_file: Optional[Path] = None,
+        resolution: Optional[Tuple[int, int]] = None,
     ) -> None:
         super().__init__(
             marker_size=marker_size,
@@ -85,12 +97,22 @@ class SnapshotCamera(VideoCaptureMixin, BaseCamera):
             calibration_file=calibration_file,
         )
         self.camera_id = camera_id
+        self._resolution = resolution
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}: {self.camera_id}>"
 
     def get_video_capture(self, camera_id: int) -> VideoCapture:
-        return VideoCapture(camera_id)
+        video_capture = VideoCapture(camera_id)
+        if self._resolution is not None:
+            set_video_capture_resolution(video_capture, self._resolution)
+        return video_capture
+
+    def get_resolution(self) -> Optional[Tuple[int, int]]:
+        return self._resolution
+
+    def set_resolution(self, resolution: Tuple[int, int]) -> None:
+        self._resolution = resolution
 
     def capture_frame(self) -> ndarray:
         self.video_capture = self.get_video_capture(self.camera_id)

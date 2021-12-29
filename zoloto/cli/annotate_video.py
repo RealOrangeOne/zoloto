@@ -14,9 +14,8 @@ def main(args: argparse.Namespace) -> None:
         Path(args.in_file), marker_type=MarkerType[args.type], marker_size=100
     ) as camera:
         fps = camera.video_capture.get(cv2.CAP_PROP_FPS)
-        width = camera.video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
-        height = camera.video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
         frames = camera.video_capture.get(cv2.CAP_PROP_FRAME_COUNT)
+        width, height = camera.get_resolution()
 
         output_writer = cv2.VideoWriter(
             str(args.out_file),
