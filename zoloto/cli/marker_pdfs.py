@@ -40,6 +40,11 @@ def main(args: argparse.Namespace) -> None:
 
     marker_type = MarkerType[args.type]
     page_size = PageSize[args.page_size]
+
+    if args.force_a4 and page_size == PageSize.A4:
+        # NOTE: This also currently only supports A3 (halving the image)
+        print("--force-a4 doesn't make sense with a page size of A4")
+
     output_dir: Path = args.path.resolve()
     output_dir.mkdir(exist_ok=True, parents=True)
 
@@ -87,23 +92,66 @@ def main(args: argparse.Namespace) -> None:
                 anchor="lt",
             )
 
-            # Put marker onto page
-            paper_img = Image.new("RGB", page_size.pixels, (255, 255, 255))
-            paper_img.paste(
-                bordered_image,
-                (
-                    (page_size.pixels[0] - img_size) // 2,
-                    (page_size.pixels[1] - img_size) // 2,
-                ),
-            )
+            if args.force_a4:
+                paper_img_1 = Image.new("RGB", PageSize.A4.pixels, (255, 255, 255))
+                paper_img_2 = Image.new("RGB", PageSize.A4.pixels, (255, 255, 255))
 
-            print("Saving", marker_id)  # noqa:T001
-            paper_img.save(
-                output_dir / "{}.pdf".format(marker_id),
-                "PDF",
-                quality=100,
-                dpi=(DPI, DPI),
-            )
+                # Crop to just halves of the marker image
+                image_half_top = bordered_image.crop((0, 0, img_size, img_size // 2))
+                image_half_bottom = bordered_image.crop(
+                    (0, img_size // 2, img_size, img_size)
+                )
+
+                # Rotate, so they fit better on the pages
+                image_half_top = image_half_top.rotate(90, expand=True)
+                image_half_bottom = image_half_bottom.rotate(90, expand=True)
+
+                # Place images centered on page
+                paper_img_1.paste(
+                    image_half_top,
+                    (
+                        (PageSize.A4.pixels[0] - image_half_top.size[0]) // 2,
+                        (PageSize.A4.pixels[1] - image_half_top.size[1]) // 2,
+                    ),
+                )
+                paper_img_2.paste(
+                    image_half_bottom,
+                    (
+                        (PageSize.A4.pixels[0] - image_half_bottom.size[0]) // 2,
+                        (PageSize.A4.pixels[1] - image_half_bottom.size[1]) // 2,
+                    ),
+                )
+
+                print("Saving", marker_id)  # noqa:T001
+                paper_img_1.save(
+                    output_dir / "{}.pdf".format(marker_id),
+                    "PDF",
+                    quality=100,
+                    dpi=(DPI, DPI),
+                    save_all=True,
+                    append_images=[
+                        paper_img_2
+                    ],  # Add the second image, resulting in a second page in the PDF
+                )
+            else:
+
+                # Put marker onto page
+                paper_img = Image.new("RGB", page_size.pixels, (255, 255, 255))
+                paper_img.paste(
+                    bordered_image,
+                    (
+                        (page_size.pixels[0] - img_size) // 2,
+                        (page_size.pixels[1] - img_size) // 2,
+                    ),
+                )
+
+                print("Saving", marker_id)  # noqa:T001
+                paper_img.save(
+                    output_dir / "{}.pdf".format(marker_id),
+                    "PDF",
+                    quality=100,
+                    dpi=(DPI, DPI),
+                )
 
 
 def add_subparser(subparsers: argparse._SubParsersAction) -> None:
@@ -143,5 +191,10 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
         help="Page size. (default: %(default)s)",
         choices=sorted([size.name for size in PageSize]),
         default="A4",
+    )
+    parser.add_argument(
+        "--force-a4",
+        help="Output the PDF onto A4, splitting as necessary",
+        action="store_true",
     )
     parser.set_defaults(func=main)
