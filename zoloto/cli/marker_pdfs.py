@@ -43,7 +43,7 @@ def main(args: argparse.Namespace) -> None:
 
     if args.force_a4 and page_size == PageSize.A4:
         # NOTE: This also currently only supports A3 (halving the image)
-        print("--force-a4 doesn't make sense with a page size of A4")
+        print("--force-a4 doesn't make sense with a page size of A4")  # noqa:T001
 
     output_dir: Path = args.path.resolve()
     output_dir.mkdir(exist_ok=True, parents=True)
@@ -53,14 +53,13 @@ def main(args: argparse.Namespace) -> None:
     required_size = args.size + (pixel_size * 2)
 
     if args.size + BORDER_SIZE * 2 > min(page_size.value):
-        print(
+        print(  # noqa:T001
             f"Warning: Marker size is too large to fit on {args.page_size}"
-        )  # noqa:T001
-
+        )
     elif required_size + BORDER_SIZE * 2 > min(page_size.value):
-        print(
+        print(  # noqa:T001
             f"Warning: Marker size is too large to fit on {args.page_size} with border"
-        )  # noqa:T001
+        )
 
     marker_ids = (
         parse_ranges(args.range) if args.range != "ALL" else range(marker_type.max_id)
