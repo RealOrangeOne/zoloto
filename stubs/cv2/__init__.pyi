@@ -13,7 +13,6 @@ CAP_PROP_FRAME_HEIGHT: int
 CAP_PROP_FRAME_COUNT: int
 
 FILE_STORAGE_READ: int
-FILE_STORAGE_WRITE: int
 
 BORDER_CONSTANT: int
 
@@ -22,6 +21,8 @@ class aruco_DetectorParameters:
 
 class FileNode:
     def mat(self) -> ndarray: ...
+    def at(self, position: int) -> FileNode: ...
+    def real(self) -> float: ...
 
 class FileStorage:
     def __init__(self, path: str, mode: int) -> None: ...

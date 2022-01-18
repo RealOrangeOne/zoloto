@@ -111,13 +111,10 @@ def test_saved_image_with_annotation(
 
 @given(marker_types())
 def test_process_eager_frame_without_calibrations(marker_type: MarkerType) -> None:
-    class TestCamera(MarkerCamera):
-        def get_calibrations(self) -> None:
-            return None
-
-    marker_camera = TestCamera(
+    marker_camera = MarkerCamera(
         MAX_ALL_ALLOWED_ID, marker_size=200, marker_type=marker_type
     )
+    marker_camera.calibration_params = None
     with pytest.raises(MissingCalibrationsError):
         list(marker_camera.process_frame_eager())
 

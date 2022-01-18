@@ -6,7 +6,7 @@ from typing import Any, Generator, List, Optional, Tuple, TypeVar, Union, cast
 import cv2
 from numpy import ndarray
 
-from zoloto.calibration import CalibrationParameters, parse_calibration_file
+from zoloto.calibration import parse_calibration_file
 from zoloto.exceptions import MissingCalibrationsError
 from zoloto.marker import EagerMarker, Marker, UncalibratedMarker
 from zoloto.marker_type import MarkerType
@@ -22,16 +22,14 @@ class BaseCamera(ABC):
         marker_type: MarkerType,
         calibration_file: Optional[Path] = None
     ) -> None:
-        self.calibration_file = calibration_file
         self.marker_type = marker_type
         self.marker_dictionary = cv2.aruco.getPredefinedDictionary(self.marker_type)
         self._marker_size = marker_size
         self.detector_params = self.get_detector_params()
 
-    def get_calibrations(self) -> Optional[CalibrationParameters]:
-        if self.calibration_file is None:
-            return None
-        return parse_calibration_file(self.calibration_file)
+        self.calibration_params = None
+        if calibration_file is not None:
+            self.calibration_params = parse_calibration_file(calibration_file)
 
     def get_detector_params(self) -> cv2.aruco_DetectorParameters:
         return cv2.aruco.DetectorParameters_create()
@@ -82,9 +80,8 @@ class BaseCamera(ABC):
         self,
         marker_id: int,
         corners: List[ndarray],
-        calibration_params: Optional[CalibrationParameters],
     ) -> Union[UncalibratedMarker, Marker]:
-        if calibration_params is None:
+        if self.calibration_params is None:
             return UncalibratedMarker(
                 marker_id, corners, self.get_marker_size(marker_id), self.marker_type
             )
@@ -93,7 +90,7 @@ class BaseCamera(ABC):
             corners,
             self.get_marker_size(marker_id),
             self.marker_type,
-            calibration_params,
+            self.calibration_params,
         )
 
     def _get_eager_marker(
@@ -110,17 +107,13 @@ class BaseCamera(ABC):
         self, *, frame: Optional[ndarray] = None
     ) -> Generator[Union[UncalibratedMarker, Marker], None, None]:
         ids, corners = self._get_ids_and_corners(frame)
-        calibration_params = self.get_calibrations()
         for marker_corners, marker_id in zip(corners, ids):
-            yield self._get_marker(
-                int(marker_id), cast(list, marker_corners), calibration_params
-            )
+            yield self._get_marker(int(marker_id), cast(list, marker_corners))
 
     def process_frame_eager(
         self, *, frame: Optional[ndarray] = None
     ) -> Generator[EagerMarker, None, None]:
-        calibration_params = self.get_calibrations()
-        if not calibration_params:
+        if self.calibration_params is None:
             raise MissingCalibrationsError()
         ids, corners = self._get_ids_and_corners(frame)
 
@@ -131,7 +124,10 @@ class BaseCamera(ABC):
         for size, ids_and_corners in groupby(sorted_corners, get_marker_size):
             size_ids, size_corners = zip(*ids_and_corners)
             rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(
-                size_corners, size, *calibration_params
+                size_corners,
+                size,
+                self.calibration_params.camera_matrix,
+                self.calibration_params.distance_coefficients,
             )
             for marker_id, marker_corners, tvec, rvec in zip(
                 size_ids, size_corners, tvecs, rvecs
