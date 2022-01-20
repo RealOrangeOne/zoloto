@@ -48,7 +48,7 @@ class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraM
         self.video_capture = self.get_video_capture(self.camera_id)
 
         if resolution is not None:
-            self.set_resolution(resolution)
+            self._set_resolution(resolution)
 
         if self.calibration_params is not None:
             validate_calibrated_video_capture_resolution(
@@ -65,7 +65,7 @@ class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraM
         cap.set(CAP_PROP_BUFFERSIZE, 1)
         return cap
 
-    def set_resolution(self, resolution: Tuple[int, int]) -> None:
+    def _set_resolution(self, resolution: Tuple[int, int]) -> None:
         set_video_capture_resolution(self.video_capture, resolution)
 
     def get_resolution(self) -> Tuple[int, int]:

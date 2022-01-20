@@ -69,7 +69,7 @@ def test_validates_set_resolution(mocker: MockerFixture) -> None:
     VideoCapture.return_value.get.side_effect = [1920, 1080]
     camera = zoloto.cameras.Camera(0, marker_type=MarkerType.ARUCO_6X6)
     with pytest.raises(ValueError):
-        camera.set_resolution((1280, 720))
+        camera._set_resolution((1280, 720))
 
 
 def test_set_resolution(mocker: MockerFixture) -> None:
