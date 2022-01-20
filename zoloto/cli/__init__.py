@@ -11,6 +11,7 @@ __all__ = [
     "save_markers",
     "marker_details",
     "marker_pdfs",
+    "validate_calibration",
 ]
 
 
@@ -36,7 +37,7 @@ def main() -> None:
     args = parser.parse_args()
 
     if "func" in args:
-        args.func(args)
+        exit(args.func(args))
     else:
         parser.print_help()
 
