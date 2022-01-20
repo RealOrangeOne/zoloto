@@ -52,7 +52,9 @@ class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraM
 
         if self.calibration_params is not None:
             validate_calibrated_video_capture_resolution(
-                self.video_capture, self.calibration_params
+                self.video_capture,
+                self.calibration_params,
+                override=resolution is not None,
             )
 
     def __repr__(self) -> str:
@@ -120,7 +122,7 @@ class SnapshotCamera(VideoCaptureMixin, BaseCamera):
 
         if self.calibration_params is not None:
             validate_calibrated_video_capture_resolution(
-                video_capture, self.calibration_params
+                video_capture, self.calibration_params, override=False
             )
         return video_capture
 

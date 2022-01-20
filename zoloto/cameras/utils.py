@@ -1,3 +1,4 @@
+import warnings
 from typing import Tuple
 
 from cv2 import CAP_PROP_FRAME_HEIGHT, CAP_PROP_FRAME_WIDTH, VideoCapture
@@ -27,9 +28,16 @@ def set_video_capture_resolution(
 
 
 def validate_calibrated_video_capture_resolution(
-    video_capture: VideoCapture, calibration_params: CalibrationParameters
+    video_capture: VideoCapture,
+    calibration_params: CalibrationParameters,
+    *,
+    override: bool = False,
 ) -> None:
     if get_video_capture_resolution(video_capture) != calibration_params.resolution:
-        raise ValueError(
-            "The resolution of the camera differs from the calibrated resolution. This will result in invalid pose and distance measurements."
-        )
+        if override:
+            warnings.warn("Overriding camera resolution with calibrated resolution")
+            set_video_capture_resolution(video_capture, calibration_params.resolution)
+        else:
+            raise ValueError(
+                "The resolution of the camera differs from the calibrated resolution"
+            )

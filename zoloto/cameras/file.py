@@ -59,7 +59,7 @@ class VideoFileCamera(
 
         if self.calibration_params is not None:
             validate_calibrated_video_capture_resolution(
-                self.video_capture, self.calibration_params
+                self.video_capture, self.calibration_params, override=False
             )
 
     def __repr__(self) -> str:
