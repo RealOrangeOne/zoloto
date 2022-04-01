@@ -9,6 +9,8 @@ from zoloto.utils import parse_ranges
 
 DPI = 72
 BORDER_SIZE = 2
+BORDER_FILL = "grey"
+CENTER_LINE_SIZE = 15
 
 
 def mm_to_inches(mm: int) -> float:
@@ -80,17 +82,51 @@ def main(args: argparse.Namespace) -> None:
 
             # Add a border to the marker, which includes padding
             bordered_image = ImageOps.expand(
-                resized_image, border=BORDER_SIZE, fill="grey"
+                resized_image, border=BORDER_SIZE, fill=BORDER_FILL
             )
             img_size = bordered_image.size[0]
 
-            ImageDraw.Draw(bordered_image).text(
+            image_draw = ImageDraw.Draw(bordered_image)
+            image_draw.text(
                 (25, img_size - 25),
                 args.description_format.format(
                     marker_type=marker_type.name, marker_id=marker_id
                 ),
                 anchor="lt",
             )
+
+            # Add center lines
+            if not args.no_center_lines:
+                image_draw.line(
+                    [img_size // 2, 0, img_size // 2, CENTER_LINE_SIZE],
+                    width=BORDER_SIZE,
+                    fill=BORDER_FILL,
+                )
+                image_draw.line(
+                    [0, img_size // 2, CENTER_LINE_SIZE, img_size // 2],
+                    width=BORDER_SIZE,
+                    fill=BORDER_FILL,
+                )
+                image_draw.line(
+                    [
+                        img_size // 2,
+                        img_size - CENTER_LINE_SIZE,
+                        img_size // 2,
+                        img_size,
+                    ],
+                    width=BORDER_SIZE,
+                    fill=BORDER_FILL,
+                )
+                image_draw.line(
+                    [
+                        img_size - CENTER_LINE_SIZE,
+                        img_size // 2,
+                        img_size,
+                        img_size // 2,
+                    ],
+                    width=BORDER_SIZE,
+                    fill=BORDER_FILL,
+                )
 
             if args.force_a4:
                 paper_img_1 = Image.new("RGB", PageSize.A4.pixels, (255, 255, 255))
@@ -195,6 +231,11 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
     parser.add_argument(
         "--force-a4",
         help="Output the PDF onto A4, splitting as necessary",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--no-center-lines",
+        help="Do not output center lines around the border",
         action="store_true",
     )
     parser.set_defaults(func=main)
