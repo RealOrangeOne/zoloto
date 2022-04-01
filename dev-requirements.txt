@@ -13,7 +13,7 @@ pytest==5.3.5
 pytest-benchmark>=3<4
 pytest-cov>=2<3
 isort==4.3.21
-black==21.9b0
+black==22.3.0
 snapshottest>=0.5<1
 pytest-mock>=3<4
 sphinx==4.2.0
