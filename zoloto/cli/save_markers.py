@@ -14,9 +14,7 @@ def main(args: argparse.Namespace) -> None:
     output_dir.mkdir(exist_ok=True, parents=True)
 
     marker_ids = (
-        parse_ranges(args.range)
-        if args.range != "ALL"
-        else range(marker_type.marker_count)
+        parse_ranges(args.range) if args.range != "ALL" else marker_type.marker_ids
     )
 
     for marker_id in sorted(marker_ids):

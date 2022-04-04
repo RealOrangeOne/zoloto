@@ -1,4 +1,5 @@
 from enum import IntEnum
+from typing import List
 
 from cv2 import aruco, aruco_Dictionary
 
@@ -48,6 +49,13 @@ class MarkerType(IntEnum):
         Number of bits along 1 size of a marker
         """
         return self.dictionary.markerSize
+
+    @property
+    def marker_ids(self) -> List[int]:
+        """
+        All of the possible marker ids
+        """
+        return list(range(self.max_id + 1))
 
 
 MARKER_TYPE_NAMES = frozenset(m.name for m in MarkerType)

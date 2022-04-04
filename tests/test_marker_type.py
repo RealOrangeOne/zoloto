@@ -22,3 +22,10 @@ def test_marker_type_max_id_disallowed(marker_type: MarkerType) -> None:
 def test_max_all_allowed_id() -> None:
     for marker_type in MarkerType:
         assert marker_type.max_id >= MAX_ALL_ALLOWED_ID
+
+
+@pytest.mark.parametrize("marker_type", MarkerType)
+def test_marker_ids(marker_type: MarkerType) -> None:
+    assert marker_type.max_id in marker_type.marker_ids
+    assert 0 in marker_type.marker_ids
+    assert len(marker_type.marker_ids) == marker_type.marker_count
