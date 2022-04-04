@@ -10,6 +10,9 @@ pip install wheel
 
 pip install -e "."
 
+# Install CLI dependencies
+pip install -e ".[cli]"
+
 if [ "$1" = "opencv" ]
 then
     pip install -e ".[opencv]" --prefer-binary
