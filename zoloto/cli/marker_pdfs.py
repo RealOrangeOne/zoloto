@@ -10,7 +10,7 @@ from zoloto.utils import parse_ranges
 DPI = 72
 BORDER_SIZE = 2
 BORDER_FILL = "grey"
-CENTER_LINE_SIZE = 15
+CENTER_LINE_SIZE = 16
 
 
 def mm_to_inches(mm: int) -> float:
