@@ -97,32 +97,41 @@ def main(args: argparse.Namespace) -> None:
 
             # Add center lines
             if not args.no_center_lines:
+                line_start = (img_size // 2) - (BORDER_SIZE // 2)
+
+                # Top
                 image_draw.line(
-                    [img_size // 2, 0, img_size // 2, CENTER_LINE_SIZE],
+                    [line_start, 0, line_start, CENTER_LINE_SIZE],
                     width=BORDER_SIZE,
                     fill=BORDER_FILL,
                 )
+
+                # Left
                 image_draw.line(
-                    [0, img_size // 2, CENTER_LINE_SIZE, img_size // 2],
+                    [0, line_start, CENTER_LINE_SIZE, line_start],
                     width=BORDER_SIZE,
                     fill=BORDER_FILL,
                 )
+
+                # Bottom
                 image_draw.line(
                     [
-                        img_size // 2,
+                        line_start,
                         img_size - CENTER_LINE_SIZE,
-                        img_size // 2,
+                        line_start,
                         img_size,
                     ],
                     width=BORDER_SIZE,
                     fill=BORDER_FILL,
                 )
+
+                # Right
                 image_draw.line(
                     [
                         img_size - CENTER_LINE_SIZE,
-                        img_size // 2,
+                        line_start,
                         img_size,
-                        img_size // 2,
+                        line_start,
                     ],
                     width=BORDER_SIZE,
                     fill=BORDER_FILL,
