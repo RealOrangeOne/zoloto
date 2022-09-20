@@ -1,6 +1,6 @@
 from typing import Optional
 
-from numpy import ndarray
+from numpy.typing import NDArray
 
 
 class ZolotoException(Exception):
@@ -12,6 +12,6 @@ class MissingCalibrationsError(ZolotoException):
 
 
 class CameraReadError(ZolotoException):
-    def __init__(self, frame: Optional[ndarray]):
+    def __init__(self, frame: Optional[NDArray]):
         self.frame = frame
         super().__init__()

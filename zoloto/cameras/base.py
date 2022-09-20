@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any, Generator, List, Optional, Tuple, TypeVar, Union, cast
 
 import cv2
-from numpy import ndarray
+from numpy.typing import NDArray
 
 from zoloto.calibration import parse_calibration_file
 from zoloto.exceptions import MissingCalibrationsError
@@ -42,12 +42,12 @@ class BaseCamera(ABC):
         return self._marker_size
 
     @abstractmethod
-    def capture_frame(self) -> ndarray:  # pragma: nocover
+    def capture_frame(self) -> NDArray:  # pragma: nocover
         raise NotImplementedError()
 
     def save_frame(
-        self, filename: Path, *, annotate: bool = False, frame: Optional[ndarray] = None
-    ) -> ndarray:
+        self, filename: Path, *, annotate: bool = False, frame: Optional[NDArray] = None
+    ) -> NDArray:
         if frame is None:
             frame = self.capture_frame()
         if annotate:
@@ -55,20 +55,20 @@ class BaseCamera(ABC):
         cv2.imwrite(str(filename), frame)
         return frame
 
-    def _annotate_frame(self, frame: ndarray) -> None:
+    def _annotate_frame(self, frame: NDArray) -> None:
         ids, corners = self._get_raw_ids_and_corners(frame)
         if corners:
             cv2.aruco.drawDetectedMarkers(frame, corners, ids)
 
-    def _get_raw_ids_and_corners(self, frame: ndarray) -> Tuple[ndarray, ndarray]:
+    def _get_raw_ids_and_corners(self, frame: NDArray) -> Tuple[NDArray, NDArray]:
         corners, ids, _ = cv2.aruco.detectMarkers(
             frame, self.marker_dictionary, parameters=self.detector_params
         )
         return ids, corners
 
     def _get_ids_and_corners(
-        self, frame: Optional[ndarray] = None
-    ) -> Tuple[List[int], List[ndarray]]:
+        self, frame: Optional[NDArray] = None
+    ) -> Tuple[List[int], List[NDArray]]:
         if frame is None:
             frame = self.capture_frame()
         marker_ids, corners = self._get_raw_ids_and_corners(frame)
@@ -79,7 +79,7 @@ class BaseCamera(ABC):
     def _get_marker(
         self,
         marker_id: int,
-        corners: List[ndarray],
+        corners: List[NDArray],
     ) -> Union[UncalibratedMarker, Marker]:
         if self.calibration_params is None:
             return UncalibratedMarker(
@@ -96,28 +96,28 @@ class BaseCamera(ABC):
     def _get_eager_marker(
         self,
         marker_id: int,
-        corners: List[ndarray],
+        corners: List[NDArray],
         size: int,
-        tvec: ndarray,
-        rvec: ndarray,
+        tvec: NDArray,
+        rvec: NDArray,
     ) -> EagerMarker:
         return EagerMarker(marker_id, corners, size, self.marker_type, (rvec, tvec))
 
     def process_frame(
-        self, *, frame: Optional[ndarray] = None
+        self, *, frame: Optional[NDArray] = None
     ) -> Generator[Union[UncalibratedMarker, Marker], None, None]:
         ids, corners = self._get_ids_and_corners(frame)
         for marker_corners, marker_id in zip(corners, ids):
             yield self._get_marker(int(marker_id), cast(list, marker_corners))
 
     def process_frame_eager(
-        self, *, frame: Optional[ndarray] = None
+        self, *, frame: Optional[NDArray] = None
     ) -> Generator[EagerMarker, None, None]:
         if self.calibration_params is None:
             raise MissingCalibrationsError()
         ids, corners = self._get_ids_and_corners(frame)
 
-        def get_marker_size(id_and_corners: Tuple[int, ndarray]) -> int:
+        def get_marker_size(id_and_corners: Tuple[int, NDArray]) -> int:
             return self.get_marker_size(id_and_corners[0])
 
         sorted_corners = sorted(zip(ids, corners), key=get_marker_size)
@@ -136,7 +136,7 @@ class BaseCamera(ABC):
                     int(marker_id), marker_corners, size, tvec[0], rvec[0]
                 )
 
-    def get_visible_markers(self, *, frame: Optional[ndarray] = None) -> List[int]:
+    def get_visible_markers(self, *, frame: Optional[NDArray] = None) -> List[int]:
         ids, _ = self._get_ids_and_corners(frame)
         return [int(i) for i in ids]
 

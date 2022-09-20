@@ -5,7 +5,8 @@ Note that stubs are only written for the parts that we use.
 from typing import Iterable, Optional, Tuple
 
 from cv2 import aruco_DetectorParameters, aruco_Dictionary
-from numpy import array, ndarray
+from numpy import array
+from numpy.typing import NDArray
 
 __empty_ndarray = array([])
 __default_detector_params = aruco_DetectorParameters()
@@ -13,15 +14,15 @@ __default_detector_params = aruco_DetectorParameters()
 class CharucoBoard:
     def draw(
         self, outSize: Tuple[int, int], marginSize: int = 0, borderBits: int = 1
-    ) -> ndarray: ...
+    ) -> NDArray: ...
 
 def DetectorParameters_create() -> aruco_DetectorParameters: ...
 def estimatePoseSingleMarkers(
     corners: Iterable,
     markerLength: int,
-    cameraMatrix: Optional[ndarray],
-    distCoeffs: Optional[ndarray],
-) -> Tuple[ndarray, ndarray, ndarray]: ...
+    cameraMatrix: Optional[NDArray],
+    distCoeffs: Optional[NDArray],
+) -> Tuple[NDArray, NDArray, NDArray]: ...
 
 DICT_4X4_1000: int
 DICT_5X5_1000: int
@@ -42,35 +43,35 @@ def CharucoBoard_create(
     dictionary: aruco_Dictionary,
 ) -> CharucoBoard: ...
 def detectMarkers(
-    image: ndarray,
+    image: NDArray,
     dictionary: aruco_Dictionary,
     parameters: aruco_DetectorParameters = __default_detector_params,
-    cameraMatrix: ndarray = __empty_ndarray,
-    distCoeff: ndarray = __empty_ndarray,
-) -> Tuple[ndarray, ndarray, ndarray]: ...
+    cameraMatrix: NDArray = __empty_ndarray,
+    distCoeff: NDArray = __empty_ndarray,
+) -> Tuple[NDArray, NDArray, NDArray]: ...
 def interpolateCornersCharuco(
-    markerCorners: ndarray,
-    markerIds: ndarray,
-    image: ndarray,
+    markerCorners: NDArray,
+    markerIds: NDArray,
+    image: NDArray,
     board: CharucoBoard,
-    cameraMatrix: ndarray = __empty_ndarray,
-    distCoeff: ndarray = __empty_ndarray,
+    cameraMatrix: NDArray = __empty_ndarray,
+    distCoeff: NDArray = __empty_ndarray,
     minMarkers: int = 2,
-) -> Tuple[int, ndarray, ndarray]: ...
+) -> Tuple[int, NDArray, NDArray]: ...
 def calibrateCameraCharuco(
-    charucoCorners: Iterable[ndarray],
-    charucoIds: Iterable[ndarray],
+    charucoCorners: Iterable[NDArray],
+    charucoIds: Iterable[NDArray],
     board: CharucoBoard,
     imageSize: Tuple[int, int],
-    cameraMatrix: Optional[ndarray],
-    distCoeff: Optional[ndarray],
-) -> Tuple[int, ndarray, ndarray, ndarray, ndarray]: ...
+    cameraMatrix: Optional[NDArray],
+    distCoeff: Optional[NDArray],
+) -> Tuple[int, NDArray, NDArray, NDArray, NDArray]: ...
 def drawDetectedMarkers(
-    image: ndarray,
-    corners: ndarray,
-    ids: ndarray = __empty_ndarray,
-    borderColor: ndarray = __empty_ndarray,
-) -> ndarray: ...
+    image: NDArray,
+    corners: NDArray,
+    ids: NDArray = __empty_ndarray,
+    borderColor: NDArray = __empty_ndarray,
+) -> NDArray: ...
 def drawMarker(
     dictionary: aruco_Dictionary, markerId: int, sidePixels: int, borderBits: int = 1
-) -> ndarray: ...
+) -> NDArray: ...
