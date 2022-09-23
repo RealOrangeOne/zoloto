@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Any, Generator, Optional, Tuple
 
 from cv2 import CAP_PROP_BUFFERSIZE, VideoCapture
-from numpy import ndarray
+from numpy.typing import NDArray
 
 from zoloto.marker_type import MarkerType
 
@@ -71,7 +71,7 @@ class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraM
     def get_resolution(self) -> Tuple[int, int]:
         return get_video_capture_resolution(self.video_capture)
 
-    def capture_frame(self) -> ndarray:
+    def capture_frame(self) -> NDArray:
         # Hack: Double capture frames to fill buffer.
         self.video_capture.read()
         return super().capture_frame()
@@ -133,7 +133,7 @@ class SnapshotCamera(VideoCaptureMixin, BaseCamera):
             )
         return self._resolution
 
-    def capture_frame(self) -> ndarray:
+    def capture_frame(self) -> NDArray:
         self.video_capture = self.get_video_capture(self.camera_id)
         frame = super().capture_frame()
         self.video_capture.release()

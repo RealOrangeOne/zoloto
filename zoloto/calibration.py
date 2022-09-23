@@ -3,14 +3,15 @@ from pathlib import Path
 from typing import NamedTuple, Tuple
 
 from cv2 import FILE_STORAGE_READ, FileStorage, aruco
-from numpy import ndarray
+from numpy import floating
+from numpy.typing import NDArray
 
 from .marker_type import MarkerType
 
 
 class CalibrationParameters(NamedTuple):
-    camera_matrix: ndarray
-    distance_coefficients: ndarray
+    camera_matrix: NDArray[floating]
+    distance_coefficients: NDArray[floating]
     resolution: Tuple[int, int]
 
 

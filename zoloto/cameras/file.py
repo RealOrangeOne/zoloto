@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Generator, Optional, Tuple
 
 from cv2 import VideoCapture, imread
-from numpy import ndarray
+from numpy.typing import NDArray
 
 from zoloto.exceptions import CameraReadError
 from zoloto.marker_type import MarkerType
@@ -34,7 +34,7 @@ class ImageFileCamera(BaseCamera):
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}: {self.image_path}>"
 
-    def capture_frame(self) -> ndarray:
+    def capture_frame(self) -> NDArray:
         return imread(str(self.image_path))
 
 
@@ -72,7 +72,7 @@ class VideoFileCamera(
     def get_resolution(self) -> Tuple[int, int]:
         return get_video_capture_resolution(self.video_capture)
 
-    def __iter__(self) -> Generator[ndarray, None, None]:
+    def __iter__(self) -> Generator[NDArray, None, None]:
         try:
             yield from super().__iter__()
         except CameraReadError as e:

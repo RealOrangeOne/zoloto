@@ -1,7 +1,7 @@
 from typing import Tuple
 
 import cv2
-from numpy import ndarray
+from numpy.typing import NDArray
 
 from zoloto.calibration import get_fake_calibration_parameters
 from zoloto.marker_type import MarkerType
@@ -59,7 +59,7 @@ class MarkerCamera(BaseCamera):
         size = int(self.get_marker_size(self.marker_id) + self.border_size * 2)
         return size, size
 
-    def capture_frame(self) -> ndarray:
+    def capture_frame(self) -> NDArray:
         image = cv2.aruco.drawMarker(
             self.marker_dictionary, self.marker_id, self.get_marker_size(self.marker_id)
         )
