@@ -6,6 +6,10 @@ on:
       - master
   pull_request:
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   build:
 
@@ -13,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python: [3.8, 3.9]
 
     steps:
@@ -27,8 +31,8 @@ jobs:
           path: ~/.cache/pip
           key: ${{ runner.os }}-${{ matrix.python }}-pip-${{ hashFiles('dev-requirements.txt') }}-${{ hashFiles('setup.py') }}
       - name: Install dependencies
-        run: bash ./scripts/setup.sh opencv
+        run: ./scripts/setup.sh opencv
       - name: Run tests
-        run: bash ./scripts/test.sh
+        run: ./scripts/test.sh
       - name: Run package build
-        run: bash ./scripts/build.sh
+        run: ./scripts/build.sh
