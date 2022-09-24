@@ -173,18 +173,18 @@ class UncalibratedMarkerTestCase(MarkerTestCase):
         with self.assertRaises(MissingCalibrationsError):
             self.marker._get_pose_vectors()
 
-    def __getattribute__(self, name: str) -> Any:
-        attr = super().__getattribute__(name)
-        if name in [
-            "test_orientation",
-            "test_distance",
-            "test_cartesian_coordinates",
-            "test_spherical_coordinates",
-        ]:
+    def test_orientation(self) -> None:
+        with self.assertRaises(MissingCalibrationsError):
+            super().test_orientation()
 
-            def test_raises(*args: Any, **kwargs: Any) -> None:
-                with self.assertRaises(MissingCalibrationsError):
-                    attr(*args, **kwargs)
+    def test_distance(self) -> None:
+        with self.assertRaises(MissingCalibrationsError):
+            super().test_distance()
 
-            return test_raises
-        return attr
+    def test_cartesian_coordinates(self) -> None:
+        with self.assertRaises(MissingCalibrationsError):
+            super().test_cartesian_coordinates()
+
+    def test_spherical_coordinates(self) -> None:
+        with self.assertRaises(MissingCalibrationsError):
+            super().test_spherical_coordinates()
