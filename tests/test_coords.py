@@ -78,36 +78,36 @@ def test_repr(euler_angles: tuple[float, float, float]) -> None:
         pytest.param(
             CartesianCoordinates(0, 0, 1),
             SphericalCoordinates(
-                rot_x=0,
-                rot_y=0,
-                dist=1,
+                theta=math.pi / 2,
+                phi=math.pi / 2,
+                distance=1,
             ),
             id="in-front-of-you",
         ),
         pytest.param(
             CartesianCoordinates(0, 1, 0),
             SphericalCoordinates(
-                rot_x=math.pi / 2,
-                rot_y=0,
-                dist=1,
+                theta=0,
+                phi=0,
+                distance=1,
             ),
             id="above-you",
         ),
         pytest.param(
             CartesianCoordinates(1, 0, 0),
             SphericalCoordinates(
-                rot_x=0,
-                rot_y=math.pi / 2,
-                dist=1,
+                theta=math.pi / 2,
+                phi=0,
+                distance=1,
             ),
             id="to-one-side",
         ),
         pytest.param(
             CartesianCoordinates(1000, 1000, 0),
             SphericalCoordinates(
-                rot_x=math.pi / 2,
-                rot_y=math.pi / 2,
-                dist=1414,
+                theta=0.7853981633974484,  # math.pi / 4, with floating point error
+                phi=0,
+                distance=1414,
             ),
             id="to-one-side-and-up",
         ),

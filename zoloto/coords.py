@@ -53,37 +53,49 @@ class CartesianCoordinates(NamedTuple):
 
 class SphericalCoordinates(NamedTuple):
     """
-    Twin-angle + distance coordinates, from the perspective of the camera.
+    SphericalCoordinates coordinates, rotated onto their side.
 
-    These are not spherical coordinates in the typical sense as each of the
-    angles are computed separately rather than being applicable one after the
-    other. This results in some real world positions being considered equal by
-    this type, however such positions are expected to be out of the viewable
-    world for a standard camera.
+    This is comparable to the ISO convention for spherical coordinates, applied
+    to our rotated axes. Here θ is measured down from the y-axis (rather than
+    the usual z-axis) while φ is measured around the y-axis.
 
-    The axes definitions are as for ``CartesianCoordinates``.
+    See https://en.wikipedia.org/wiki/Spherical_coordinate_system and
+    https://studentrobotics.org/docs/programming/sr/vision/#SphericalCoordinates.
 
-    :param float rot_x: Rotation around the X-axis, in radians. Zero is at the
-        centre of the image. Increasing values indicate greater distance towards
-        the bottom of the image.
-    :param float rot_y: Rotation around the Y-axis, in radians. Zero is at the
-        centre of the image. Increasing values indicate greater distance to the
-        right within the image.
-    :param float dist: Distance
+    :param float distance: Radial distance from the origin.
+    :param float theta: Polar angle, θ, in radians. This is the angle "down"
+        from the y-axis to the vector which points to the location. For points
+        with zero cartesian x-coordinate value, this can be viewed as the
+        rotation about the x-axis. Zero is on the positive y-axis.
+    :param float phi: Azimuth angle, φ, in radians. This is the angle from the
+        x-axis around the polar (y-axis) to the projection of the point on the
+        x-z plane. This can be viewed as rotation about the y-axis. Zero is at
+        the centre of the image.
     """
 
-    rot_x: float
-    rot_y: float
-    dist: int
+    distance: int
+    theta: float
+    phi: float
+
+    @property
+    def rot_x(self) -> float:
+        return self.theta
+
+    @property
+    def rot_y(self) -> float:
+        return self.phi
 
     @classmethod
     def from_cartesian(cls, cartesian: CartesianCoordinates) -> SphericalCoordinates:
+        if not any(cartesian):
+            return SphericalCoordinates(0, 0, 0)
+
         distance = math.sqrt(sum(x**2 for x in cartesian))
         x, y, z = cartesian
-        return cls(
-            rot_x=math.atan2(y, z),
-            rot_y=math.atan2(x, z),
-            dist=int(distance),
+        return SphericalCoordinates(
+            distance=int(distance),
+            theta=math.acos(y / distance),
+            phi=math.atan2(z, x),
         )
 
 
