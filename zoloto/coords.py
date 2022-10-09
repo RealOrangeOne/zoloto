@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Iterator, NamedTuple, Tuple
 
 from cached_property import cached_property

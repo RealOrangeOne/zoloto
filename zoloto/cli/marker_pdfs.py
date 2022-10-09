@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import argparse
 from enum import Enum
 from pathlib import Path

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from zoloto.cameras.camera import Camera
 from zoloto.cameras.file import ImageFileCamera, VideoFileCamera
 

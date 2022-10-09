@@ -1,4 +1,6 @@
 """Tests for coordinates classes."""
+from __future__ import annotations
+
 from typing import Tuple
 
 from hypothesis import given
