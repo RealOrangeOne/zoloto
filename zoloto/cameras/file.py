@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Generator, Optional, Tuple
+from typing import Generator
 
 from cv2 import VideoCapture, imread
 from numpy.typing import NDArray

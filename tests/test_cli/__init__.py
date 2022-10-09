@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import subprocess
 import sys
-from typing import List
 
 
 def call_cli(args: list[str]) -> subprocess.CompletedProcess:

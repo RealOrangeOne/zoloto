@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from functools import lru_cache
 from pathlib import Path
-from typing import NamedTuple, Tuple
+from typing import NamedTuple
 
 from cv2 import FILE_STORAGE_READ, FileStorage, aruco
 from numpy import floating

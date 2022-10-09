@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 from enum import Enum
 from pathlib import Path
-from typing import Tuple
 
 from zoloto.cameras.marker import MarkerCamera
 from zoloto.marker_type import MARKER_TYPE_NAMES, MarkerType

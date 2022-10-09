@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from typing import Any, List
+from typing import Any
 from unittest import TestCase
 from unittest.mock import patch
 

@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import tempfile
 from pathlib import Path
-from typing import Optional
 
 from zoloto.calibration import parse_calibration_file
 from zoloto.cameras.file import ImageFileCamera

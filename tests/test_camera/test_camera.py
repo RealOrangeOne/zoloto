@@ -3,7 +3,6 @@ from __future__ import annotations
 import warnings
 from itertools import cycle
 from pathlib import Path
-from typing import Type
 
 import pytest
 from cv2 import CAP_PROP_FRAME_HEIGHT, CAP_PROP_FRAME_WIDTH

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import warnings
-from typing import Tuple
 
 from cv2 import CAP_PROP_FRAME_HEIGHT, CAP_PROP_FRAME_WIDTH, VideoCapture
 

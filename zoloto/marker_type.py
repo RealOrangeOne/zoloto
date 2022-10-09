@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from enum import IntEnum
-from typing import List
 
 from cv2 import aruco, aruco_Dictionary
 

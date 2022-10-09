@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from itertools import groupby
 from pathlib import Path
-from typing import Any, Generator, List, Optional, Tuple, TypeVar, Union, cast
+from typing import Any, Generator, TypeVar, cast
 
 import cv2
 from numpy.typing import NDArray
