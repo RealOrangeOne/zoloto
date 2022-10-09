@@ -53,7 +53,7 @@ class MarkerType(IntEnum):
         return self.dictionary.markerSize
 
     @property
-    def marker_ids(self) -> List[int]:
+    def marker_ids(self) -> list[int]:
         """
         All of the possible marker ids
         """

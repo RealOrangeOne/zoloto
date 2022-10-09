@@ -43,7 +43,7 @@ def is_valid_calibration(filename: Path) -> bool:
     return True
 
 
-def main(args: argparse.Namespace) -> Optional[int]:
+def main(args: argparse.Namespace) -> int | None:
     if is_valid_calibration(args.file):
         print("Calibration is valid")  # noqa:T001
         return None

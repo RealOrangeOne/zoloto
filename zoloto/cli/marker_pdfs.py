@@ -33,7 +33,7 @@ class PageSize(Enum):
     A4 = (210, 297)
 
     @property
-    def pixels(self) -> Tuple[int, int]:
+    def pixels(self) -> tuple[int, int]:
         return (
             mm_to_pixels(self.value[0]),
             mm_to_pixels(self.value[1]),
@@ -171,7 +171,7 @@ def main(args: argparse.Namespace) -> None:
 
                 print("Saving", marker_id)  # noqa:T001
                 paper_img_1.save(
-                    output_dir / "{}.pdf".format(marker_id),
+                    output_dir / f"{marker_id}.pdf",
                     "PDF",
                     quality=100,
                     dpi=(DPI, DPI),
@@ -194,7 +194,7 @@ def main(args: argparse.Namespace) -> None:
 
                 print("Saving", marker_id)  # noqa:T001
                 paper_img.save(
-                    output_dir / "{}.pdf".format(marker_id),
+                    output_dir / f"{marker_id}.pdf",
                     "PDF",
                     quality=100,
                     dpi=(DPI, DPI),

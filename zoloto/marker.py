@@ -18,7 +18,7 @@ from .marker_type import MarkerType
 
 class BaseMarker(ABC):
     def __init__(
-        self, marker_id: int, corners: List[NDArray], size: int, marker_type: MarkerType
+        self, marker_id: int, corners: list[NDArray], size: int, marker_type: MarkerType
     ):
         self.__id = marker_id
         self._pixel_corners = corners
@@ -29,7 +29,7 @@ class BaseMarker(ABC):
         return f"<{self.__class__.__name__} id={self.id} size={self.size} type={self.marker_type.name}>"
 
     @abstractmethod
-    def _get_pose_vectors(self) -> Tuple[NDArray, NDArray]:  # pragma: nocover
+    def _get_pose_vectors(self) -> tuple[NDArray, NDArray]:  # pragma: nocover
         raise NotImplementedError()
 
     @property  # noqa: A003
@@ -45,7 +45,7 @@ class BaseMarker(ABC):
         return self.__marker_type
 
     @property
-    def pixel_corners(self) -> List[Coordinates]:
+    def pixel_corners(self) -> list[Coordinates]:
         return [Coordinates(x=float(x), y=float(y)) for x, y in self._pixel_corners]
 
     @cached_property
@@ -83,7 +83,7 @@ class BaseMarker(ABC):
     def _tvec(self) -> NDArray:
         return self._get_pose_vectors()[1]
 
-    def as_dict(self) -> Dict[str, Any]:
+    def as_dict(self) -> dict[str, Any]:
         marker_dict = {
             "id": self.id,
             "size": self.size,
@@ -102,10 +102,10 @@ class EagerMarker(BaseMarker):
     def __init__(
         self,
         marker_id: int,
-        corners: List[NDArray],
+        corners: list[NDArray],
         size: int,
         marker_type: MarkerType,
-        precalculated_vectors: Tuple[NDArray, NDArray],
+        precalculated_vectors: tuple[NDArray, NDArray],
     ):
         super().__init__(marker_id, corners, size, marker_type)
         self.__precalculated_vectors = precalculated_vectors
@@ -113,7 +113,7 @@ class EagerMarker(BaseMarker):
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__} id={self.id} size={self.size} type={self.marker_type.name} distance={self.distance}>"
 
-    def _get_pose_vectors(self) -> Tuple[NDArray, NDArray]:
+    def _get_pose_vectors(self) -> tuple[NDArray, NDArray]:
         return self.__precalculated_vectors
 
 
@@ -121,7 +121,7 @@ class Marker(BaseMarker):
     def __init__(
         self,
         marker_id: int,
-        corners: List[NDArray],
+        corners: list[NDArray],
         size: int,
         marker_type: MarkerType,
         calibration_params: CalibrationParameters,
@@ -130,7 +130,7 @@ class Marker(BaseMarker):
         self.__calibration_params = calibration_params
 
     @cached_method
-    def _get_pose_vectors(self) -> Tuple[NDArray, NDArray]:
+    def _get_pose_vectors(self) -> tuple[NDArray, NDArray]:
         rvec, tvec, _ = aruco.estimatePoseSingleMarkers(
             [self._pixel_corners],
             self.size,
@@ -141,5 +141,5 @@ class Marker(BaseMarker):
 
 
 class UncalibratedMarker(BaseMarker):
-    def _get_pose_vectors(self) -> Tuple[NDArray, NDArray]:
+    def _get_pose_vectors(self) -> tuple[NDArray, NDArray]:
         raise MissingCalibrationsError()

@@ -21,7 +21,7 @@ from zoloto.marker_type import MarkerType
 )
 @given(marker_types())
 def test_enumerate_all_cameras(
-    camera_class: Type[zoloto.cameras.Camera],
+    camera_class: type[zoloto.cameras.Camera],
     mocker: MockerFixture,
     marker_type: MarkerType,
 ) -> None:
@@ -40,7 +40,7 @@ def test_enumerate_all_cameras(
 )
 @given(marker_types())
 def test_enumerate_no_cameras(
-    camera_class: Type[zoloto.cameras.Camera],
+    camera_class: type[zoloto.cameras.Camera],
     mocker: MockerFixture,
     marker_type: MarkerType,
 ) -> None:

@@ -36,10 +36,10 @@ class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraM
         self,
         camera_id: int,
         *,
-        marker_size: Optional[int] = None,
+        marker_size: int | None = None,
         marker_type: MarkerType,
-        calibration_file: Optional[Path] = None,
-        resolution: Optional[Tuple[int, int]] = None,
+        calibration_file: Path | None = None,
+        resolution: tuple[int, int] | None = None,
     ) -> None:
         super().__init__(
             marker_size=marker_size,
@@ -67,10 +67,10 @@ class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraM
         cap.set(CAP_PROP_BUFFERSIZE, 1)
         return cap
 
-    def _set_resolution(self, resolution: Tuple[int, int]) -> None:
+    def _set_resolution(self, resolution: tuple[int, int]) -> None:
         set_video_capture_resolution(self.video_capture, resolution)
 
-    def get_resolution(self) -> Tuple[int, int]:
+    def get_resolution(self) -> tuple[int, int]:
         return get_video_capture_resolution(self.video_capture)
 
     def capture_frame(self) -> NDArray:
@@ -83,7 +83,7 @@ class Camera(VideoCaptureMixin, IterableCameraMixin, BaseCamera, ViewableCameraM
         self.video_capture.release()
 
     @classmethod
-    def discover(cls, **kwargs: Any) -> Generator["Camera", None, None]:
+    def discover(cls, **kwargs: Any) -> Generator[Camera, None, None]:
         for camera_id in find_camera_ids():
             yield cls(camera_id, **kwargs)
 
@@ -99,10 +99,10 @@ class SnapshotCamera(VideoCaptureMixin, BaseCamera):
         self,
         camera_id: int,
         *,
-        marker_size: Optional[int] = None,
+        marker_size: int | None = None,
         marker_type: MarkerType,
-        calibration_file: Optional[Path] = None,
-        resolution: Optional[Tuple[int, int]] = None,
+        calibration_file: Path | None = None,
+        resolution: tuple[int, int] | None = None,
     ) -> None:
         super().__init__(
             marker_size=marker_size,
@@ -128,7 +128,7 @@ class SnapshotCamera(VideoCaptureMixin, BaseCamera):
             )
         return video_capture
 
-    def get_resolution(self) -> Tuple[int, int]:
+    def get_resolution(self) -> tuple[int, int]:
         if self._resolution is None:
             raise ValueError(
                 "Cannot find resolution of camera until at least 1 frame has been captured."
@@ -142,6 +142,6 @@ class SnapshotCamera(VideoCaptureMixin, BaseCamera):
         return frame
 
     @classmethod
-    def discover(cls, **kwargs: Any) -> Generator["SnapshotCamera", None, None]:
+    def discover(cls, **kwargs: Any) -> Generator[SnapshotCamera, None, None]:
         for camera_id in find_camera_ids():
             yield cls(camera_id, **kwargs)

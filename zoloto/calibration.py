@@ -14,7 +14,7 @@ from .marker_type import MarkerType
 class CalibrationParameters(NamedTuple):
     camera_matrix: NDArray[floating]
     distance_coefficients: NDArray[floating]
-    resolution: Tuple[int, int]
+    resolution: tuple[int, int]
 
 
 def parse_calibration_file(calibration_file: Path) -> CalibrationParameters:
@@ -34,7 +34,7 @@ def parse_calibration_file(calibration_file: Path) -> CalibrationParameters:
     return params
 
 
-@lru_cache()
+@lru_cache
 def get_fake_calibration_parameters() -> CalibrationParameters:
     """
     HACK: Generate fake calibration parameters

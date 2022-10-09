@@ -8,7 +8,7 @@ from cv2 import CAP_PROP_FRAME_HEIGHT, CAP_PROP_FRAME_WIDTH, VideoCapture
 from zoloto.calibration import CalibrationParameters
 
 
-def get_video_capture_resolution(video_capture: VideoCapture) -> Tuple[int, int]:
+def get_video_capture_resolution(video_capture: VideoCapture) -> tuple[int, int]:
     return (
         int(video_capture.get(CAP_PROP_FRAME_WIDTH)),
         int(video_capture.get(CAP_PROP_FRAME_HEIGHT)),
@@ -16,7 +16,7 @@ def get_video_capture_resolution(video_capture: VideoCapture) -> Tuple[int, int]
 
 
 def set_video_capture_resolution(
-    video_capture: VideoCapture, resolution: Tuple[int, int]
+    video_capture: VideoCapture, resolution: tuple[int, int]
 ) -> None:
     video_capture.set(CAP_PROP_FRAME_WIDTH, resolution[0])
     video_capture.set(CAP_PROP_FRAME_HEIGHT, resolution[1])

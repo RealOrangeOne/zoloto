@@ -22,13 +22,13 @@ def cached_method(f: T) -> T:
     return wrapper  # type: ignore[return-value]
 
 
-def parse_ranges(ranges: str) -> Set[int]:
+def parse_ranges(ranges: str) -> set[int]:
     """
     Parse a comma seprated list of numbers which may include ranges
     specified as hyphen-separated numbers.
     From https://stackoverflow.com/questions/6405208
     """
-    result: List[int] = []
+    result: list[int] = []
     for part in ranges.split(","):
         if "-" in part:
             a_, b_ = part.split("-")

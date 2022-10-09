@@ -28,7 +28,7 @@ def get_parser() -> argparse.ArgumentParser:
 
     subparsers = parser.add_subparsers()
     for command in __all__:
-        name = "{}.{}".format(__name__, command)
+        name = f"{__name__}.{command}"
         importlib.import_module(name).add_subparser(subparsers)
 
     return parser
