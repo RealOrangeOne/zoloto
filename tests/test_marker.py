@@ -20,9 +20,9 @@ class MarkerTestCase(TestCase):
             marker_size=self.MARKER_SIZE,
             marker_type=MarkerType.ARUCO_6X6,
         )
-        self.markers = list(
+        self.markers: List[BaseMarker] = list(
             self.marker_camera.process_frame()
-        )  # type: List[BaseMarker]
+        )
         self.marker = self.markers[0]
 
     def assertIsType(self, a: Any, b: Any) -> None:

@@ -19,7 +19,7 @@ extensions = [
     "m2r2",
 ]
 
-templates_path = []  # type: List[str]
+templates_path: List[str] = []
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
@@ -30,7 +30,7 @@ intersphinx_mapping = {
 
 html_theme = "sphinx_rtd_theme"
 
-html_static_path = []  # type: List[str]
+html_static_path: List[str] = []
 
 autodoc_default_options = {
     "member-order": "alphabetical",
