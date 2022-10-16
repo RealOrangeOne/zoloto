@@ -12,9 +12,9 @@ PixelCoordinates
     :members:
     :no-inherited-members:
 
-ThreeDCoordinates
------------------
-.. autoclass:: zoloto.coords.ThreeDCoordinates
+CartesianCoordinates
+--------------------
+.. autoclass:: zoloto.coords.CartesianCoordinates
     :members:
     :no-inherited-members:
 

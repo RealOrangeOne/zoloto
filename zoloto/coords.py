@@ -22,7 +22,7 @@ class PixelCoordinates(NamedTuple):
     y: float
 
 
-class ThreeDCoordinates(NamedTuple):
+class CartesianCoordinates(NamedTuple):
     """
     :param float x: X coordinate
     :param float y: Y coordinate

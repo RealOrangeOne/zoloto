@@ -11,7 +11,7 @@ from numpy.typing import NDArray
 from zoloto.utils import cached_method
 
 from .calibration import CalibrationParameters
-from .coords import Orientation, PixelCoordinates, Spherical, ThreeDCoordinates
+from .coords import CartesianCoordinates, Orientation, PixelCoordinates, Spherical
 from .exceptions import MissingCalibrationsError
 from .marker_type import MarkerType
 
@@ -74,8 +74,8 @@ class BaseMarker(ABC):
         )
 
     @property
-    def cartesian(self) -> ThreeDCoordinates:
-        return ThreeDCoordinates(*self._tvec.tolist())
+    def cartesian(self) -> CartesianCoordinates:
+        return CartesianCoordinates(*self._tvec.tolist())
 
     @property
     def _rvec(self) -> NDArray:
