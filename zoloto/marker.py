@@ -11,7 +11,7 @@ from numpy.typing import NDArray
 from zoloto.utils import cached_method
 
 from .calibration import CalibrationParameters
-from .coords import Coordinates, Orientation, Spherical, ThreeDCoordinates
+from .coords import Orientation, PixelCoordinates, Spherical, ThreeDCoordinates
 from .exceptions import MissingCalibrationsError
 from .marker_type import MarkerType
 
@@ -45,13 +45,15 @@ class BaseMarker(ABC):
         return self.__marker_type
 
     @property
-    def pixel_corners(self) -> list[Coordinates]:
-        return [Coordinates(x=float(x), y=float(y)) for x, y in self._pixel_corners]
+    def pixel_corners(self) -> list[PixelCoordinates]:
+        return [
+            PixelCoordinates(x=float(x), y=float(y)) for x, y in self._pixel_corners
+        ]
 
     @cached_property
-    def pixel_centre(self) -> Coordinates:
+    def pixel_centre(self) -> PixelCoordinates:
         tl, _, br, _ = self.pixel_corners
-        return Coordinates(
+        return PixelCoordinates(
             x=tl.x + (self.size / 2) - 1,
             y=br.y - (self.size / 2),
         )

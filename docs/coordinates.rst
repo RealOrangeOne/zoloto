@@ -6,9 +6,9 @@ Orientation
 .. autoclass:: zoloto.coords.Orientation
     :members:
 
-Coordinates
------------
-.. autoclass:: zoloto.coords.Coordinates
+PixelCoordinates
+----------------
+.. autoclass:: zoloto.coords.PixelCoordinates
     :members:
     :no-inherited-members:
 

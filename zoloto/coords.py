@@ -7,8 +7,13 @@ from cv2 import Rodrigues
 from pyquaternion import Quaternion
 
 
-class Coordinates(NamedTuple):
+class PixelCoordinates(NamedTuple):
     """
+    Coordinates within an image made up from pixels.
+
+    This type allows float values to account for computed locations which are
+    not limited to exact pixel boundaries.
+
     :param float x: X coordinate
     :param float y: Y coordinate
     """
