@@ -34,7 +34,7 @@ class CartesianCoordinates(NamedTuple):
     z: float
 
 
-class Spherical(NamedTuple):
+class SphericalCoordinates(NamedTuple):
     """
     :param float rot_x: Rotation around the X-axis, in radians
     :param float rot_y: Rotation around the Y-axis, in radians

@@ -18,9 +18,9 @@ CartesianCoordinates
     :members:
     :no-inherited-members:
 
-Spherical
----------
-.. autoclass:: zoloto.coords.Spherical
+SphericalCoordinates
+--------------------
+.. autoclass:: zoloto.coords.SphericalCoordinates
     :members:
     :no-inherited-members:
 

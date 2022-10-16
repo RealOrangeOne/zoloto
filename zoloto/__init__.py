@@ -1,6 +1,11 @@
 from __future__ import annotations
 
-from zoloto.coords import CartesianCoordinates, Orientation, PixelCoordinates, Spherical
+from zoloto.coords import (
+    CartesianCoordinates,
+    Orientation,
+    PixelCoordinates,
+    SphericalCoordinates,
+)
 from zoloto.marker import Marker
 from zoloto.marker_type import MarkerType
 
@@ -11,7 +16,7 @@ __all__ = [
     "CartesianCoordinates",
     "Orientation",
     "PixelCoordinates",
-    "Spherical",
+    "SphericalCoordinates",
     "Marker",
     "MarkerType",
 ]

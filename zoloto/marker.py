@@ -11,7 +11,12 @@ from numpy.typing import NDArray
 from zoloto.utils import cached_method
 
 from .calibration import CalibrationParameters
-from .coords import CartesianCoordinates, Orientation, PixelCoordinates, Spherical
+from .coords import (
+    CartesianCoordinates,
+    Orientation,
+    PixelCoordinates,
+    SphericalCoordinates,
+)
 from .exceptions import MissingCalibrationsError
 from .marker_type import MarkerType
 
@@ -67,9 +72,9 @@ class BaseMarker(ABC):
         return Orientation(*self._rvec)
 
     @cached_property
-    def spherical(self) -> Spherical:
+    def spherical(self) -> SphericalCoordinates:
         x, y, z = self._tvec
-        return Spherical(
+        return SphericalCoordinates(
             rot_x=float(arctan2(y, z)), rot_y=float(arctan2(x, z)), dist=self.distance
         )
 
