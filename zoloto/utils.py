@@ -16,8 +16,8 @@ def cached_method(f: T) -> T:
         obj.__dict__[f.__name__] = lambda: value
         return value
 
-    wrapper.__wrapped__ = f  # type: ignore
-    return wrapper  # type: ignore
+    wrapper.__wrapped__ = f  # type: ignore[attr-defined]
+    return wrapper  # type: ignore[return-value]
 
 
 def parse_ranges(ranges: str) -> Set[int]:
