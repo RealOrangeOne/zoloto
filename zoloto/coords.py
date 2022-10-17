@@ -79,10 +79,12 @@ class SphericalCoordinates(NamedTuple):
 
     @property
     def rot_x(self) -> float:
+        """Approximate rotation around the x-axis, an alias for ``self.theta``."""
         return self.theta
 
     @property
     def rot_y(self) -> float:
+        """Rotation around the y-axis, an alias for ``self.phi``."""
         return self.phi
 
     @classmethod
