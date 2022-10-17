@@ -17,7 +17,7 @@ echo "> Running linter..."
 flake8 zoloto tests benchmarks setup.py docs stubs
 
 echo "> Running isort..."
-isort -rc -c zoloto tests benchmarks setup.py docs stubs
+isort --check-only zoloto tests benchmarks setup.py docs stubs
 
 echo "> Running type checker..."
 mypy zoloto tests docs stubs

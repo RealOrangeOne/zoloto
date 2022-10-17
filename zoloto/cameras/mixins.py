@@ -22,7 +22,7 @@ class IterableCameraMixin(ABC):
 
 class VideoCaptureMixin(ABC):
     def capture_frame(self) -> NDArray:
-        ret, frame = self.video_capture.read()  # type: ignore
+        ret, frame = self.video_capture.read()  # type: ignore[attr-defined]
         if not ret or frame is None:
             raise CameraReadError(frame)
         return frame
