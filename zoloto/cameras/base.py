@@ -22,7 +22,7 @@ class BaseCamera(ABC):
         *,
         marker_size: int | None = None,
         marker_type: MarkerType,
-        calibration_file: Path | None = None
+        calibration_file: Path | None = None,
     ) -> None:
         self.marker_type = marker_type
         self.marker_dictionary = cv2.aruco.getPredefinedDictionary(self.marker_type)

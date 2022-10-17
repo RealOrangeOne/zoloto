@@ -18,7 +18,7 @@ class PiCamera(IterableCameraMixin, BaseCamera, ViewableCameraMixin):
         *,
         marker_size: int | None = None,
         marker_type: MarkerType,
-        calibration_file: Path | None = None
+        calibration_file: Path | None = None,
     ) -> None:
         super().__init__(
             marker_size=marker_size,

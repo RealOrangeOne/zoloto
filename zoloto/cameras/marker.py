@@ -41,7 +41,7 @@ class MarkerCamera(BaseCamera):
 
         if border_size < self.MIN_BORDER_SIZE:
             raise ValueError(
-                f"Border size must be at least {self.MIN_BORDER_SIZE}"
+                f"Border size must be at least {self.MIN_BORDER_SIZE}",
             )
 
         super().__init__(
