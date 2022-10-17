@@ -39,7 +39,7 @@ class PageSize(Enum):
 
 
 def main(args: argparse.Namespace) -> None:
-    from PIL import Image, ImageOps, ImageDraw
+    from PIL import Image, ImageDraw, ImageOps
 
     marker_type = MarkerType[args.type]
     page_size = PageSize[args.page_size]

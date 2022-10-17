@@ -1,10 +1,10 @@
 from pathlib import Path
 from typing import Optional
 
-from numpy.typing import NDArray
-
 import picamera
 import picamera.array
+from numpy.typing import NDArray
+
 from zoloto.marker_type import MarkerType
 
 from .base import BaseCamera
