@@ -24,6 +24,22 @@ class PixelCoordinates(NamedTuple):
 
 class CartesianCoordinates(NamedTuple):
     """
+    Cartesian coordinates, rotated on their side.
+
+    The X axis is horizontal relative to the camera's perspective, i.e: left &
+    right within the frame of the image. Zero is at the centre of the image.
+    Increasing values indicate greater distance to the right.
+
+    The Y axis is vertical relative to the camera's perspective, i.e: up & down
+    within the frame of the image. Zero is at the centre of the image.
+    Increasing values indicate greater distance below the centre of the image.
+
+    The Z axis extends directly away from the camera. Zero is at the camera.
+    Increasing values indicate greater distance from the camera.
+
+    These match traditional cartesian coordinates when the camera is facing
+    upwards.
+
     :param float x: X coordinate
     :param float y: Y coordinate
     :param float z: Z coordinate
