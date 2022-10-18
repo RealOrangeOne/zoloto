@@ -64,17 +64,58 @@ class Orientation:
 
     @property
     def rot_x(self) -> float:
-        """Get rotation angle around x axis in radians."""
+        """
+        Get rotation angle around X axis in radians.
+
+        The X axis is horizontal relative to the camera's perspective, i.e: left
+        & right within the frame of the image.
+
+        Increasing values represent an increasing clockwise rotation of the
+        marker as seen from the camera's left.
+
+        Zero values for April Tags markers have the marker facing away from the
+        camera. The practical effect of this is that an April Tags marker facing
+        the camera square-on will have a value of ``pi`` (or equivalently
+        ``-pi``) and the value will decrease as the marker diverges from
+        square-on.
+
+        For observed markers positive values therefore indicate a rotation of
+        the top of the marker away from the camera, such that marker could be
+        said to be leaning backwards, with the value decreasing as the marker
+        leans back further.
+        """
         return self.roll
 
     @property
     def rot_y(self) -> float:
-        """Get rotation angle around y axis in radians."""
+        """
+        Get rotation angle around Y axis in radians.
+
+        The Y axis is vertical relative to the camera's perspective, i.e: up &
+        down within the frame of the image.
+
+        Positive values indicate a rotation of an observed marker towards the
+        camera's right. This is a rotation of the marker counter-clockwise about
+        the Y axis as seen from above the marker.
+
+        Zero values for April Tags markers have the marker facing the camera
+        square-on.
+        """
         return self.pitch
 
     @property
     def rot_z(self) -> float:
-        """Get rotation angle around z axis in radians."""
+        """
+        Get rotation angle around Z axis in radians.
+
+        The Z axis extends directly away from the camera.
+
+        Positive values indicate a rotation counter-clockwise from the
+        perspective of the camera.
+
+        Zero values for April Tags markers have the marker reference point at
+        the top left.
+        """
         return self.yaw
 
     @property
