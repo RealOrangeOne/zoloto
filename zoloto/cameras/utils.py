@@ -33,11 +33,13 @@ def validate_calibrated_video_capture_resolution(
     *,
     override: bool = False,
 ) -> None:
-    if get_video_capture_resolution(video_capture) != calibration_params.resolution:
+    device_resolution = get_video_capture_resolution(video_capture)
+    if device_resolution != calibration_params.resolution:
         if override:
             warnings.warn("Overriding camera resolution with calibrated resolution")
             set_video_capture_resolution(video_capture, calibration_params.resolution)
         else:
             raise ValueError(
-                "The resolution of the camera differs from the calibrated resolution"
+                f"The resolution of the camera {device_resolution!r} differs "
+                f"from the calibrated resolution {calibration_params.resolution!r}"
             )
