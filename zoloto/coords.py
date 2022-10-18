@@ -124,6 +124,6 @@ class Orientation:
         return self._quaternion
 
     def __repr__(self) -> str:
-        return "Orientation(rot_x={},rot_y={},rot_z={})".format(
+        return "Orientation(rot_x={}, rot_y={}, rot_z={})".format(
             self.rot_x, self.rot_y, self.rot_z
         )
