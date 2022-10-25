@@ -8,7 +8,7 @@ from zoloto.marker_type import MARKER_TYPE_NAMES, MarkerType
 from zoloto.utils import parse_ranges
 
 DPI = 72
-BORDER_FILL = "grey"
+BORDER_FILL = "lightgrey"
 
 
 def mm_to_inches(mm: int) -> float:
