@@ -10,16 +10,6 @@ from . import call_cli
 
 
 @pytest.mark.parametrize("marker_type", MarkerType)
-def test_creates_correct_number_of_pdfs(
-    marker_type: MarkerType, tmp_path: Path
-) -> None:
-    rtn = call_cli(["marker-pdfs", marker_type.name, str(tmp_path), "100"])
-    rtn.check_returncode()
-    pdfs = list(tmp_path.glob("*.pdf"))
-    assert len(pdfs) == marker_type.marker_count
-
-
-@pytest.mark.parametrize("marker_type", MarkerType)
 def test_detectable(marker_type: MarkerType, tmp_path: Path) -> None:
     rtn = call_cli(
         [
