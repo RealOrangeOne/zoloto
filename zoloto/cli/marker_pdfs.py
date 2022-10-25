@@ -8,7 +8,6 @@ from zoloto.marker_type import MARKER_TYPE_NAMES, MarkerType
 from zoloto.utils import parse_ranges
 
 DPI = 72
-BORDER_SIZE = 2
 BORDER_FILL = "grey"
 CENTER_LINE_SIZE = 16
 
@@ -55,11 +54,11 @@ def main(args: argparse.Namespace) -> None:
     pixel_size = args.size // marker_type.min_marker_image_size
     required_size = args.size + (pixel_size * 2)
 
-    if args.size + BORDER_SIZE * 2 > min(page_size.value):
+    if args.size + args.border_size * 2 > min(page_size.value):
         print(  # noqa:T001
             f"Warning: Marker size is too large to fit on {args.page_size}"
         )
-    elif required_size + BORDER_SIZE * 2 > min(page_size.value):
+    elif required_size + args.border_size * 2 > min(page_size.value):
         print(  # noqa:T001
             f"Warning: Marker size is too large to fit on {args.page_size} with border"
         )
@@ -82,7 +81,7 @@ def main(args: argparse.Namespace) -> None:
 
             # Add a border to the marker, which includes padding
             bordered_image = ImageOps.expand(
-                resized_image, border=BORDER_SIZE, fill=BORDER_FILL
+                resized_image, border=args.border_size, fill=BORDER_FILL
             )
             img_size = bordered_image.size[0]
 
@@ -97,19 +96,19 @@ def main(args: argparse.Namespace) -> None:
 
             # Add center lines
             if not args.no_center_lines:
-                line_start = (img_size // 2) - (BORDER_SIZE // 2)
+                line_start = (img_size // 2) - (args.border_size // 2)
 
                 # Top
                 image_draw.line(
                     [line_start, 0, line_start, CENTER_LINE_SIZE],
-                    width=BORDER_SIZE,
+                    width=args.border_size,
                     fill=BORDER_FILL,
                 )
 
                 # Left
                 image_draw.line(
                     [0, line_start, CENTER_LINE_SIZE, line_start],
-                    width=BORDER_SIZE,
+                    width=args.border_size,
                     fill=BORDER_FILL,
                 )
 
@@ -121,7 +120,7 @@ def main(args: argparse.Namespace) -> None:
                         line_start,
                         img_size,
                     ],
-                    width=BORDER_SIZE,
+                    width=args.border_size,
                     fill=BORDER_FILL,
                 )
 
@@ -133,7 +132,7 @@ def main(args: argparse.Namespace) -> None:
                         img_size,
                         line_start,
                     ],
-                    width=BORDER_SIZE,
+                    width=args.border_size,
                     fill=BORDER_FILL,
                 )
 
@@ -246,5 +245,11 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
         "--no-center-lines",
         help="Do not output center lines around the border",
         action="store_true",
+    )
+    parser.add_argument(
+        "--border-size",
+        help="Size of the border (and center lines) in pixels. Note that the border expands from center (default: %(default)s)",
+        default=2,
+        type=int,
     )
     parser.set_defaults(func=main)
