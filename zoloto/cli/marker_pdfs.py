@@ -172,10 +172,9 @@ def main(args: argparse.Namespace) -> None:
                     ),
                 )
 
-                print("Saving", marker_id)  # noqa:T001
+                print("Saving marker", marker_id)  # noqa:T001
                 paper_img_1.save(
-                    output_dir / "{}.pdf".format(marker_id),
-                    "PDF",
+                    output_dir / args.filename.format(marker_id),
                     quality=100,
                     dpi=(DPI, DPI),
                     save_all=True,
@@ -195,10 +194,9 @@ def main(args: argparse.Namespace) -> None:
                     ),
                 )
 
-                print("Saving", marker_id)  # noqa:T001
+                print("Saving marker", marker_id)  # noqa:T001
                 paper_img.save(
-                    output_dir / "{}.pdf".format(marker_id),
-                    "PDF",
+                    output_dir / args.filename.format(id=marker_id),
                     quality=100,
                     dpi=(DPI, DPI),
                 )
@@ -223,6 +221,12 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
         "size",
         type=float,
         help="Size of marker (mm)",
+    )
+    parser.add_argument(
+        "--filename",
+        type=str,
+        help="Output filename. `id` is available for string format replacement (default: %(default)s)",
+        default="{id}.pdf",
     )
     parser.add_argument(
         "--description-format",

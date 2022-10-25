@@ -2,7 +2,6 @@ from pathlib import Path
 
 import cv2
 import pytest
-from pdf2image import convert_from_path
 
 from zoloto.cameras.file import ImageFileCamera
 from zoloto.marker_type import MarkerType
@@ -23,7 +22,16 @@ def test_creates_correct_number_of_pdfs(
 @pytest.mark.parametrize("marker_type", MarkerType)
 def test_detectable(marker_type: MarkerType, tmp_path: Path) -> None:
     rtn = call_cli(
-        ["marker-pdfs", marker_type.name, str(tmp_path), "100", "--range", "0"]
+        [
+            "marker-pdfs",
+            marker_type.name,
+            str(tmp_path),
+            "100",
+            "--range",
+            "0",
+            "--filename",
+            "{id}.png",  # HACK: Pretend the output is a PNG for the sake of tests
+        ]
     )
     rtn.check_returncode()
 
@@ -40,7 +48,6 @@ def test_detectable(marker_type: MarkerType, tmp_path: Path) -> None:
             detector_params.minMarkerDistanceRate = 0.035
             return detector_params
 
-    convert_from_path(tmp_path / "0.pdf")[0].save(tmp_path / "0.png")
     image_file_camera = CustomImageCamera(tmp_path / "0.png", marker_type=marker_type)
     assert image_file_camera.get_visible_markers() == [0]
 
@@ -63,10 +70,10 @@ def test_detectable_without_border(marker_type: MarkerType, tmp_path: Path) -> N
             "0",
             "--border-size",
             "0",
+            "--filename",
+            "{id}.png",  # HACK: Pretend the output is a PNG for the sake of tests
         ]
     )
     rtn.check_returncode()
-
-    convert_from_path(tmp_path / "0.pdf")[0].save(tmp_path / "0.png")
     image_file_camera = ImageFileCamera(tmp_path / "0.png", marker_type=marker_type)
     assert image_file_camera.get_visible_markers() == [0]
