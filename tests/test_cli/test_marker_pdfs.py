@@ -10,11 +10,14 @@ from zoloto.marker_type import MarkerType
 from . import call_cli
 
 
-def test_creates_correct_number_of_pdfs(tmp_path: Path) -> None:
-    rtn = call_cli(["marker-pdfs", "APRILTAG_16H5", str(tmp_path), "100"])
+@pytest.mark.parametrize("marker_type", MarkerType)
+def test_creates_correct_number_of_pdfs(
+    marker_type: MarkerType, tmp_path: Path
+) -> None:
+    rtn = call_cli(["marker-pdfs", marker_type.name, str(tmp_path), "100"])
     rtn.check_returncode()
     pdfs = list(tmp_path.glob("*.pdf"))
-    assert len(pdfs) == MarkerType.APRILTAG_16H5.marker_count
+    assert len(pdfs) == marker_type.marker_count
 
 
 @pytest.mark.parametrize("marker_type", MarkerType)
