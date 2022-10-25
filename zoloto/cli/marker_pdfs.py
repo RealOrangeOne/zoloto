@@ -260,7 +260,7 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
     parser.add_argument(
         "--border-size",
         help="Size of the border (and center lines) in pixels. Note that the border expands from center (default: %(default)s)",
-        default=2,
+        default=1,
         type=int,
     )
     parser.set_defaults(func=main)
