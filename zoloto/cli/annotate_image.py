@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import argparse
 from pathlib import Path
 
@@ -12,7 +14,7 @@ def main(args: argparse.Namespace) -> None:
         camera.save_frame(Path(args.out_file), annotate=True)
 
         print(  # noqa: T001
-            "Saw {} markers in this image".format(len(camera.get_visible_markers()))
+            f"Saw {len(camera.get_visible_markers())} markers in this image"
         )
 
 

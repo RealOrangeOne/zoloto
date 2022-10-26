@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import json
-from typing import Any, List
+from typing import Any
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -20,9 +22,7 @@ class MarkerTestCase(TestCase):
             marker_size=self.MARKER_SIZE,
             marker_type=MarkerType.ARUCO_6X6,
         )
-        self.markers = list(
-            self.marker_camera.process_frame()
-        )  # type: List[BaseMarker]
+        self.markers: list[BaseMarker] = list(self.marker_camera.process_frame())
         self.marker = self.markers[0]
 
     def assertIsType(self, a: Any, b: Any) -> None:
