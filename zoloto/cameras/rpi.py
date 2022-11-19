@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Optional
 
 import picamera
 import picamera.array
@@ -15,9 +16,9 @@ class PiCamera(IterableCameraMixin, BaseCamera, ViewableCameraMixin):
     def __init__(
         self,
         *,
-        marker_size: Optional[int] = None,
+        marker_size: int | None = None,
         marker_type: MarkerType,
-        calibration_file: Optional[Path] = None
+        calibration_file: Path | None = None,
     ) -> None:
         super().__init__(
             marker_size=marker_size,

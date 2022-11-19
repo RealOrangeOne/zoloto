@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import argparse
 from pathlib import Path
 
@@ -27,7 +29,7 @@ def main(args: argparse.Namespace) -> None:
             print("Saving", marker_id)  # noqa:T001
 
             if args.raw:
-                camera.save_frame(output_dir / "{}.png".format(marker_id))
+                camera.save_frame(output_dir / f"{marker_id}.png")
             else:
                 image = Image.fromarray(camera.capture_frame())
 
@@ -43,7 +45,7 @@ def main(args: argparse.Namespace) -> None:
                     ),
                     anchor="lt",
                 )
-                resized_image.save(output_dir / "{}.png".format(marker_id))
+                resized_image.save(output_dir / f"{marker_id}.png")
 
 
 def add_subparser(subparsers: argparse._SubParsersAction) -> None:

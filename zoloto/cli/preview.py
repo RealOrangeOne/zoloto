@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import argparse
 
 from zoloto.cameras.camera import Camera
@@ -22,5 +24,6 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
         type=str,
         choices=sorted(MARKER_TYPE_NAMES),
         help="Marker dictionary",
+        required=True,
     )
     parser.set_defaults(func=main)

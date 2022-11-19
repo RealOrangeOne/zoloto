@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from itertools import groupby
 from pathlib import Path
-from typing import Any, Generator, List, Optional, Tuple, TypeVar, Union, cast
+from typing import Any, Generator, TypeVar, cast
 
 import cv2
 from numpy.typing import NDArray
@@ -18,9 +20,9 @@ class BaseCamera(ABC):
     def __init__(
         self,
         *,
-        marker_size: Optional[int] = None,
+        marker_size: int | None = None,
         marker_type: MarkerType,
-        calibration_file: Optional[Path] = None
+        calibration_file: Path | None = None,
     ) -> None:
         self.marker_type = marker_type
         self.marker_dictionary = cv2.aruco.getPredefinedDictionary(self.marker_type)
@@ -53,7 +55,7 @@ class BaseCamera(ABC):
         raise NotImplementedError()
 
     def save_frame(
-        self, filename: Path, *, annotate: bool = False, frame: Optional[NDArray] = None
+        self, filename: Path, *, annotate: bool = False, frame: NDArray | None = None
     ) -> NDArray:
         if frame is None:
             frame = self.capture_frame()
@@ -67,15 +69,15 @@ class BaseCamera(ABC):
         if corners:
             cv2.aruco.drawDetectedMarkers(frame, corners, ids)
 
-    def _get_raw_ids_and_corners(self, frame: NDArray) -> Tuple[NDArray, NDArray]:
+    def _get_raw_ids_and_corners(self, frame: NDArray) -> tuple[NDArray, NDArray]:
         corners, ids, _ = cv2.aruco.detectMarkers(
             frame, self.marker_dictionary, parameters=self.detector_params
         )
         return ids, corners
 
     def _get_ids_and_corners(
-        self, frame: Optional[NDArray] = None
-    ) -> Tuple[List[int], List[NDArray]]:
+        self, frame: NDArray | None = None
+    ) -> tuple[list[int], list[NDArray]]:
         if frame is None:
             frame = self.capture_frame()
         marker_ids, corners = self._get_raw_ids_and_corners(frame)
@@ -86,8 +88,8 @@ class BaseCamera(ABC):
     def _get_marker(
         self,
         marker_id: int,
-        corners: List[NDArray],
-    ) -> Union[UncalibratedMarker, Marker]:
+        corners: list[NDArray],
+    ) -> UncalibratedMarker | Marker:
         if self.calibration_params is None:
             return UncalibratedMarker(
                 marker_id, corners, self.get_marker_size(marker_id), self.marker_type
@@ -103,7 +105,7 @@ class BaseCamera(ABC):
     def _get_eager_marker(
         self,
         marker_id: int,
-        corners: List[NDArray],
+        corners: list[NDArray],
         size: int,
         tvec: NDArray,
         rvec: NDArray,
@@ -111,20 +113,20 @@ class BaseCamera(ABC):
         return EagerMarker(marker_id, corners, size, self.marker_type, (rvec, tvec))
 
     def process_frame(
-        self, *, frame: Optional[NDArray] = None
-    ) -> Generator[Union[UncalibratedMarker, Marker], None, None]:
+        self, *, frame: NDArray | None = None
+    ) -> Generator[UncalibratedMarker | Marker, None, None]:
         ids, corners = self._get_ids_and_corners(frame)
         for marker_corners, marker_id in zip(corners, ids):
             yield self._get_marker(int(marker_id), cast(list, marker_corners))
 
     def process_frame_eager(
-        self, *, frame: Optional[NDArray] = None
+        self, *, frame: NDArray | None = None
     ) -> Generator[EagerMarker, None, None]:
         if self.calibration_params is None:
             raise MissingCalibrationsError()
         ids, corners = self._get_ids_and_corners(frame)
 
-        def get_marker_size(id_and_corners: Tuple[int, NDArray]) -> int:
+        def get_marker_size(id_and_corners: tuple[int, NDArray]) -> int:
             return self.get_marker_size(id_and_corners[0])
 
         sorted_corners = sorted(zip(ids, corners), key=get_marker_size)
@@ -143,7 +145,7 @@ class BaseCamera(ABC):
                     int(marker_id), marker_corners, size, tvec[0], rvec[0]
                 )
 
-    def get_visible_markers(self, *, frame: Optional[NDArray] = None) -> List[int]:
+    def get_visible_markers(self, *, frame: NDArray | None = None) -> list[int]:
         ids, _ = self._get_ids_and_corners(frame)
         return [int(i) for i in ids]
 

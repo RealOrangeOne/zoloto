@@ -1,7 +1,8 @@
+from __future__ import annotations
+
 import argparse
 from enum import Enum
 from pathlib import Path
-from typing import Tuple
 
 from zoloto.cameras.marker import MarkerCamera
 from zoloto.marker_type import MARKER_TYPE_NAMES, MarkerType
@@ -29,7 +30,7 @@ class PageSize(Enum):
     A4 = (210, 297)
 
     @property
-    def pixels(self) -> Tuple[int, int]:
+    def pixels(self) -> tuple[int, int]:
         return (
             mm_to_pixels(self.value[0]),
             mm_to_pixels(self.value[1]),

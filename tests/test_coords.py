@@ -1,5 +1,5 @@
 """Tests for coordinates classes."""
-from typing import Tuple
+from __future__ import annotations
 
 from hypothesis import given
 from hypothesis.strategies import floats, tuples
@@ -9,7 +9,7 @@ from zoloto.coords import Orientation
 
 
 @given(tuples(floats(), floats(), floats()))
-def test_valid_conversion(euler_angles: Tuple[float, float, float]) -> None:
+def test_valid_conversion(euler_angles: tuple[float, float, float]) -> None:
     """
     Test conversion from the vector.
 
@@ -24,7 +24,7 @@ def test_valid_conversion(euler_angles: Tuple[float, float, float]) -> None:
 
 
 @given(tuples(floats(), floats(), floats()))
-def test_rot_yaw_pitch_roll(euler_angles: Tuple[float, float, float]) -> None:
+def test_rot_yaw_pitch_roll(euler_angles: tuple[float, float, float]) -> None:
     """Test that x,y,z are equal to yaw, pitch, roll."""
     q = Quaternion(axis=euler_angles, scalar=1)
     orientation = Orientation(*q.vector)
@@ -35,7 +35,7 @@ def test_rot_yaw_pitch_roll(euler_angles: Tuple[float, float, float]) -> None:
 
 
 @given(tuples(floats(), floats(), floats()))
-def test_iterator(euler_angles: Tuple[float, float, float]) -> None:
+def test_iterator(euler_angles: tuple[float, float, float]) -> None:
     """Test that the iterator returns the correct values."""
     q = Quaternion(axis=euler_angles, scalar=1)
     orientation = Orientation(*q.vector)
@@ -50,7 +50,7 @@ def test_iterator(euler_angles: Tuple[float, float, float]) -> None:
 
 
 @given(tuples(floats(), floats(), floats()))
-def test_repr(euler_angles: Tuple[float, float, float]) -> None:
+def test_repr(euler_angles: tuple[float, float, float]) -> None:
     """Test that the representation is as expected."""
     q = Quaternion(axis=euler_angles, scalar=1)
     orientation = Orientation(*q.vector)
@@ -61,4 +61,4 @@ def test_repr(euler_angles: Tuple[float, float, float]) -> None:
     repr_str = repr(orientation)
 
     for name, val in zip(names, ypr):
-        assert "{}={}".format(name, val) in repr_str
+        assert f"{name}={val}" in repr_str

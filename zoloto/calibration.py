@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 from functools import lru_cache
 from pathlib import Path
-from typing import NamedTuple, Tuple
+from typing import NamedTuple
 
 from cv2 import FILE_STORAGE_READ, FileStorage, aruco
 from numpy import floating
@@ -12,7 +14,7 @@ from .marker_type import MarkerType
 class CalibrationParameters(NamedTuple):
     camera_matrix: NDArray[floating]
     distance_coefficients: NDArray[floating]
-    resolution: Tuple[int, int]
+    resolution: tuple[int, int]
 
 
 def parse_calibration_file(calibration_file: Path) -> CalibrationParameters:
@@ -32,7 +34,7 @@ def parse_calibration_file(calibration_file: Path) -> CalibrationParameters:
     return params
 
 
-@lru_cache()
+@lru_cache
 def get_fake_calibration_parameters() -> CalibrationParameters:
     """
     HACK: Generate fake calibration parameters

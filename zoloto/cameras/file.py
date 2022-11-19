@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Generator, Optional, Tuple
+from typing import Generator
 
 from cv2 import VideoCapture, imread
 from numpy.typing import NDArray
@@ -20,9 +22,9 @@ class ImageFileCamera(BaseCamera):
         self,
         image_path: Path,
         *,
-        marker_size: Optional[int] = None,
+        marker_size: int | None = None,
         marker_type: MarkerType,
-        calibration_file: Optional[Path] = None,
+        calibration_file: Path | None = None,
     ) -> None:
         self.image_path = image_path
         super().__init__(
@@ -45,9 +47,9 @@ class VideoFileCamera(
         self,
         video_path: Path,
         *,
-        marker_size: Optional[int] = None,
+        marker_size: int | None = None,
         marker_type: MarkerType,
-        calibration_file: Optional[Path] = None,
+        calibration_file: Path | None = None,
     ) -> None:
         super().__init__(
             marker_size=marker_size,
@@ -69,7 +71,7 @@ class VideoFileCamera(
         super().close()
         self.video_capture.release()
 
-    def get_resolution(self) -> Tuple[int, int]:
+    def get_resolution(self) -> tuple[int, int]:
         return get_video_capture_resolution(self.video_capture)
 
     def __iter__(self) -> Generator[NDArray, None, None]:

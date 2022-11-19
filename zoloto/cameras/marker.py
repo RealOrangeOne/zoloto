@@ -1,4 +1,4 @@
-from typing import Tuple
+from __future__ import annotations
 
 import cv2
 from numpy.typing import NDArray
@@ -41,7 +41,7 @@ class MarkerCamera(BaseCamera):
 
         if border_size < self.MIN_BORDER_SIZE:
             raise ValueError(
-                "Border size must be at least {}".format(self.MIN_BORDER_SIZE)
+                f"Border size must be at least {self.MIN_BORDER_SIZE}",
             )
 
         super().__init__(
@@ -55,7 +55,7 @@ class MarkerCamera(BaseCamera):
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__} id={self.marker_id} size={self._marker_size} type={self.marker_type.name}>"
 
-    def get_resolution(self) -> Tuple[int, int]:
+    def get_resolution(self) -> tuple[int, int]:
         size = int(self.get_marker_size(self.marker_id) + self.border_size * 2)
         return size, size
 

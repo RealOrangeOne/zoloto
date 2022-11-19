@@ -1,7 +1,8 @@
+from __future__ import annotations
+
 import warnings
 from itertools import cycle
 from pathlib import Path
-from typing import Type
 
 import pytest
 from cv2 import CAP_PROP_FRAME_HEIGHT, CAP_PROP_FRAME_WIDTH
@@ -19,7 +20,7 @@ from zoloto.marker_type import MarkerType
 )
 @given(marker_types())
 def test_enumerate_all_cameras(
-    camera_class: Type[zoloto.cameras.Camera],
+    camera_class: type[zoloto.cameras.Camera],
     mocker: MockerFixture,
     marker_type: MarkerType,
 ) -> None:
@@ -38,7 +39,7 @@ def test_enumerate_all_cameras(
 )
 @given(marker_types())
 def test_enumerate_no_cameras(
-    camera_class: Type[zoloto.cameras.Camera],
+    camera_class: type[zoloto.cameras.Camera],
     mocker: MockerFixture,
     marker_type: MarkerType,
 ) -> None:
