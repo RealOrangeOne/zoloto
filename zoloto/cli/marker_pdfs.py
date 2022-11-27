@@ -175,7 +175,7 @@ def main(args: argparse.Namespace) -> None:
 
                 print("Saving marker", marker_id)  # noqa:T001
                 paper_img_1.save(
-                    output_dir / args.filename.format(marker_id),
+                    output_dir / args.filename.format(id=marker_id),
                     quality=100,
                     dpi=(DPI, DPI),
                     save_all=True,
