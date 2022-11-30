@@ -6,21 +6,21 @@ Orientation
 .. autoclass:: zoloto.coords.Orientation
     :members:
 
-Coordinates
------------
-.. autoclass:: zoloto.coords.Coordinates
+PixelCoordinates
+----------------
+.. autoclass:: zoloto.coords.PixelCoordinates
     :members:
     :no-inherited-members:
 
-ThreeDCoordinates
------------------
-.. autoclass:: zoloto.coords.ThreeDCoordinates
+CartesianCoordinates
+--------------------
+.. autoclass:: zoloto.coords.CartesianCoordinates
     :members:
     :no-inherited-members:
 
-Spherical
----------
-.. autoclass:: zoloto.coords.Spherical
+SphericalCoordinates
+--------------------
+.. autoclass:: zoloto.coords.SphericalCoordinates
     :members:
     :no-inherited-members:
 

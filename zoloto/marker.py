@@ -11,7 +11,12 @@ from numpy.typing import NDArray
 from zoloto.utils import cached_method
 
 from .calibration import CalibrationParameters
-from .coords import Coordinates, Orientation, Spherical, ThreeDCoordinates
+from .coords import (
+    CartesianCoordinates,
+    Orientation,
+    PixelCoordinates,
+    SphericalCoordinates,
+)
 from .exceptions import MissingCalibrationsError
 from .marker_type import MarkerType
 
@@ -45,13 +50,15 @@ class BaseMarker(ABC):
         return self.__marker_type
 
     @property
-    def pixel_corners(self) -> list[Coordinates]:
-        return [Coordinates(x=float(x), y=float(y)) for x, y in self._pixel_corners]
+    def pixel_corners(self) -> list[PixelCoordinates]:
+        return [
+            PixelCoordinates(x=float(x), y=float(y)) for x, y in self._pixel_corners
+        ]
 
     @cached_property
-    def pixel_centre(self) -> Coordinates:
+    def pixel_centre(self) -> PixelCoordinates:
         tl, _, br, _ = self.pixel_corners
-        return Coordinates(
+        return PixelCoordinates(
             x=tl.x + (self.size / 2) - 1,
             y=br.y - (self.size / 2),
         )
@@ -65,15 +72,15 @@ class BaseMarker(ABC):
         return Orientation(*self._rvec)
 
     @cached_property
-    def spherical(self) -> Spherical:
+    def spherical(self) -> SphericalCoordinates:
         x, y, z = self._tvec
-        return Spherical(
+        return SphericalCoordinates(
             rot_x=float(arctan2(y, z)), rot_y=float(arctan2(x, z)), dist=self.distance
         )
 
     @property
-    def cartesian(self) -> ThreeDCoordinates:
-        return ThreeDCoordinates(*self._tvec.tolist())
+    def cartesian(self) -> CartesianCoordinates:
+        return CartesianCoordinates(*self._tvec.tolist())
 
     @property
     def _rvec(self) -> NDArray:

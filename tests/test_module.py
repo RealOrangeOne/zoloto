@@ -20,7 +20,7 @@ def test_exposes_marker_type() -> None:
 
 @pytest.mark.parametrize(
     "coordinate_struct",
-    ["Coordinates", "Orientation", "ThreeDCoordinates", "Spherical"],
+    ["PixelCoordinates", "Orientation", "CartesianCoordinates", "SphericalCoordinates"],
 )
 def test_exposes_coordinates(coordinate_struct: str) -> None:
     assert getattr(zoloto, coordinate_struct) == getattr(
