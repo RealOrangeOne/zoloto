@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 from typing import Any
 from unittest import TestCase
 from unittest.mock import patch
@@ -71,10 +72,10 @@ class MarkerTestCase(TestCase):
         self.assertAlmostEqual(int(z), 910, delta=100)  # HACK: Sometimes it changes
 
     def test_spherical_coordinates(self) -> None:
-        rot_x, rot_y, dist = self.marker.spherical
+        dist, rot_x, rot_y = self.marker.spherical
         self.assertEqual(dist, self.marker.distance)
-        self.assertAlmostEqual(rot_x, 0, delta=0.1)
-        self.assertAlmostEqual(rot_y, 0, delta=0.1)
+        self.assertAlmostEqual(rot_x, math.pi / 2, delta=0.1)
+        self.assertAlmostEqual(rot_y, math.pi / 2, delta=0.1)
 
     def test_as_dict(self) -> None:
         marker_dict = self.marker.as_dict()
@@ -119,7 +120,7 @@ class MarkerTestCase(TestCase):
 
             self.assertIsType(self.marker.spherical.rot_x, float)
             self.assertIsType(self.marker.spherical.rot_y, float)
-            self.assertIsType(self.marker.spherical.dist, int)
+            self.assertIsType(self.marker.spherical.distance, int)
 
             self.assertIsType(self.marker.cartesian.x, float)
             self.assertIsType(self.marker.cartesian.y, float)

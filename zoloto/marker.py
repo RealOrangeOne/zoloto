@@ -5,7 +5,6 @@ from typing import Any
 
 from cached_property import cached_property
 from cv2 import aruco
-from numpy import arctan2, linalg
 from numpy.typing import NDArray
 
 from zoloto.utils import cached_method
@@ -65,7 +64,7 @@ class BaseMarker(ABC):
 
     @cached_property
     def distance(self) -> int:
-        return int(linalg.norm(self._tvec))
+        return self.spherical.distance
 
     @cached_property
     def orientation(self) -> Orientation:
@@ -73,10 +72,7 @@ class BaseMarker(ABC):
 
     @cached_property
     def spherical(self) -> SphericalCoordinates:
-        x, y, z = self._tvec
-        return SphericalCoordinates(
-            rot_x=float(arctan2(y, z)), rot_y=float(arctan2(x, z)), dist=self.distance
-        )
+        return SphericalCoordinates.from_cartesian(self.cartesian)
 
     @property
     def cartesian(self) -> CartesianCoordinates:
