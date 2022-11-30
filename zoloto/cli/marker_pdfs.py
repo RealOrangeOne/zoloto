@@ -9,9 +9,7 @@ from zoloto.marker_type import MARKER_TYPE_NAMES, MarkerType
 from zoloto.utils import parse_ranges
 
 DPI = 72
-BORDER_SIZE = 2
-BORDER_FILL = "grey"
-CENTER_LINE_SIZE = 16
+BORDER_FILL = "lightgrey"
 
 
 def mm_to_inches(mm: int) -> float:
@@ -56,14 +54,21 @@ def main(args: argparse.Namespace) -> None:
     pixel_size = args.size // marker_type.min_marker_image_size
     required_size = args.size + (pixel_size * 2)
 
-    if args.size + BORDER_SIZE * 2 > min(page_size.value):
+    if args.size + args.border_size * 2 > min(page_size.value):
         print(  # noqa:T001
             f"Warning: Marker size is too large to fit on {args.page_size}"
         )
-    elif required_size + BORDER_SIZE * 2 > min(page_size.value):
+    elif required_size + args.border_size * 2 > min(page_size.value):
         print(  # noqa:T001
             f"Warning: Marker size is too large to fit on {args.page_size} with border"
         )
+
+    if (
+        args.border_size
+        and args.center_line_length
+        and args.border_size > args.center_line_length
+    ):
+        print("Warning: center lines may not be visible")  # noqa:T001
 
     marker_ids = (
         parse_ranges(args.range) if args.range != "ALL" else marker_type.marker_ids
@@ -83,7 +88,7 @@ def main(args: argparse.Namespace) -> None:
 
             # Add a border to the marker, which includes padding
             bordered_image = ImageOps.expand(
-                resized_image, border=BORDER_SIZE, fill=BORDER_FILL
+                resized_image, border=args.border_size, fill=BORDER_FILL
             )
             img_size = bordered_image.size[0]
 
@@ -97,20 +102,20 @@ def main(args: argparse.Namespace) -> None:
             )
 
             # Add center lines
-            if not args.no_center_lines:
-                line_start = (img_size // 2) - (BORDER_SIZE // 2)
+            if args.center_line_length:
+                line_start = (img_size // 2) - (args.border_size // 2)
 
                 # Top
                 image_draw.line(
-                    [line_start, 0, line_start, CENTER_LINE_SIZE],
-                    width=BORDER_SIZE,
+                    [line_start, 0, line_start, args.center_line_length],
+                    width=args.border_size,
                     fill=BORDER_FILL,
                 )
 
                 # Left
                 image_draw.line(
-                    [0, line_start, CENTER_LINE_SIZE, line_start],
-                    width=BORDER_SIZE,
+                    [0, line_start, args.center_line_length, line_start],
+                    width=args.border_size,
                     fill=BORDER_FILL,
                 )
 
@@ -118,23 +123,23 @@ def main(args: argparse.Namespace) -> None:
                 image_draw.line(
                     [
                         line_start,
-                        img_size - CENTER_LINE_SIZE,
+                        img_size - args.center_line_length,
                         line_start,
                         img_size,
                     ],
-                    width=BORDER_SIZE,
+                    width=args.border_size,
                     fill=BORDER_FILL,
                 )
 
                 # Right
                 image_draw.line(
                     [
-                        img_size - CENTER_LINE_SIZE,
+                        img_size - args.center_line_length,
                         line_start,
                         img_size,
                         line_start,
                     ],
-                    width=BORDER_SIZE,
+                    width=args.border_size,
                     fill=BORDER_FILL,
                 )
 
@@ -168,10 +173,9 @@ def main(args: argparse.Namespace) -> None:
                     ),
                 )
 
-                print("Saving", marker_id)  # noqa:T001
+                print("Saving marker", marker_id)  # noqa:T001
                 paper_img_1.save(
-                    output_dir / f"{marker_id}.pdf",
-                    "PDF",
+                    output_dir / args.filename.format(id=marker_id),
                     quality=100,
                     dpi=(DPI, DPI),
                     save_all=True,
@@ -191,10 +195,9 @@ def main(args: argparse.Namespace) -> None:
                     ),
                 )
 
-                print("Saving", marker_id)  # noqa:T001
+                print("Saving marker", marker_id)  # noqa:T001
                 paper_img.save(
-                    output_dir / f"{marker_id}.pdf",
-                    "PDF",
+                    output_dir / args.filename.format(id=marker_id),
                     quality=100,
                     dpi=(DPI, DPI),
                 )
@@ -221,6 +224,12 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
         help="Size of marker (mm)",
     )
     parser.add_argument(
+        "--filename",
+        type=str,
+        help="Output filename. `id` is available for string format replacement (default: %(default)s)",
+        default="{id}.pdf",
+    )
+    parser.add_argument(
         "--description-format",
         type=str,
         help="Text format for the description on the marker images. `marker_id` and `marker_type` are available for string format replacement. (default: %(default)s)",
@@ -244,8 +253,15 @@ def add_subparser(subparsers: argparse._SubParsersAction) -> None:
         action="store_true",
     )
     parser.add_argument(
-        "--no-center-lines",
-        help="Do not output center lines around the border",
-        action="store_true",
+        "--center-line-length",
+        help="Length of center lines in pixels (default: %(default)s)",
+        default=10,
+        type=int,
+    )
+    parser.add_argument(
+        "--border-size",
+        help="Size of the border (and center lines) in pixels. Note that the border expands from center (default: %(default)s)",
+        default=1,
+        type=int,
     )
     parser.set_defaults(func=main)

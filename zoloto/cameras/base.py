@@ -34,7 +34,14 @@ class BaseCamera(ABC):
             self.calibration_params = parse_calibration_file(calibration_file)
 
     def get_detector_params(self) -> cv2.aruco_DetectorParameters:
-        return cv2.aruco.DetectorParameters_create()
+        """
+        Note: We modify the default parameters slightly to improve detection
+        on markers with hard borders (like the ones generated from
+        `zoloto marker-pdfs`)
+        """
+        parameters = cv2.aruco.DetectorParameters_create()
+        parameters.minMarkerDistanceRate = 0.035
+        return parameters
 
     def get_marker_size(self, marker_id: int) -> int:
         if self._marker_size is None:

@@ -17,7 +17,7 @@ FILE_STORAGE_READ: int
 BORDER_CONSTANT: int
 
 class aruco_DetectorParameters:
-    pass
+    minMarkerDistanceRate: float
 
 class FileNode:
     def mat(self) -> NDArray: ...
